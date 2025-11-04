@@ -1,0 +1,120 @@
+# Feature Specification: Placement Mode Foundations
+
+**Feature Branch**: `001-placement-mode`  
+**Created**: 2025-11-04  
+**Status**: Draft  
+**Input**: User description: "Placement mode: draw stations, depots, and tracks. Stations and depots can have selectable areas; stations allow drawing platforms and stopping tracks; depots allow drawing stopping lanes and regular tracks. Draw tracks point-to-point (landmarks), allow branching and elevated/underground tracks; tracks are straight lines between points. Intersections create points. Place vehicles in depots with quantity and type (speed variations). Flow: setup route -> select stations for route -> diagram settings screen (horizontal time axis, vertical draggable stations) -> select starting station/depot, extend to other stations, set endpoint (start/end must be station or depot) -> specify train cars -> preview. Execution mode: execute diagram with adjustable time speed (respect train speeds and overlaps). Trains shown as single rectangles; when turning, represented as two trapezoids bending along corner normals. Ensure no overlapping train cars at stations by validating line availability. Support add-ons."
+
+## Constitution Guardrails *(mandatory)*
+
+- **Rigorous Code Quality**: Maintain schematic tooling and simulation data structures under existing linting and architectural review gates; require peer review to confirm geometric primitives, route state transitions, and add-on hooks adhere to shared modelling guidelines.
+- **Test-Driven Reliability**: Provide unit tests for landmark geometry, station/depot configuration, vehicle assignment, and timetable validation plus end-to-end regression scenarios covering placement-to-preview flow; enforce ≥90% coverage for placement calculations and timetable conflict detection.
+- **Consistent User Experience**: Align placement, diagram, and execution screens with existing simulator visual language; update in-game help/tutorial copy describing new workflow stages and note add-on availability in release notes; no deprecations anticipated.
+- **Performance and Determinism**: Support editing maps with at least 200 landmarks and 50 concurrent trains while maintaining deterministic outcomes via seedable simulation state and repeatable timeline playback checks; measure editing responsiveness and execution tick rate on reference hardware.
+
+## User Scenarios & Testing *(mandatory)*
+
+### User Story 1 - Lay Route Infrastructure (Priority: P1)
+
+A route planner sketches stations, depots, and point-to-point tracks to establish a service corridor before any timetable work begins.
+
+**Why this priority**: Without an accurate physical layout, the simulator cannot support timetable creation or execution.
+
+**Independent Test**: Fully testable by creating a new map, placing required infrastructure, saving, and reloading to confirm fidelity.
+
+**Acceptance Scenarios**:
+
+1. **Given** a blank placement canvas, **When** the planner draws a station area and assigns platforms and stopping tracks, **Then** the station persists with selectable platform geometry and usable stopping tracks.
+2. **Given** two landmarks on the map, **When** the planner connects them with a track segment and flags it as elevated, **Then** a straight track appears with the elevation attribute accessible for later editing.
+3. **Given** two crossing track segments, **When** they intersect, **Then** the system creates a new landmark at the intersection that can be used as a branching anchor.
+
+---
+
+### User Story 2 - Configure Route Diagram (Priority: P2)
+
+A timetable designer takes an existing layout, defines a route, selects its stations, and configures diagram settings before committing train assignments.
+
+**Why this priority**: Structured routes and diagram settings are essential to produce a coherent timetable preview.
+
+**Independent Test**: Testable by selecting a subset of infrastructure, building a route sequence, arranging diagram axes, and verifying preview readiness without running execution mode.
+
+**Acceptance Scenarios**:
+
+1. **Given** an existing placement, **When** the designer chooses a starting station or depot and extends the route through selected stations, **Then** the system enforces both start and end points as valid stations or depots.
+2. **Given** the diagram settings screen, **When** the designer drags station rows on the vertical axis, **Then** the updated order reflects immediately on the timeline preview.
+3. **Given** the designer assigns vehicle counts and types to the route, **When** the configuration is saved, **Then** the preview summarizes consist lengths and speed categories.
+
+---
+
+### User Story 3 - Validate Execution Preview (Priority: P3)
+
+An operations lead previews and runs the timetable, adjusting time speed and ensuring trains honour signals without overlapping in stations.
+
+**Why this priority**: The execution preview confirms that placement and diagram work produce a conflict-free service before committing to publication.
+
+**Independent Test**: Verified by launching execution mode for a configured route, manipulating playback speed, and observing conflict resolution without editing infrastructure.
+
+**Acceptance Scenarios**:
+
+1. **Given** a generated timetable preview, **When** execution mode runs at accelerated time, **Then** train movement respects individual speed profiles and maintains schedule ordering.
+2. **Given** two trains scheduled to occupy the same stopping track, **When** validation runs before execution, **Then** the system blocks the conflict and guides the user to select an alternate line or timing.
+3. **Given** a train navigating a corner, **When** it turns, **Then** the visual representation transitions from a rectangle into two trapezoids aligned with the corner normal.
+
+---
+
+### Edge Cases
+
+- What happens when a route loops back to its origin? The system must prevent duplicate traversal unless the designer explicitly inserts an intermediate landmark, avoiding infinite pathing.
+- How does system handle an elevated track intersecting an underground track? The intersection should not create a shared landmark because the vertical separation keeps paths independent.
+- How is deterministic output preserved when multiple trains adjust speeds simultaneously? The execution engine must sequence updates by timetable order and shared seed to avoid diverging results across replays.
+
+## Requirements *(mandatory)*
+
+### Functional Requirements
+
+- **FR-001**: Placement mode MUST allow users to create and name new routes before any infrastructure is added.
+- **FR-002**: Placement mode MUST support drawing station areas with configurable platforms and stopping tracks that can be individually selected and edited.
+- **FR-003**: Placement mode MUST support drawing depot areas with configurable stopping lanes and regular tracks used for staging trains.
+- **FR-004**: Placement mode MUST enable creation of landmarks and straight track segments between landmarks, including branching from existing points.
+- **FR-005**: The system MUST automatically generate a landmark whenever two track segments intersect on the same elevation.
+- **FR-006**: Placement mode MUST let designers set track characteristics such as elevation (ground, elevated, underground) and ensure those attributes propagate through connected segments.
+- **FR-007**: Depot management MUST allow users to assign vehicle inventories by quantity and speed category for each depot.
+- **FR-008**: Route definition MUST require selecting a valid station or depot as the starting point, extending through ordered stations, and finishing at a station or depot.
+- **FR-009**: The diagram settings screen MUST display time horizontally and stations vertically, allowing drag-and-drop reordering of station rows with immediate feedback.
+- **FR-010**: The system MUST capture consist definitions (train cars, counts, speed profiles) for each route and surface them in the preview.
+- **FR-011**: Preview generation MUST validate that stopping tracks and depot lanes have sufficient capacity to avoid overlapping train cars during dwell periods.
+- **FR-012**: Execution mode MUST respect user-selected time scaling while maintaining per-train speed constraints and preventing visual or logical overlaps.
+- **FR-013**: Train visualization MUST render consist bodies as single rectangles on straight segments and as paired trapezoids that bend smoothly through corners.
+- **FR-014**: The platform MUST expose an add-on interface that lets optional content register new assets and event-driven behaviors tied to simulator timing while preventing access to security-sensitive operations.
+
+### Key Entities *(include if feature involves data)*
+
+- **Landmark**: Spatial point defining track endpoints or intersections; stores coordinates, elevation, and connected segments.
+- **Track Segment**: Straight connection between two landmarks with attributes for elevation, permissible speed, and whether it belongs to a depot or mainline.
+- **Station**: Area selection containing named platforms and stopping tracks; references associated landmarks for entry and exit.
+- **Depot**: Area selection containing stopping lanes, service tracks, and assigned vehicle inventory grouped by speed category.
+- **Route**: Ordered list of stations and depots defining service flow, linked to diagram settings and assigned consists.
+- **Vehicle Type**: Classification describing consist capabilities such as nominal speed tier and capacity, used when assigning trains to depots and routes.
+- **Scheduled Train**: Timetabled movement referencing a route, vehicle type, and dwell/arrival times for validation and execution.
+
+## Success Criteria *(mandatory)*
+
+### Measurable Outcomes
+
+- **SC-001**: Experienced designers can create a complete route with at least four stations, one depot, and ten track segments in under 15 minutes during usability testing.
+- **SC-002**: Validation catches 100% of intentional overlapping dwell conflicts across regression scenario suites before execution starts.
+- **SC-003**: At least 90% of beta testers report that diagram configuration controls are understandable without external documentation.
+- **SC-004**: Execution previews render 60 simulation minutes in under 5 real-time minutes on reference hardware while preserving consistent outcomes across repeated runs.
+- **SC-005**: Add-on content can be installed and activated without regressions in core placement mode across three representative external packages.
+
+## Assumptions & Dependencies
+
+- External asset add-ons follow documented content schemas and do not bypass validation logic.
+- Reference hardware for performance measures aligns with current minimum simulator specifications.
+- Existing save/load infrastructure remains available to persist placement and timetable data for testing scenarios.
+
+## Clarifications
+
+### Session 2025-11-04
+
+- Q: What level of executable capability should add-ons provide? → A: Add-ons can register event-timed gameplay code but must not perform security-sensitive actions.

@@ -1,0 +1,658 @@
+openapi: 3.1.0
+info:
+  title: Line Train Sim Client Service API
+  version: 0.1.0
+  description: |
+    Contract for client-side service layer handling placement mode, diagram configuration,
+    execution preview, and add-on sandbox registration. Operations are exposed through
+    a local message bus but modeled here as RESTful endpoints for clarity and testing.
+servers:
+  - url: app://local
+paths:
+  /landmarks:
+    post:
+      operationId: createLandmark
+      summary: Create a new landmark on the placement canvas.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LandmarkInput'
+      responses:
+        '201':
+          description: Landmark created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Landmark'
+  /tracks:
+    post:
+      operationId: createTrackSegment
+      summary: Connect two landmarks with a straight track segment.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackSegmentInput'
+      responses:
+        '201':
+          description: Track segment created; intersections auto-generated when needed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackSegment'
+  /stations:
+    post:
+      operationId: createStation
+      summary: Register a station area with platforms and stopping tracks.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationInput'
+      responses:
+        '201':
+          description: Station created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Station'
+    patch:
+      operationId: updateStation
+      summary: Update station geometry or platform definitions.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationPatch'
+      responses:
+        '200':
+          description: Station updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Station'
+  /depots:
+    post:
+      operationId: createDepot
+      summary: Create a depot area with stopping lanes and inventory.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepotInput'
+      responses:
+        '201':
+          description: Depot created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Depot'
+    patch:
+      operationId: updateDepot
+      summary: Change depot inventory, lanes, or service tracks.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepotPatch'
+      responses:
+        '200':
+          description: Depot updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Depot'
+  /routes:
+    post:
+      operationId: createRoute
+      summary: Define a route with ordered stops and consist templates.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteInput'
+      responses:
+        '201':
+          description: Route created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+    patch:
+      operationId: updateRoute
+      summary: Modify stops, diagram settings, or consist templates.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoutePatch'
+      responses:
+        '200':
+          description: Route updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+  /preview:
+    post:
+      operationId: generatePreview
+      summary: Produce timetable preview including conflict validation results.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewRequest'
+      responses:
+        '200':
+          description: Preview generated with validation outcomes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewResponse'
+  /execution:
+    post:
+      operationId: runExecution
+      summary: Begin execution mode playback using the validated timetable.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecutionRequest'
+      responses:
+        '202':
+          description: Execution started with seed for deterministic playback.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionAck'
+  /addons/register:
+    post:
+      operationId: registerAddon
+      summary: Load an add-on package and enable its sandboxed event hooks.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddonRegistration'
+      responses:
+        '201':
+          description: Add-on registered with permitted hooks.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Addon'
+
+components:
+  schemas:
+    LandmarkInput:
+      type: object
+      required: [position, elevation]
+      properties:
+        position:
+          $ref: '#/components/schemas/Point'
+        elevation:
+          $ref: '#/components/schemas/Elevation'
+        metadata:
+          $ref: '#/components/schemas/LandmarkMeta'
+    Landmark:
+      allOf:
+        - $ref: '#/components/schemas/LandmarkInput'
+        - type: object
+          required: [id, connections]
+          properties:
+            id:
+              type: string
+            connections:
+              type: array
+              items:
+                type: string
+    TrackSegmentInput:
+      type: object
+      required: [startLandmarkId, endLandmarkId, classification, permissibleSpeedKph, elevation]
+      properties:
+        startLandmarkId:
+          type: string
+        endLandmarkId:
+          type: string
+        classification:
+          type: string
+          enum: [mainline, station, depot]
+        permissibleSpeedKph:
+          type: number
+          minimum: 1
+        elevation:
+          $ref: '#/components/schemas/Elevation'
+        isBidirectional:
+          type: boolean
+          default: true
+    TrackSegment:
+      allOf:
+        - $ref: '#/components/schemas/TrackSegmentInput'
+        - type: object
+          required: [id]
+          properties:
+            id:
+              type: string
+    StationInput:
+      type: object
+      required: [name, areaPolygon, platforms, stoppingTracks, landmarkEntrances]
+      properties:
+        name:
+          type: string
+        areaPolygon:
+          type: array
+          minItems: 3
+          items:
+            $ref: '#/components/schemas/Point'
+        platforms:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Platform'
+        stoppingTracks:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/StoppingTrack'
+        landmarkEntrances:
+          type: array
+          items:
+            type: string
+        diagramOrderIndex:
+          type: integer
+    Station:
+      allOf:
+        - $ref: '#/components/schemas/StationInput'
+        - type: object
+          required: [id]
+          properties:
+            id:
+              type: string
+    StationPatch:
+      type: object
+      properties:
+        name:
+          type: string
+        areaPolygon:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+        platforms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Platform'
+        stoppingTracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoppingTrack'
+        landmarkEntrances:
+          type: array
+          items:
+            type: string
+        diagramOrderIndex:
+          type: integer
+    DepotInput:
+      type: object
+      required: [name, areaPolygon, stoppingLanes, serviceTracks]
+      properties:
+        name:
+          type: string
+        areaPolygon:
+          type: array
+          minItems: 3
+          items:
+            $ref: '#/components/schemas/Point'
+        stoppingLanes:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/StoppingLane'
+        serviceTracks:
+          type: array
+          items:
+            type: string
+        inventory:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepotInventoryItem'
+    Depot:
+      allOf:
+        - $ref: '#/components/schemas/DepotInput'
+        - type: object
+          required: [id]
+          properties:
+            id:
+              type: string
+    DepotPatch:
+      type: object
+      properties:
+        areaPolygon:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+        stoppingLanes:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoppingLane'
+        serviceTracks:
+          type: array
+          items:
+            type: string
+        inventory:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepotInventoryItem'
+    RouteInput:
+      type: object
+      required: [name, stops, diagramSettings, consistTemplates]
+      properties:
+        name:
+          type: string
+        stops:
+          type: array
+          minItems: 2
+          items:
+            $ref: '#/components/schemas/RouteStop'
+        diagramSettings:
+          $ref: '#/components/schemas/DiagramConfig'
+        consistTemplates:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/ConsistTemplate'
+        timeScale:
+          type: number
+          minimum: 0.1
+          maximum: 5
+    Route:
+      allOf:
+        - $ref: '#/components/schemas/RouteInput'
+        - type: object
+          required: [id]
+          properties:
+            id:
+              type: string
+    RoutePatch:
+      type: object
+      properties:
+        stops:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteStop'
+        diagramSettings:
+          $ref: '#/components/schemas/DiagramConfig'
+        consistTemplates:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsistTemplate'
+        timeScale:
+          type: number
+    PreviewRequest:
+      type: object
+      required: [routeId]
+      properties:
+        routeId:
+          type: string
+        seed:
+          type: number
+        options:
+          $ref: '#/components/schemas/PreviewOptions'
+    PreviewResponse:
+      type: object
+      required: [conflicts, scheduledTrains]
+      properties:
+        conflicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Conflict'
+        scheduledTrains:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduledTrain'
+    ExecutionRequest:
+      type: object
+      required: [routeId, previewSeed, timeScale]
+      properties:
+        routeId:
+          type: string
+        previewSeed:
+          type: number
+        timeScale:
+          type: number
+        overrides:
+          $ref: '#/components/schemas/ExecutionOverrides'
+    ExecutionAck:
+      type: object
+      required: [executionId, seed]
+      properties:
+        executionId:
+          type: string
+        seed:
+          type: number
+    AddonRegistration:
+      type: object
+      required: [id, version, permissions, hooks]
+      properties:
+        id:
+          type: string
+        version:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddonPermission'
+        hooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddonHookDescriptor'
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddonAssetRef'
+    Addon:
+      type: object
+      required: [id, version, permissions, hooks]
+      properties:
+        id:
+          type: string
+        version:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddonPermission'
+        hooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddonHookDescriptor'
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddonAssetRef'
+    Point:
+      type: object
+      required: [x, y]
+      properties:
+        x:
+          type: number
+        y:
+          type: number
+    Elevation:
+      type: string
+      enum: [ground, elevated, underground]
+    LandmarkMeta:
+      type: object
+      properties:
+        label:
+          type: string
+        source:
+          type: string
+    Platform:
+      type: object
+      required: [id, name, lengthMeters]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        lengthMeters:
+          type: number
+    StoppingTrack:
+      type: object
+      required: [trackSegmentId, capacity]
+      properties:
+        trackSegmentId:
+          type: string
+        capacity:
+          type: integer
+          minimum: 1
+    StoppingLane:
+      type: object
+      required: [trackSegmentId, capacity]
+      properties:
+        trackSegmentId:
+          type: string
+        capacity:
+          type: integer
+          minimum: 1
+    DepotInventoryItem:
+      type: object
+      required: [vehicleTypeId, quantity]
+      properties:
+        vehicleTypeId:
+          type: string
+        quantity:
+          type: integer
+          minimum: 0
+    RouteStop:
+      type: object
+      required: [entityId, type]
+      properties:
+        entityId:
+          type: string
+        type:
+          type: string
+          enum: [station, depot]
+        dwellTemplate:
+          $ref: '#/components/schemas/DwellTemplate'
+    DiagramConfig:
+      type: object
+      required: [horizontalAxis, verticalAxis]
+      properties:
+        horizontalAxis:
+          type: string
+          enum: [time]
+        verticalAxis:
+          type: string
+          enum: [stations]
+        stationOrder:
+          type: array
+          items:
+            type: string
+    ConsistTemplate:
+      type: object
+      required: [id, vehicleTypeId, carCount]
+      properties:
+        id:
+          type: string
+        vehicleTypeId:
+          type: string
+        carCount:
+          type: integer
+          minimum: 1
+    PreviewOptions:
+      type: object
+      properties:
+        includeAddons:
+          type: boolean
+          default: true
+    Conflict:
+      type: object
+      required: [type, locationId, message]
+      properties:
+        type:
+          type: string
+        locationId:
+          type: string
+        message:
+          type: string
+    ScheduledTrain:
+      type: object
+      required: [id, routeId, consistId, departureTime, dwellAssignments, seed]
+      properties:
+        id:
+          type: string
+        routeId:
+          type: string
+        consistId:
+          type: string
+        departureTime:
+          type: string
+          format: date-time
+        dwellAssignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DwellAssignment'
+        seed:
+          type: number
+    ExecutionOverrides:
+      type: object
+      properties:
+        timeScale:
+          type: number
+        skipConflicts:
+          type: boolean
+          default: false
+    AddonPermission:
+      type: string
+      enum: [asset-read, asset-write, event-hooks]
+    AddonHookDescriptor:
+      type: object
+      required: [event, handlerId]
+      properties:
+        event:
+          type: string
+          enum: [onPlacementReady, onBeforePreview, onAfterPreview, onExecutionTick]
+        handlerId:
+          type: string
+    AddonAssetRef:
+      type: object
+      required: [type, assetId]
+      properties:
+        type:
+          type: string
+        assetId:
+          type: string
+    DwellTemplate:
+      type: object
+      properties:
+        minSeconds:
+          type: integer
+        maxSeconds:
+          type: integer
+    DwellAssignment:
+      type: object
+      required: [stopId, arrival, departure, trackId]
+      properties:
+        stopId:
+          type: string
+        arrival:
+          type: string
+          format: date-time
+        departure:
+          type: string
+          format: date-time
+        trackId:
+          type: string
