@@ -1,4 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
+import { error as logError } from '../logging/logger';
 
 // Database entities
 export interface LandmarkEntity {
@@ -98,7 +99,10 @@ export interface AddonEntity {
   updatedAt: number;
 }
 
-// Database class
+/**
+ * IndexedDB database for train simulation persistence
+ * Provides type-safe access to all entity tables with error handling
+ */
 class PlacementSimDB extends Dexie {
   landmarks!: EntityTable<LandmarkEntity, 'id'>;
   trackSegments!: EntityTable<TrackSegmentEntity, 'id'>;
@@ -122,8 +126,37 @@ class PlacementSimDB extends Dexie {
       scheduledTrains: 'id, routeId, departureTime, createdAt',
       addons: 'id, name, enabled, createdAt',
     });
+
+    // Setup error handling
+    this.on('ready', () => {
+      console.info('PlacementSimDB initialized successfully');
+    });
+
+    this.on('blocked', () => {
+      logError('Database upgrade blocked by another tab');
+    });
   }
 }
 
 // Export singleton instance
 export const db = new PlacementSimDB();
+
+/**
+ * Safe database operation wrapper with error handling
+ * @param operation - Database operation to execute
+ * @param errorMessage - Error message prefix for logging
+ * @returns Result of operation or null on error
+ */
+export async function safeDatabaseOperation<T>(
+  operation: () => Promise<T>,
+  errorMessage: string,
+): Promise<T | null> {
+  try {
+    return await operation();
+  } catch (err) {
+    logError(errorMessage, err instanceof Error ? err : undefined, {
+      operation: operation.name,
+    });
+    return null;
+  }
+}

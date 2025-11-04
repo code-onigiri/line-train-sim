@@ -1,11 +1,12 @@
 import { type IntlShape, createIntl, createIntlCache } from 'react-intl';
 import enUSMessages from './locales/en-US.json';
+import jaJPMessages from './locales/ja-JP.json';
 
 export type Locale = 'en-US' | 'ja-JP';
 
 const messages: Record<Locale, Record<string, string>> = {
   'en-US': enUSMessages,
-  'ja-JP': {}, // To be added in Phase 7
+  'ja-JP': jaJPMessages,
 };
 
 // Create cache for performance

@@ -1,0 +1,33 @@
+{
+  "app.title": "線路列車シミュレーター",
+  "app.loading": "読み込み中...",
+
+  "placement.title": "配置モード",
+  "placement.tool.select": "選択",
+  "placement.tool.landmark": "ランドマーク",
+  "placement.tool.track": "線路",
+  "placement.tool.station": "駅",
+  "placement.tool.depot": "車両基地",
+  "placement.tool.pan": "パン",
+
+  "diagram.title": "ダイヤグラム設定",
+  "diagram.route.new": "新規路線",
+  "diagram.route.save": "路線を保存",
+  "diagram.stations.reorder": "駅の順序変更",
+
+  "execution.title": "実行プレビュー",
+  "execution.play": "再生",
+  "execution.pause": "一時停止",
+  "execution.stop": "停止",
+  "execution.speed": "速度: {scale}x",
+
+  "validation.error.required": "この項目は必須です",
+  "validation.error.invalidRoute": "路線は駅または車両基地で始まり終わる必要があります",
+  "validation.error.conflict": "競合が検出されました: {message}",
+
+  "common.save": "保存",
+  "common.cancel": "キャンセル",
+  "common.delete": "削除",
+  "common.edit": "編集",
+  "common.close": "閉じる"
+}

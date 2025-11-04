@@ -1,10 +1,12 @@
 import type { Application } from 'pixi.js';
 
+/** 2D point in canvas coordinates */
 export interface Point {
   x: number;
   y: number;
 }
 
+/** Unified interaction event supporting touch, mouse, and keyboard */
 export interface InteractionEvent {
   type: 'pointerdown' | 'pointerup' | 'pointermove' | 'wheel' | 'keydown' | 'keyup';
   point: Point;
@@ -17,30 +19,65 @@ export interface InteractionEvent {
   key?: string;
 }
 
+/** Handler function for interaction events */
 export type InteractionHandler = (event: InteractionEvent) => void;
 
+/**
+ * Manages user interactions for the canvas including touch, mouse, and keyboard
+ * Provides unified event handling with proper cleanup to prevent memory leaks
+ * @example
+ * ```typescript
+ * const manager = new InteractionManager(pixiApp.getApp());
+ * manager.on('pointerdown', (event) => {
+ *   console.log('Clicked at', event.point);
+ * });
+ * // Later: manager.destroy() to cleanup
+ * ```
+ */
 export class InteractionManager {
   private handlers: Map<string, InteractionHandler[]> = new Map();
   private canvas: HTMLCanvasElement;
   private isEnabled = true;
+  // Store bound handlers for proper cleanup
+  private boundHandlers: {
+    pointerdown: (e: PointerEvent) => void;
+    pointerup: (e: PointerEvent) => void;
+    pointermove: (e: PointerEvent) => void;
+    wheel: (e: WheelEvent) => void;
+    keydown: (e: KeyboardEvent) => void;
+    keyup: (e: KeyboardEvent) => void;
+  };
 
   constructor(private app: Application) {
     this.canvas = app.canvas as HTMLCanvasElement;
+    // Bind handlers once to enable proper cleanup
+    this.boundHandlers = {
+      pointerdown: this.handlePointerDown.bind(this),
+      pointerup: this.handlePointerUp.bind(this),
+      pointermove: this.handlePointerMove.bind(this),
+      wheel: this.handleWheel.bind(this),
+      keydown: this.handleKeyDown.bind(this),
+      keyup: this.handleKeyUp.bind(this),
+    };
     this.setupEventListeners();
   }
 
+  /**
+   * Setup event listeners for canvas and window
+   * @private
+   */
   private setupEventListeners(): void {
     // Pointer events
-    this.canvas.addEventListener('pointerdown', this.handlePointerDown.bind(this));
-    this.canvas.addEventListener('pointerup', this.handlePointerUp.bind(this));
-    this.canvas.addEventListener('pointermove', this.handlePointerMove.bind(this));
+    this.canvas.addEventListener('pointerdown', this.boundHandlers.pointerdown);
+    this.canvas.addEventListener('pointerup', this.boundHandlers.pointerup);
+    this.canvas.addEventListener('pointermove', this.boundHandlers.pointermove);
 
     // Wheel events
-    this.canvas.addEventListener('wheel', this.handleWheel.bind(this), { passive: false });
+    this.canvas.addEventListener('wheel', this.boundHandlers.wheel, { passive: false });
 
     // Keyboard events
-    window.addEventListener('keydown', this.handleKeyDown.bind(this));
-    window.addEventListener('keyup', this.handleKeyUp.bind(this));
+    window.addEventListener('keydown', this.boundHandlers.keydown);
+    window.addEventListener('keyup', this.boundHandlers.keyup);
   }
 
   private getCanvasPoint(clientX: number, clientY: number): Point {
@@ -141,6 +178,11 @@ export class InteractionManager {
     });
   }
 
+  /**
+   * Register an event handler for the specified event type
+   * @param eventType - Event type to listen for
+   * @param handler - Handler function to call when event occurs
+   */
   public on(eventType: string, handler: InteractionHandler): void {
     if (!this.handlers.has(eventType)) {
       this.handlers.set(eventType, []);
@@ -148,6 +190,11 @@ export class InteractionManager {
     this.handlers.get(eventType)?.push(handler);
   }
 
+  /**
+   * Unregister an event handler for the specified event type
+   * @param eventType - Event type to stop listening for
+   * @param handler - Handler function to remove
+   */
   public off(eventType: string, handler: InteractionHandler): void {
     const handlers = this.handlers.get(eventType);
     if (handlers) {
@@ -158,6 +205,11 @@ export class InteractionManager {
     }
   }
 
+  /**
+   * Emit an event to all registered handlers
+   * @param event - Event to emit
+   * @private
+   */
   private emit(event: InteractionEvent): void {
     const handlers = this.handlers.get(event.type);
     if (handlers) {
@@ -167,21 +219,34 @@ export class InteractionManager {
     }
   }
 
+  /**
+   * Enable interaction handling
+   */
   public enable(): void {
     this.isEnabled = true;
   }
 
+  /**
+   * Disable interaction handling temporarily
+   */
   public disable(): void {
     this.isEnabled = false;
   }
 
+  /**
+   * Cleanup all event listeners and handlers
+   * Must be called when the component is unmounted to prevent memory leaks
+   */
   public destroy(): void {
-    this.canvas.removeEventListener('pointerdown', this.handlePointerDown.bind(this));
-    this.canvas.removeEventListener('pointerup', this.handlePointerUp.bind(this));
-    this.canvas.removeEventListener('pointermove', this.handlePointerMove.bind(this));
-    this.canvas.removeEventListener('wheel', this.handleWheel.bind(this));
-    window.removeEventListener('keydown', this.handleKeyDown.bind(this));
-    window.removeEventListener('keyup', this.handleKeyUp.bind(this));
+    // Remove event listeners using bound handlers
+    this.canvas.removeEventListener('pointerdown', this.boundHandlers.pointerdown);
+    this.canvas.removeEventListener('pointerup', this.boundHandlers.pointerup);
+    this.canvas.removeEventListener('pointermove', this.boundHandlers.pointermove);
+    this.canvas.removeEventListener('wheel', this.boundHandlers.wheel);
+    window.removeEventListener('keydown', this.boundHandlers.keydown);
+    window.removeEventListener('keyup', this.boundHandlers.keyup);
+
+    // Clear all handlers
     this.handlers.clear();
   }
 }
