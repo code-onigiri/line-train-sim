@@ -21,3 +21,7 @@
 - **Decision**: Introduce an add-on sandbox API exposing event hooks without privileged access
   - **Rationale**: Maintains extensibility while satisfying security constraint against privileged operations; event hooks allow timing-based behaviors and remain testable.
   - **Alternatives considered**: Deny script execution (limits feature goals), full scripting without sandbox (violates security requirement)
+
+- **Decision**: Adopt FormatJS (react-intl) for internationalization with locale bundles stored client-side
+  - **Rationale**: react-intl integrates cleanly with React 18, supports ICU message formatting for time axes, and keeps translations in structured JSON that can live alongside IndexedDB data for offline use.
+  - **Alternatives considered**: i18next (broader ecosystem but heavier runtime), custom string tables (high maintenance, lacks pluralization support)

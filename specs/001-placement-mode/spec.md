@@ -86,6 +86,7 @@ An operations lead previews and runs the timetable, adjusting time speed and ens
 - **FR-012**: Execution mode MUST respect user-selected time scaling while maintaining per-train speed constraints and preventing visual or logical overlaps.
 - **FR-013**: Train visualization MUST render consist bodies as single rectangles on straight segments and as paired trapezoids that bend smoothly through corners.
 - **FR-014**: The platform MUST expose an add-on interface that lets optional content register new assets and event-driven behaviors tied to simulator timing while preventing access to security-sensitive operations.
+- **FR-015**: The user interface MUST support configurable locale packs with translated text, numeric, and time formatting for placement, diagram, and execution surfaces.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -106,6 +107,7 @@ An operations lead previews and runs the timetable, adjusting time speed and ens
 - **SC-003**: At least 90% of beta testers report that diagram configuration controls are understandable without external documentation.
 - **SC-004**: Execution previews render 60 simulation minutes in under 5 real-time minutes on reference hardware while preserving consistent outcomes across repeated runs.
 - **SC-005**: Add-on content can be installed and activated without regressions in core placement mode across three representative external packages.
+- **SC-006**: At least two locales ship at launch, and 90% of UI copy in usability tests reflects the selected locale’s language and formatting rules.
 
 ## Assumptions & Dependencies
 

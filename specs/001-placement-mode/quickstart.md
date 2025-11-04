@@ -26,8 +26,10 @@ bun run test:e2e
 # Build production bundle
 bun run build
 ```
+# Sync locale bundles (optional example)
 
 ## Local Data Storage
+
 
 - Primary persistence: IndexedDB via Dexie (`placementSimDB`).
 - Preferences fallback: `localStorage` key `lts:preferences`.
@@ -48,3 +50,9 @@ localStorage.removeItem('lts:preferences');
 - Drop `.lts-addon.json` packages into `app/public/addons/`.
 - Enable via Settings → Add-ons; each package must declare permitted event hooks (`onPlacementReady`, `onBeforePreview`, `onAfterPreview`, `onExecutionTick`).
 - Sandboxed scripts execute in isolated Web Worker; no direct network or storage access.
+
+## Internationalization
+
+- Default locale: `en-US`; additional locales stored in `app/src/i18n/locales/*`.
+- Use `bun run intl:extract` to update message catalogs from source.
+- Place compiled translation files under `app/public/locales/` for offline availability.
