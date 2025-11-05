@@ -40,12 +40,6 @@ export class IntersectionDetector {
     seg2: TrackSegmentModel,
     landmarks: Map<string, LandmarkModel>,
   ): IntersectionResult {
-    // Check vertical clearance first
-    const elevationDiff = Math.abs(seg1.elevation - seg2.elevation);
-    if (elevationDiff >= VERTICAL_CLEARANCE_THRESHOLD) {
-      return { intersects: false };
-    }
-
     // Get landmark positions
     const start1 = landmarks.get(seg1.startLandmarkId);
     const end1 = landmarks.get(seg1.endLandmarkId);
@@ -53,6 +47,16 @@ export class IntersectionDetector {
     const end2 = landmarks.get(seg2.endLandmarkId);
 
     if (!start1 || !end1 || !start2 || !end2) {
+      return { intersects: false };
+    }
+
+    // Check vertical clearance based on landmark elevations
+    // Calculate average elevation of segment endpoints for comparison
+    const avgElevation1 = (start1.elevationMeters + end1.elevationMeters) / 2;
+    const avgElevation2 = (start2.elevationMeters + end2.elevationMeters) / 2;
+    const elevationDiff = Math.abs(avgElevation1 - avgElevation2);
+
+    if (elevationDiff >= VERTICAL_CLEARANCE_THRESHOLD) {
       return { intersects: false };
     }
 

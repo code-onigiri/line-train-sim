@@ -55,13 +55,28 @@ export class IntersectionHandler {
         continue;
       }
 
-      // Calculate elevation at intersection point (average of intersecting segments)
+      // Calculate elevation at intersection point
+      // Get landmarks for both segments to compute average elevation
+      const newSegStart = landmarkMap.get(newSegment.startLandmarkId);
+      const newSegEnd = landmarkMap.get(newSegment.endLandmarkId);
       const intersectedSegment = this.trackSegmentService.get(intersection.segmentId);
-      if (!intersectedSegment) {
+
+      if (!intersectedSegment || !newSegStart || !newSegEnd) {
         continue;
       }
 
-      const averageElevation = (newSegment.elevation + intersectedSegment.elevation) / 2;
+      const intersectedSegStart = landmarkMap.get(intersectedSegment.startLandmarkId);
+      const intersectedSegEnd = landmarkMap.get(intersectedSegment.endLandmarkId);
+
+      if (!intersectedSegStart || !intersectedSegEnd) {
+        continue;
+      }
+
+      // Calculate average elevation from all four endpoints
+      const avgElevation1 = (newSegStart.elevationMeters + newSegEnd.elevationMeters) / 2;
+      const avgElevation2 =
+        (intersectedSegStart.elevationMeters + intersectedSegEnd.elevationMeters) / 2;
+      const averageElevation = (avgElevation1 + avgElevation2) / 2;
 
       // Create new landmark at intersection
       const landmark = this.landmarkService.create(x, y, averageElevation, {
@@ -104,28 +119,28 @@ export class IntersectionHandler {
       this.trackSegmentService.create(segment.startLandmarkId, landmarkId, segment.classification, {
         isBidirectional: segment.isBidirectional,
         permissibleSpeedKph: segment.permissibleSpeedKph,
-        elevation: segment.elevation,
+        slopePercent: segment.slopePercent,
       });
 
       // Create segment from intersection landmark to end
       this.trackSegmentService.create(landmarkId, segment.endLandmarkId, segment.classification, {
         isBidirectional: segment.isBidirectional,
         permissibleSpeedKph: segment.permissibleSpeedKph,
-        elevation: segment.elevation,
+        slopePercent: segment.slopePercent,
       });
     } else {
       // Create segment from start to intersection landmark
       this.trackSegmentService.create(segment.startLandmarkId, landmarkId, segment.classification, {
         isBidirectional: segment.isBidirectional,
         permissibleSpeedKph: segment.permissibleSpeedKph,
-        elevation: segment.elevation,
+        slopePercent: segment.slopePercent,
       });
 
       // Create segment from intersection landmark to end
       this.trackSegmentService.create(landmarkId, segment.endLandmarkId, segment.classification, {
         isBidirectional: segment.isBidirectional,
         permissibleSpeedKph: segment.permissibleSpeedKph,
-        elevation: segment.elevation,
+        slopePercent: segment.slopePercent,
       });
     }
 

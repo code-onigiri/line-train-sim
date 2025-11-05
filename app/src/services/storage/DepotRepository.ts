@@ -18,8 +18,8 @@ export class DepotRepository {
       stoppingLanes: depot.stoppingLanes,
       serviceTracks: depot.serviceTracks,
       inventory: depot.inventory,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: depot.createdAt,
+      updatedAt: depot.updatedAt,
     };
 
     const result = await safeDatabaseOperation(async () => {
@@ -43,8 +43,8 @@ export class DepotRepository {
       stoppingLanes: depot.stoppingLanes,
       serviceTracks: depot.serviceTracks,
       inventory: depot.inventory,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: depot.createdAt,
+      updatedAt: depot.updatedAt,
     }));
 
     const result = await safeDatabaseOperation(async () => {

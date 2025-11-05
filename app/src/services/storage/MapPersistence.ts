@@ -114,7 +114,7 @@ export class MapPersistence {
             id: entity.id,
             x: entity.x,
             y: entity.y,
-            elevation: entity.elevation,
+            elevationMeters: entity.elevationMeters,
             connections: entity.connections,
             metadata: entity.metadata,
           }) as unknown as LandmarkModel,
@@ -129,7 +129,7 @@ export class MapPersistence {
             classification: entity.classification,
             isBidirectional: entity.isBidirectional,
             permissibleSpeedKph: entity.permissibleSpeedKph,
-            elevation: entity.elevation,
+            slopePercent: entity.slopePercent,
             addons: entity.addons,
           }) as unknown as TrackSegmentModel,
       );

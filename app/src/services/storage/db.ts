@@ -6,7 +6,7 @@ export interface LandmarkEntity {
   id: string;
   x: number;
   y: number;
-  elevation: number;
+  elevationMeters: number;
   connections: string[];
   metadata: Record<string, unknown>;
   createdAt: number;
@@ -20,7 +20,7 @@ export interface TrackSegmentEntity {
   classification: 'mainline' | 'station' | 'depot';
   isBidirectional: boolean;
   permissibleSpeedKph: number;
-  elevation: number;
+  slopePercent: number;
   addons: string[];
   createdAt: number;
   updatedAt: number;
@@ -117,7 +117,7 @@ class PlacementSimDB extends Dexie {
     super('placementSimDB');
 
     this.version(1).stores({
-      landmarks: 'id, elevation, createdAt',
+      landmarks: 'id, elevationMeters, createdAt',
       trackSegments: 'id, startLandmarkId, endLandmarkId, classification, createdAt',
       stations: 'id, name, diagramOrderIndex, createdAt',
       depots: 'id, name, createdAt',
