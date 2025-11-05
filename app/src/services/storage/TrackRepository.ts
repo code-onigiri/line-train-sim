@@ -18,10 +18,10 @@ export class TrackRepository {
       classification: segment.classification,
       isBidirectional: segment.isBidirectional,
       permissibleSpeedKph: segment.permissibleSpeedKph,
-      elevation: segment.elevation,
+      slopePercent: segment.slopePercent,
       addons: segment.addons,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: segment.createdAt,
+      updatedAt: segment.updatedAt,
     };
 
     const result = await safeDatabaseOperation(async () => {
@@ -45,10 +45,10 @@ export class TrackRepository {
       classification: segment.classification,
       isBidirectional: segment.isBidirectional,
       permissibleSpeedKph: segment.permissibleSpeedKph,
-      elevation: segment.elevation,
+      slopePercent: segment.slopePercent,
       addons: segment.addons,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: segment.createdAt,
+      updatedAt: segment.updatedAt,
     }));
 
     const result = await safeDatabaseOperation(async () => {

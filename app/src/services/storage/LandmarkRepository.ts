@@ -15,11 +15,11 @@ export class LandmarkRepository {
       id: landmark.id,
       x: landmark.x,
       y: landmark.y,
-      elevation: landmark.elevation,
+      elevationMeters: landmark.elevationMeters,
       connections: landmark.connections,
       metadata: landmark.metadata,
-      createdAt: landmark.metadata.createdAt as number,
-      updatedAt: Date.now(),
+      createdAt: landmark.createdAt,
+      updatedAt: landmark.updatedAt,
     };
 
     const result = await safeDatabaseOperation(async () => {
@@ -40,11 +40,11 @@ export class LandmarkRepository {
       id: landmark.id,
       x: landmark.x,
       y: landmark.y,
-      elevation: landmark.elevation,
+      elevationMeters: landmark.elevationMeters,
       connections: landmark.connections,
       metadata: landmark.metadata,
-      createdAt: landmark.metadata.createdAt as number,
-      updatedAt: Date.now(),
+      createdAt: landmark.createdAt,
+      updatedAt: landmark.updatedAt,
     }));
 
     const result = await safeDatabaseOperation(async () => {
@@ -88,7 +88,7 @@ export class LandmarkRepository {
   async getByElevationRange(minElevation: number, maxElevation: number): Promise<LandmarkEntity[]> {
     const result = await safeDatabaseOperation(async () => {
       return await db.landmarks
-        .where('elevation')
+        .where('elevationMeters')
         .between(minElevation, maxElevation, true, true)
         .toArray();
     }, `Failed to get landmarks by elevation range [${minElevation}, ${maxElevation}]`);

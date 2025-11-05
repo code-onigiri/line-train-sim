@@ -19,8 +19,8 @@ export class StationRepository {
       stoppingTracks: station.stoppingTracks,
       landmarkEntrances: station.landmarkEntrances,
       diagramOrderIndex: station.diagramOrderIndex,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: station.createdAt,
+      updatedAt: station.updatedAt,
     };
 
     const result = await safeDatabaseOperation(async () => {
@@ -45,8 +45,8 @@ export class StationRepository {
       stoppingTracks: station.stoppingTracks,
       landmarkEntrances: station.landmarkEntrances,
       diagramOrderIndex: station.diagramOrderIndex,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: station.createdAt,
+      updatedAt: station.updatedAt,
     }));
 
     const result = await safeDatabaseOperation(async () => {
