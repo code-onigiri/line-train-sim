@@ -79,10 +79,10 @@ Per plan.md structure:
 - [x] T028 [P] [US1] Create Depot model with validation in app/src/models/Depot.ts
 - [x] T029 [P] [US1] Create Platform and StoppingTrack models in app/src/models/StationComponents.ts
 - [x] T030 [P] [US1] Create StoppingLane and DepotInventoryItem models in app/src/models/DepotComponents.ts
-- [ ] T031 [US1] Implement LandmarkService with create, update, delete operations in app/src/services/placement/LandmarkService.ts
-- [ ] T032 [US1] Implement TrackSegmentService with create, intersection detection (4m vertical clearance threshold), and elevation (numeric height in meters) with slope calculation in app/src/services/placement/TrackSegmentService.ts
-- [ ] T033 [US1] Implement StationService with area polygon validation and platform management in app/src/services/placement/StationService.ts
-- [ ] T034 [US1] Implement DepotService with inventory management and lane configuration in app/src/services/placement/DepotService.ts
+- [x] T031 [US1] Implement LandmarkService with create, update, delete operations in app/src/services/placement/LandmarkService.ts
+- [x] T032 [US1] Implement TrackSegmentService with create, intersection detection (4m vertical clearance threshold), and elevation (numeric height in meters) with slope calculation in app/src/services/placement/TrackSegmentService.ts
+- [x] T033 [US1] Implement StationService with area polygon validation and platform management in app/src/services/placement/StationService.ts
+- [x] T034 [US1] Implement DepotService with inventory management and lane configuration in app/src/services/placement/DepotService.ts
 - [ ] T035 [P] [US1] Create PixiJS renderer for landmarks in app/src/canvas/renderer/LandmarkRenderer.ts
 - [ ] T036 [P] [US1] Create PixiJS renderer for track segments with elevation visualization in app/src/canvas/renderer/TrackRenderer.ts
 - [ ] T037 [P] [US1] Create PixiJS renderer for station areas and platforms in app/src/canvas/renderer/StationRenderer.ts
