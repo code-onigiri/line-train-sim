@@ -24,8 +24,11 @@ export class TrackSegmentService {
     const startLandmark = this.landmarkService.get(startLandmarkId);
     const endLandmark = this.landmarkService.get(endLandmarkId);
 
-    if (!startLandmark || !endLandmark) {
-      throw new Error('Both start and end landmarks must exist');
+    if (!startLandmark) {
+      throw new Error(`Start landmark not found: ${startLandmarkId}`);
+    }
+    if (!endLandmark) {
+      throw new Error(`End landmark not found: ${endLandmarkId}`);
     }
 
     // Calculate elevation if not provided (average of landmark elevations)

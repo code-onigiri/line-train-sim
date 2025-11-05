@@ -4,6 +4,7 @@ import type { LandmarkModel } from '../../models/Landmark';
 export class LandmarkRenderer {
   private container: Container;
   private graphics: Map<string, Graphics> = new Map();
+  private lastRenderedState: Map<string, string> = new Map();
 
   constructor(parentContainer: Container) {
     this.container = new Container();
@@ -13,8 +14,18 @@ export class LandmarkRenderer {
   /**
    * Render a single landmark
    * @param landmark - Landmark model to render
+   * @param force - Force re-render even if state hasn't changed
    */
-  render(landmark: LandmarkModel): void {
+  render(landmark: LandmarkModel, force = false): void {
+    // Generate state hash to detect changes
+    const stateHash = `${landmark.x},${landmark.y},${landmark.elevation},${landmark.connections.length}`;
+    const lastHash = this.lastRenderedState.get(landmark.id);
+
+    // Skip rendering if state hasn't changed (performance optimization)
+    if (!force && lastHash === stateHash) {
+      return;
+    }
+
     let graphic = this.graphics.get(landmark.id);
 
     if (!graphic) {
@@ -42,6 +53,9 @@ export class LandmarkRenderer {
       graphic.circle(landmark.x, landmark.y, radius + 2);
       graphic.stroke({ width: 2, color: 0x0066cc, alpha: 0.8 });
     }
+
+    // Cache the rendered state
+    this.lastRenderedState.set(landmark.id, stateHash);
   }
 
   /**
@@ -75,6 +89,7 @@ export class LandmarkRenderer {
     if (graphic) {
       graphic.destroy();
       this.graphics.delete(landmarkId);
+      this.lastRenderedState.delete(landmarkId);
     }
   }
 
@@ -86,6 +101,7 @@ export class LandmarkRenderer {
       graphic.destroy();
     }
     this.graphics.clear();
+    this.lastRenderedState.clear();
   }
 
   /**

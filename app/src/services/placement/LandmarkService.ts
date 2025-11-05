@@ -50,14 +50,25 @@ export class LandmarkService {
       return false;
     }
 
-    // Check if landmark has connections
+    // Check if landmark has connections - return false instead of throwing
     if (landmark.connections.length > 0) {
-      throw new Error(
-        'Cannot delete landmark with existing connections. Remove track segments first.',
-      );
+      return false;
     }
 
     return this.landmarks.delete(id);
+  }
+
+  /**
+   * Check if a landmark can be safely deleted
+   * @param id - Landmark ID
+   * @returns true if landmark can be deleted, false otherwise
+   */
+  canDelete(id: string): boolean {
+    const landmark = this.landmarks.get(id);
+    if (!landmark) {
+      return false;
+    }
+    return landmark.connections.length === 0;
   }
 
   addConnection(landmarkId: string, trackSegmentId: string): LandmarkModel {
