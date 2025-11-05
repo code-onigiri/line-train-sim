@@ -87,8 +87,8 @@ Per plan.md structure:
 - [x] T036 [P] [US1] Create PixiJS renderer for track segments with elevation visualization in app/src/canvas/renderer/TrackRenderer.ts
 - [x] T037 [P] [US1] Create PixiJS renderer for station areas and platforms in app/src/canvas/renderer/StationRenderer.ts
 - [x] T038 [P] [US1] Create PixiJS renderer for depot areas and lanes in app/src/canvas/renderer/DepotRenderer.ts
-- [ ] T039 [P] [US1] Implement placement mode UI toolbar with drawing tools in app/src/ui/placement/PlacementToolbar.tsx
-- [ ] T040 [US1] Implement landmark placement interaction handler in app/src/canvas/interactions/LandmarkPlacementHandler.ts
+- [x] T039 [P] [US1] Implement placement mode UI toolbar with drawing tools in app/src/ui/placement/PlacementToolbar.tsx
+- [x] T040 [US1] Implement landmark placement interaction handler in app/src/canvas/interactions/LandmarkPlacementHandler.ts
 - [ ] T041 [US1] Implement track drawing interaction handler with straight line snapping in app/src/canvas/interactions/TrackDrawingHandler.ts
 - [ ] T042 [US1] Implement station area selection and platform configuration UI in app/src/ui/placement/StationEditor.tsx
 - [ ] T043 [US1] Implement depot area selection and lane configuration UI in app/src/ui/placement/DepotEditor.tsx
