@@ -107,7 +107,7 @@ export class TrackSegmentService {
     }
 
     // Check vertical clearance based on landmark elevations
-    // Get elevation at the midpoint of each segment for comparison
+    // Calculate average elevation of segment endpoints for comparison
     const start1 = this.landmarkService.get(seg1.startLandmarkId);
     const end1 = this.landmarkService.get(seg1.endLandmarkId);
     const start2 = this.landmarkService.get(seg2.startLandmarkId);
@@ -117,9 +117,15 @@ export class TrackSegmentService {
       return false;
     }
 
-    // Calculate average elevation for each segment
-    const avgElevation1 = (start1.elevationMeters + end1.elevationMeters) / 2;
-    const avgElevation2 = (start2.elevationMeters + end2.elevationMeters) / 2;
+    // Calculate average elevation for each segment based on endpoint elevations
+    const avgElevation1 = this.calculateSegmentAverageElevation(
+      start1.elevationMeters,
+      end1.elevationMeters,
+    );
+    const avgElevation2 = this.calculateSegmentAverageElevation(
+      start2.elevationMeters,
+      end2.elevationMeters,
+    );
     const elevationDiff = Math.abs(avgElevation1 - avgElevation2);
 
     if (elevationDiff >= VERTICAL_CLEARANCE_THRESHOLD) {
@@ -135,6 +141,11 @@ export class TrackSegmentService {
     );
 
     return intersectionPoint !== null;
+  }
+
+  // Helper: Calculate average elevation from segment endpoints
+  private calculateSegmentAverageElevation(startElevation: number, endElevation: number): number {
+    return (startElevation + endElevation) / 2;
   }
 
   // Helper: Calculate line segment intersection point
