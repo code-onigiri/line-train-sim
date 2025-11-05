@@ -39,13 +39,13 @@ describe('TrackSegmentService', () => {
       }).toThrow('End landmark not found: non-existent-id');
     });
 
-    it('should calculate average elevation if not provided', () => {
+    it('should default to 0% slope if not provided', () => {
       const start = landmarkService.create(100, 200, 10);
       const end = landmarkService.create(200, 300, 20);
 
       const track = trackService.create(start.id, end.id);
 
-      expect(track.elevation).toBe(15);
+      expect(track.slopePercent).toBe(0);
     });
 
     it('should add connections to both landmarks', () => {

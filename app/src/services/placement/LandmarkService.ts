@@ -7,10 +7,10 @@ export class LandmarkService {
   create(
     x: number,
     y: number,
-    elevation = 0,
+    elevationMeters = 0,
     metadata: Record<string, unknown> = {},
   ): LandmarkModel {
-    const landmark = new LandmarkModel({ x, y, elevation, metadata });
+    const landmark = new LandmarkModel({ x, y, elevationMeters, metadata });
     this.landmarks.set(landmark.id, landmark);
     return landmark;
   }
@@ -33,8 +33,8 @@ export class LandmarkService {
     if (updates.x !== undefined || updates.y !== undefined) {
       updated = updated.updatePosition(updates.x ?? existing.x, updates.y ?? existing.y);
     }
-    if (updates.elevation !== undefined) {
-      updated = updated.updateElevation(updates.elevation);
+    if (updates.elevationMeters !== undefined) {
+      updated = updated.updateElevation(updates.elevationMeters);
     }
     if (updates.metadata) {
       updated = updated.updateMetadata(updates.metadata);
