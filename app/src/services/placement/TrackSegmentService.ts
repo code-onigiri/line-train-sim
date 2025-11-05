@@ -17,7 +17,7 @@ export class TrackSegmentService {
     options: {
       isBidirectional?: boolean;
       permissibleSpeedKph?: number;
-      elevation?: number;
+      slopePercent?: number;
     } = {},
   ): TrackSegmentModel {
     // Validate landmarks exist
@@ -31,8 +31,8 @@ export class TrackSegmentService {
       throw new Error(`End landmark not found: ${endLandmarkId}`);
     }
 
-    // Calculate elevation if not provided (average of landmark elevations)
-    const elevation = options.elevation ?? (startLandmark.elevation + endLandmark.elevation) / 2;
+    // Slope must be manually entered, default to 0
+    const slopePercent = options.slopePercent ?? 0;
 
     const segment = new TrackSegmentModel({
       startLandmarkId,
@@ -40,7 +40,7 @@ export class TrackSegmentService {
       classification,
       isBidirectional: options.isBidirectional ?? true,
       permissibleSpeedKph: options.permissibleSpeedKph ?? 100,
-      elevation,
+      slopePercent,
     });
 
     this.trackSegments.set(segment.id, segment);
@@ -73,8 +73,8 @@ export class TrackSegmentService {
     if (updates.permissibleSpeedKph !== undefined) {
       updated = updated.updateSpeed(updates.permissibleSpeedKph);
     }
-    if (updates.elevation !== undefined) {
-      updated = updated.updateElevation(updates.elevation);
+    if (updates.slopePercent !== undefined) {
+      updated = updated.updateSlope(updates.slopePercent);
     }
     if (updates.isBidirectional !== undefined) {
       updated = updated.setBidirectional(updates.isBidirectional);
@@ -106,13 +106,8 @@ export class TrackSegmentService {
       return false;
     }
 
-    // Check vertical clearance
-    const elevationDiff = Math.abs(seg1.elevation - seg2.elevation);
-    if (elevationDiff >= VERTICAL_CLEARANCE_THRESHOLD) {
-      return false; // No intersection due to sufficient vertical separation
-    }
-
-    // Get landmark positions
+    // Check vertical clearance based on landmark elevations
+    // Calculate average elevation of segment endpoints for comparison
     const start1 = this.landmarkService.get(seg1.startLandmarkId);
     const end1 = this.landmarkService.get(seg1.endLandmarkId);
     const start2 = this.landmarkService.get(seg2.startLandmarkId);
@@ -120,6 +115,21 @@ export class TrackSegmentService {
 
     if (!start1 || !end1 || !start2 || !end2) {
       return false;
+    }
+
+    // Calculate average elevation for each segment based on endpoint elevations
+    const avgElevation1 = this.calculateSegmentAverageElevation(
+      start1.elevationMeters,
+      end1.elevationMeters,
+    );
+    const avgElevation2 = this.calculateSegmentAverageElevation(
+      start2.elevationMeters,
+      end2.elevationMeters,
+    );
+    const elevationDiff = Math.abs(avgElevation1 - avgElevation2);
+
+    if (elevationDiff >= VERTICAL_CLEARANCE_THRESHOLD) {
+      return false; // No intersection due to sufficient vertical separation
     }
 
     // Line segment intersection algorithm
@@ -131,6 +141,11 @@ export class TrackSegmentService {
     );
 
     return intersectionPoint !== null;
+  }
+
+  // Helper: Calculate average elevation from segment endpoints
+  private calculateSegmentAverageElevation(startElevation: number, endElevation: number): number {
+    return (startElevation + endElevation) / 2;
   }
 
   // Helper: Calculate line segment intersection point

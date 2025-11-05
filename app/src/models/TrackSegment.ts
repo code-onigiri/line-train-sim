@@ -13,7 +13,7 @@ export class TrackSegmentModel {
       classification: data.classification ?? 'mainline',
       isBidirectional: data.isBidirectional ?? true,
       permissibleSpeedKph: data.permissibleSpeedKph ?? 100,
-      elevation: data.elevation ?? 0,
+      slopePercent: data.slopePercent ?? 0,
       addons: data.addons ?? [],
       createdAt: data.createdAt ?? now,
       updatedAt: data.updatedAt ?? now,
@@ -44,8 +44,8 @@ export class TrackSegmentModel {
     return this.data.permissibleSpeedKph;
   }
 
-  get elevation(): number {
-    return this.data.elevation;
+  get slopePercent(): number {
+    return this.data.slopePercent;
   }
 
   get addons(): string[] {
@@ -76,10 +76,10 @@ export class TrackSegmentModel {
     });
   }
 
-  updateElevation(elevation: number): TrackSegmentModel {
+  updateSlope(slopePercent: number): TrackSegmentModel {
     return new TrackSegmentModel({
       ...this.data,
-      elevation,
+      slopePercent,
       updatedAt: Date.now(),
     });
   }

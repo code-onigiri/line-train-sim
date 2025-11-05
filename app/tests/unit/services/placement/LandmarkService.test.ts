@@ -14,7 +14,7 @@ describe('LandmarkService', () => {
 
       expect(landmark.x).toBe(100);
       expect(landmark.y).toBe(200);
-      expect(landmark.elevation).toBe(5);
+      expect(landmark.elevationMeters).toBe(5);
       expect(service.count()).toBe(1);
     });
 

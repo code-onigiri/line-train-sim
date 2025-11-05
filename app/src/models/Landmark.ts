@@ -10,7 +10,7 @@ export class LandmarkModel {
       id: data.id || uuidv4(),
       x: data.x ?? 0,
       y: data.y ?? 0,
-      elevation: data.elevation ?? 0,
+      elevationMeters: data.elevationMeters ?? 0,
       connections: data.connections ?? [],
       metadata: data.metadata ?? {},
       createdAt: data.createdAt ?? now,
@@ -30,8 +30,8 @@ export class LandmarkModel {
     return this.data.y;
   }
 
-  get elevation(): number {
-    return this.data.elevation;
+  get elevationMeters(): number {
+    return this.data.elevationMeters;
   }
 
   get connections(): string[] {
@@ -59,10 +59,10 @@ export class LandmarkModel {
     });
   }
 
-  updateElevation(elevation: number): LandmarkModel {
+  updateElevation(elevationMeters: number): LandmarkModel {
     return new LandmarkModel({
       ...this.data,
-      elevation,
+      elevationMeters,
       updatedAt: Date.now(),
     });
   }

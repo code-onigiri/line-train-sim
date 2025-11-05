@@ -8,14 +8,14 @@ describe('LandmarkModel', () => {
 
     expect(landmark.x).toBe(100);
     expect(landmark.y).toBe(200);
-    expect(landmark.elevation).toBe(0);
+    expect(landmark.elevationMeters).toBe(0);
     expect(landmark.connections).toEqual([]);
   });
 
   it('should create a landmark with custom elevation', () => {
-    const landmark = new LandmarkModel({ x: 100, y: 200, elevation: 10 });
+    const landmark = new LandmarkModel({ x: 100, y: 200, elevationMeters: 10 });
 
-    expect(landmark.elevation).toBe(10);
+    expect(landmark.elevationMeters).toBe(10);
   });
 
   it('should update position immutably', () => {
@@ -30,11 +30,11 @@ describe('LandmarkModel', () => {
   });
 
   it('should update elevation immutably', () => {
-    const original = new LandmarkModel({ x: 100, y: 200, elevation: 0 });
+    const original = new LandmarkModel({ x: 100, y: 200, elevationMeters: 0 });
     const updated = original.updateElevation(10);
 
-    expect(original.elevation).toBe(0);
-    expect(updated.elevation).toBe(10);
+    expect(original.elevationMeters).toBe(0);
+    expect(updated.elevationMeters).toBe(10);
   });
 
   it('should add connection', () => {
@@ -66,25 +66,25 @@ describe('LandmarkModel', () => {
   });
 
   it('should serialize to JSON', () => {
-    const landmark = new LandmarkModel({ x: 100, y: 200, elevation: 5 });
+    const landmark = new LandmarkModel({ x: 100, y: 200, elevationMeters: 5 });
     const json = landmark.toJSON();
 
     expect(json.x).toBe(100);
     expect(json.y).toBe(200);
-    expect(json.elevation).toBe(5);
+    expect(json.elevationMeters).toBe(5);
     expect(json).toHaveProperty('id');
     expect(json).toHaveProperty('createdAt');
     expect(json).toHaveProperty('updatedAt');
   });
 
   it('should deserialize from JSON', () => {
-    const original = new LandmarkModel({ x: 100, y: 200, elevation: 5 });
+    const original = new LandmarkModel({ x: 100, y: 200, elevationMeters: 5 });
     const json = original.toJSON();
     const restored = LandmarkModel.fromJSON(json);
 
     expect(restored.x).toBe(original.x);
     expect(restored.y).toBe(original.y);
-    expect(restored.elevation).toBe(original.elevation);
+    expect(restored.elevationMeters).toBe(original.elevationMeters);
     expect(restored.id).toBe(original.id);
   });
 });
