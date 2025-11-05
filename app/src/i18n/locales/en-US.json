@@ -1,0 +1,33 @@
+{
+  "app.title": "Line Train Simulator",
+  "app.loading": "Loading...",
+
+  "placement.title": "Placement Mode",
+  "placement.tool.select": "Select",
+  "placement.tool.landmark": "Landmark",
+  "placement.tool.track": "Track",
+  "placement.tool.station": "Station",
+  "placement.tool.depot": "Depot",
+  "placement.tool.pan": "Pan",
+
+  "diagram.title": "Diagram Configuration",
+  "diagram.route.new": "New Route",
+  "diagram.route.save": "Save Route",
+  "diagram.stations.reorder": "Reorder Stations",
+
+  "execution.title": "Execution Preview",
+  "execution.play": "Play",
+  "execution.pause": "Pause",
+  "execution.stop": "Stop",
+  "execution.speed": "Speed: {scale}x",
+
+  "validation.error.required": "This field is required",
+  "validation.error.invalidRoute": "Route must start and end at a station or depot",
+  "validation.error.conflict": "Conflict detected: {message}",
+
+  "common.save": "Save",
+  "common.cancel": "Cancel",
+  "common.delete": "Delete",
+  "common.edit": "Edit",
+  "common.close": "Close"
+}

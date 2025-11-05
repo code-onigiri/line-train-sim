@@ -64,8 +64,8 @@ An operations lead previews and runs the timetable, adjusting time speed and ens
 
 ### Edge Cases
 
-- What happens when a route loops back to its origin? The system must prevent duplicate traversal unless the designer explicitly inserts an intermediate landmark, avoiding infinite pathing.
-- How does system handle an elevated track intersecting an underground track? The intersection should not create a shared landmark because the vertical separation keeps paths independent.
+- What happens when a route loops back to its origin? The system must detect loops and display a warning; if validation error occurs, prevent execution until the designer inserts an intermediate landmark to break the loop.
+- How does system handle an elevated track intersecting an underground track? The intersection should not create a shared landmark if vertical separation is ≥4m (train clearance height), keeping paths independent.
 - How is deterministic output preserved when multiple trains adjust speeds simultaneously? The execution engine must sequence updates by timetable order and shared seed to avoid diverging results across replays.
 
 ## Requirements *(mandatory)*
@@ -76,8 +76,8 @@ An operations lead previews and runs the timetable, adjusting time speed and ens
 - **FR-002**: Placement mode MUST support drawing station areas with configurable platforms and stopping tracks that can be individually selected and edited.
 - **FR-003**: Placement mode MUST support drawing depot areas with configurable stopping lanes and regular tracks used for staging trains.
 - **FR-004**: Placement mode MUST enable creation of landmarks and straight track segments between landmarks, including branching from existing points.
-- **FR-005**: The system MUST automatically generate a landmark whenever two track segments intersect on the same elevation.
-- **FR-006**: Placement mode MUST let designers set track characteristics such as elevation (ground, elevated, underground) and ensure those attributes propagate through connected segments.
+- **FR-005**: The system MUST automatically generate a landmark whenever two track segments intersect with vertical separation less than train clearance height (4 meters); tracks separated by ≥4m are considered different elevation levels and do not create intersection landmarks.
+- **FR-006**: Placement mode MUST let designers set track characteristics such as elevation (numeric height in meters); elevation changes between connected landmarks define slopes and do not propagate automatically to other segments.
 - **FR-007**: Depot management MUST allow users to assign vehicle inventories by quantity and speed category for each depot.
 - **FR-008**: Route definition MUST require selecting a valid station or depot as the starting point, extending through ordered stations, and finishing at a station or depot.
 - **FR-009**: The diagram settings screen MUST display time horizontally and stations vertically, allowing drag-and-drop reordering of station rows with immediate feedback.
@@ -112,7 +112,8 @@ An operations lead previews and runs the timetable, adjusting time speed and ens
 ## Assumptions & Dependencies
 
 - External asset add-ons follow documented content schemas and do not bypass validation logic.
-- Reference hardware for performance measures aligns with current minimum simulator specifications.
+- Reference hardware for performance measures: Average consumer PC (non-gaming grade) with modern CPU, 8-16GB RAM, integrated or entry-level discrete GPU.
+- Target browser versions: Chrome 142+, Firefox 144+, Safari 26.0+ (latest evergreen releases as of November 2025).
 - Existing save/load infrastructure remains available to persist placement and timetable data for testing scenarios.
 
 ## Clarifications
