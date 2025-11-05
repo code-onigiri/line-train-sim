@@ -7,11 +7,11 @@
 - **Fields**:
   - `id: string` (UUID)
   - `position: { x: number; y: number }` (canvas coordinates in meters)
-  - `elevation: 'ground' | 'elevated' | 'underground'`
+  - `elevationMeters: number` (numeric height in meters; measured from track rail top surface)
   - `connections: string[]` (track segment ids)
   - `metadata: LandmarkMeta` (labels, creation source)
 - **Relationships**: Bidirectional links to `TrackSegment` via `connections`.
-- **Validation Rules**: Coordinates must stay within map bounds; elevation transitions require corresponding track attributes.
+- **Validation Rules**: Coordinates must stay within map bounds; elevation changes between connected landmarks are used to manually calculate and set track segment slopes.
 - **State Transitions**: Created via placement, updated when connected segments change, deleted when orphaned and user confirms.
 
 ### TrackSegment
@@ -23,10 +23,10 @@
   - `classification: 'mainline' | 'station' | 'depot'`
   - `isBidirectional: boolean`
   - `permissibleSpeedKph: number`
-  - `elevation: 'ground' | 'elevated' | 'underground'`
+  - `slopePercent: number` (manually entered grade; positive = uphill from start to end)
   - `addons: AddonBinding[]`
 - **Relationships**: Belongs to exactly two landmarks; optionally referenced by stations or depots for stopping areas.
-- **Validation Rules**: Elevation must match connected landmarks; no duplicate segment pairs; intersection on same elevation triggers new landmark creation.
+- **Validation Rules**: No duplicate segment pairs; intersection with vertical separation <4m (measured from track rail top surface) triggers new landmark creation; segments separated by ≥4m are considered different elevation levels and do not create intersection landmarks.
 - **State Transitions**: Derived from placement edits; splits when new landmark inserted; merges during simplification if colinear.
 
 ### Station
@@ -61,12 +61,12 @@
 - **Fields**:
   - `id: string`
   - `name: string`
-  - `stops: RouteStop[]` (ordered list of station/depot ids)
+  - `stops: RouteStop[]` (ordered list of station/depot ids; depots allowed only at start/end positions)
   - `diagramSettings: DiagramConfig`
   - `consistTemplates: ConsistTemplate[]`
   - `timeScale: number` (execution speed multiplier default)
 - **Relationships**: Consumed by `ScheduledTrain`; references `Station` and `Depot` entities.
-- **Validation Rules**: First and last stops must be station or depot; no consecutive duplicate stops unless flagged as loop; diagram settings must align with stop list.
+- **Validation Rules**: First and last stops must be station or depot; intermediate stops must be stations only; no consecutive duplicate stops unless flagged as loop (loop detection displays warning and prevents execution until resolved with intermediate landmark insertion); diagram settings must align with stop list.
 - **State Transitions**: Updated when designer reorders stops, modifies diagram settings, or changes consist templates.
 
 ### VehicleType
@@ -87,11 +87,11 @@
 - **Fields**:
   - `id: string`
   - `routeId: string`
-  - `consistId: string`
+  - `consistTemplateId: string`
   - `departureTime: TimelineTime`
-  - `dwellAssignments: DwellAssignment[]`
+  - `dwellAssignments: DwellAssignment[]` (each includes dwell duration calculated from route configuration)
   - `seed: number`
-- **Relationships**: Links to `Route`, references `Depot` for start availability, uses `VehicleType` via consist.
+- **Relationships**: Links to `Route`, references `Depot` for start availability, uses `VehicleType` via `ConsistTemplate`.
 - **Validation Rules**: Must pass conflict detection (no overlapping dwell on same stopping track/lane); seed must persist for deterministic playback.
 - **State Transitions**: Generated during preview, updated when timetable changes, archived after execution logs stored.
 
@@ -105,5 +105,5 @@
   - `assets: AddonAssetRef[]`
   - `permissions: AddonPermission[]`
 - **Relationships**: Hooks integrate with render or simulation events; assets referenced by vehicle or scenery definitions.
-- **Validation Rules**: Permissions cannot include security-sensitive scopes; version must follow semver; event hooks restricted to approved lifecycle points.
+- **Validation Rules**: Permissions cannot include security-sensitive scopes (prohibited: network access, file system access, IndexedDB write, localStorage write, arbitrary code execution outside sandbox); version must follow semver; event hooks restricted to approved lifecycle points (onPlacementReady, onBeforePreview, onAfterPreview, onExecutionTick).
 - **State Transitions**: Enabled/disabled per session; validated at load and on update.

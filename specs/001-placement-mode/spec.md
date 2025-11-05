@@ -25,8 +25,9 @@ A route planner sketches stations, depots, and point-to-point tracks to establis
 **Acceptance Scenarios**:
 
 1. **Given** a blank placement canvas, **When** the planner draws a station area and assigns platforms and stopping tracks, **Then** the station persists with selectable platform geometry and usable stopping tracks.
-2. **Given** two landmarks on the map, **When** the planner connects them with a track segment and flags it as elevated, **Then** a straight track appears with the elevation attribute accessible for later editing.
-3. **Given** two crossing track segments, **When** they intersect, **Then** the system creates a new landmark at the intersection that can be used as a branching anchor.
+2. **Given** two landmarks on the map, **When** the planner connects them with a track segment and sets slope percentage manually, **Then** a straight track appears with the slope attribute accessible for later editing.
+3. **Given** two crossing track segments with vertical separation <4m (measured from track rail top surface), **When** they intersect, **Then** the system creates a new landmark at the intersection that can be used as a branching anchor.
+4. **Given** existing placed infrastructure, **When** the planner selects an element and modifies its properties (e.g., station name, track slope), **Then** changes persist to storage and visual rendering updates immediately on the canvas.
 
 ---
 
@@ -121,3 +122,13 @@ An operations lead previews and runs the timetable, adjusting time speed and ens
 ### Session 2025-11-04
 
 - Q: What level of executable capability should add-ons provide? → A: Add-ons can register event-timed gameplay code but must not perform security-sensitive actions.
+
+### Session 2025-11-05 (Analysis Refinements)
+
+- Q: How are elevation slopes calculated between landmarks? → A: Slope calculation is **manual entry** by the user; the system stores slope percentage on each track segment but does not automatically derive it from landmark elevation differences.
+- Q: What is the measurement reference point for elevation and clearance? → A: All elevation values (landmark heights and vertical separation for clearance) are measured from **track rail top surface**.
+- Q: What defines "experienced designers" in SC-001? → A: Users who have completed the in-app tutorial and successfully created at least one route with minimum 2 stations.
+- Q: How does the system handle route loops? → A: Loop detection algorithm identifies when a route returns to a previously visited station; system displays a **warning message** and **prevents execution** until the designer inserts an intermediate landmark to break the circular path.
+- Q: How are dwell durations determined for capacity validation? → A: Dwell durations are configured per route stop in the diagram settings screen; default values provided based on station type (terminal: 5min, intermediate: 2min) but user-adjustable.
+- Q: Can routes include depots as intermediate stops? → A: No, depots are permitted **only as start or end points**; intermediate stops must be stations only.
+- Q: How should train rendering handle multiple consecutive corners? → A: Train visualization transitions to trapezoid mode when entering a corner and maintains trapezoid geometry until the train fully exits onto a straight segment; consecutive corners chain trapezoid transformations without snapping back to rectangles.
