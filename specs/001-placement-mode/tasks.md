@@ -73,12 +73,12 @@ Per plan.md structure:
 
 ### Implementation for User Story 1
 
-- [ ] T025 [P] [US1] Create Landmark model with validation in app/src/models/Landmark.ts
-- [ ] T026 [P] [US1] Create TrackSegment model with validation in app/src/models/TrackSegment.ts
-- [ ] T027 [P] [US1] Create Station model with validation in app/src/models/Station.ts
-- [ ] T028 [P] [US1] Create Depot model with validation in app/src/models/Depot.ts
-- [ ] T029 [P] [US1] Create Platform and StoppingTrack models in app/src/models/StationComponents.ts
-- [ ] T030 [P] [US1] Create StoppingLane and DepotInventoryItem models in app/src/models/DepotComponents.ts
+- [x] T025 [P] [US1] Create Landmark model with validation in app/src/models/Landmark.ts
+- [x] T026 [P] [US1] Create TrackSegment model with validation in app/src/models/TrackSegment.ts
+- [x] T027 [P] [US1] Create Station model with validation in app/src/models/Station.ts
+- [x] T028 [P] [US1] Create Depot model with validation in app/src/models/Depot.ts
+- [x] T029 [P] [US1] Create Platform and StoppingTrack models in app/src/models/StationComponents.ts
+- [x] T030 [P] [US1] Create StoppingLane and DepotInventoryItem models in app/src/models/DepotComponents.ts
 - [ ] T031 [US1] Implement LandmarkService with create, update, delete operations in app/src/services/placement/LandmarkService.ts
 - [ ] T032 [US1] Implement TrackSegmentService with create, intersection detection (4m vertical clearance threshold), and elevation (numeric height in meters) with slope calculation in app/src/services/placement/TrackSegmentService.ts
 - [ ] T033 [US1] Implement StationService with area polygon validation and platform management in app/src/services/placement/StationService.ts
