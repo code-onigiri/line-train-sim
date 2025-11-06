@@ -150,7 +150,7 @@ Per plan.md structure:
 - [x] T058 [P] [US2] Create ConsistTemplate model in app/src/models/ConsistTemplate.ts
 - [x] T059 [US2] Implement RouteService with stop ordering and validation in app/src/services/diagram/RouteService.ts
 - [ ] T060 [US2] Implement route definition UI with station/depot selection in app/src/ui/diagram/RouteBuilder.tsx
-- [ ] T061 [US2] Implement validation for start/end must be station or depot in app/src/services/validation/RouteValidator.ts
+- [x] T061 [US2] Implement validation for start/end must be station or depot in app/src/services/validation/RouteValidator.ts
 - [ ] T062 [US2] Implement diagram settings screen with horizontal time axis in app/src/ui/diagram/DiagramSettings.tsx
 - [ ] T063 [US2] Implement vertical station list with drag-and-drop reordering in app/src/ui/diagram/StationOrderEditor.tsx
 - [ ] T063a [US2] Implement real-time diagram preview updates during station drag-and-drop reordering in app/src/ui/diagram/LivePreviewPanel.tsx
