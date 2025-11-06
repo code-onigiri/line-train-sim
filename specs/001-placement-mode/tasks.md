@@ -154,17 +154,17 @@ Per plan.md structure:
 - [ ] T062 [US2] Implement diagram settings screen with horizontal time axis in app/src/ui/diagram/DiagramSettings.tsx
 - [ ] T063 [US2] Implement vertical station list with drag-and-drop reordering in app/src/ui/diagram/StationOrderEditor.tsx
 - [ ] T063a [US2] Implement real-time diagram preview updates during station drag-and-drop reordering in app/src/ui/diagram/LivePreviewPanel.tsx
-- [ ] T064 [P] [US2] Create VehicleTypeService with speed category management in app/src/services/diagram/VehicleTypeService.ts
+- [x] T064 [P] [US2] Create VehicleTypeService with speed category management in app/src/services/diagram/VehicleTypeService.ts
 - [ ] T065 [US2] Implement consist configuration UI with car counts and speed profiles in app/src/ui/diagram/ConsistEditor.tsx
 - [ ] T066 [US2] Implement depot inventory assignment interface in app/src/ui/diagram/DepotInventoryPanel.tsx
-- [ ] T067 [P] [US2] Add persistence layer for routes using Dexie in app/src/services/storage/RouteRepository.ts
-- [ ] T068 [P] [US2] Add persistence layer for vehicle types using Dexie in app/src/services/storage/VehicleTypeRepository.ts
+- [x] T067 [P] [US2] Add persistence layer for routes using Dexie in app/src/services/storage/RouteRepository.ts
+- [x] T068 [P] [US2] Add persistence layer for vehicle types using Dexie in app/src/services/storage/VehicleTypeRepository.ts
 - [ ] T069 [US2] Implement diagram preview summary showing consist lengths and speed categories in app/src/ui/diagram/PreviewSummary.tsx
 - [ ] T070 [US2] Add route navigation between placement and diagram modes in app/src/app/routes/routeNavigation.ts
-- [ ] T071 [US2] Implement diagram settings persistence and retrieval in app/src/services/storage/DiagramRepository.ts
+- [x] T071 [US2] Implement diagram settings persistence and retrieval in app/src/services/storage/DiagramRepository.ts
 - [x] T072 [US2] Add validation for route completeness and loop detection (warning + execution prevention on error) before preview in app/src/services/validation/DiagramValidator.ts
 - [ ] T072a [US2] Implement loop detection warning UI dialog with guidance to insert intermediate landmark in app/src/ui/diagram/LoopWarningDialog.tsx
-- [ ] T073 [P] [US2] Implement localized time formatting for diagram axis in app/src/i18n/timeFormatters.ts
+- [x] T073 [P] [US2] Implement localized time formatting for diagram axis in app/src/i18n/timeFormatters.ts
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - users can build infrastructure (US1) and configure routes with diagrams (US2) as separate workflows.
 
