@@ -127,14 +127,32 @@ export class ClientService {
     landmarkEntrances: string[];
     diagramOrderIndex?: number;
   }): StationModel {
-    return this.stationService.create(
-      input.name,
-      input.areaPolygon,
-      input.platforms,
-      input.stoppingTracks,
-      input.landmarkEntrances,
-      input.diagramOrderIndex,
-    );
+    // Create base station
+    let station = this.stationService.create(input.name, input.areaPolygon);
+
+    // Add platforms
+    for (const platform of input.platforms) {
+      station = this.stationService.addPlatform(station.id, platform.id);
+    }
+
+    // Add stopping tracks
+    for (const track of input.stoppingTracks) {
+      station = this.stationService.addStoppingTrack(station.id, track.trackSegmentId);
+    }
+
+    // Add landmark entrances
+    for (const landmarkId of input.landmarkEntrances) {
+      station = this.stationService.addLandmarkEntrance(station.id, landmarkId);
+    }
+
+    // Set diagram order if provided
+    if (input.diagramOrderIndex !== undefined) {
+      station = this.stationService.update(station.id, {
+        diagramOrderIndex: input.diagramOrderIndex,
+      })!;
+    }
+
+    return station;
   }
 
   /**
@@ -175,13 +193,27 @@ export class ClientService {
     serviceTracks: string[];
     inventory?: Array<{ vehicleTypeId: string; quantity: number }>;
   }): DepotModel {
-    return this.depotService.create(
-      input.name,
-      input.areaPolygon,
-      input.stoppingLanes,
-      input.serviceTracks,
-      input.inventory ?? [],
-    );
+    // Create base depot
+    let depot = this.depotService.create(input.name, input.areaPolygon);
+
+    // Add stopping lanes
+    for (const lane of input.stoppingLanes) {
+      depot = this.depotService.addStoppingLane(depot.id, lane.trackSegmentId);
+    }
+
+    // Add service tracks
+    for (const trackId of input.serviceTracks) {
+      depot = this.depotService.addServiceTrack(depot.id, trackId);
+    }
+
+    // Add inventory if provided
+    if (input.inventory) {
+      for (const item of input.inventory) {
+        depot = this.depotService.addInventory(depot.id, item.vehicleTypeId, item.quantity);
+      }
+    }
+
+    return depot;
   }
 
   /**
@@ -198,8 +230,25 @@ export class ClientService {
     serviceTracks?: string[];
     inventory?: Array<{ vehicleTypeId: string; quantity: number }>;
   }): DepotModel | undefined {
-    const { id, ...updates } = input;
-    return this.depotService.update(id, updates);
+    const { id, inventory, stoppingLanes, serviceTracks, ...basicUpdates } = input;
+    
+    // First update basic properties
+    let depot = this.depotService.update(id, basicUpdates);
+    if (!depot) {
+      return undefined;
+    }
+
+    // Handle inventory updates if provided
+    if (inventory) {
+      for (const item of inventory) {
+        depot = this.depotService.addInventory(depot.id, item.vehicleTypeId, item.quantity);
+      }
+    }
+
+    // TODO: Handle stoppingLanes and serviceTracks updates
+    // These would require clearing existing and adding new ones
+
+    return depot;
   }
 
   // ============================================================================

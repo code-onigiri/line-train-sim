@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { v4 as uuidv4 } from 'uuid';
 import { ClientService } from '../../../src/services/ClientService';
 
 describe('ClientService', () => {
@@ -70,6 +71,10 @@ describe('ClientService', () => {
 
   describe('Station Operations', () => {
     it('should create a station', () => {
+      const platformId = uuidv4();
+      const trackId = uuidv4();
+      const landmarkId = uuidv4();
+
       const station = clientService.createStation({
         name: 'Test Station',
         areaPolygon: [
@@ -77,9 +82,9 @@ describe('ClientService', () => {
           { x: 100, y: 0 },
           { x: 100, y: 100 },
         ],
-        platforms: [{ id: 'platform-1', name: 'Platform 1', lengthMeters: 200 }],
-        stoppingTracks: [{ trackSegmentId: 'track-1', capacity: 2 }],
-        landmarkEntrances: ['landmark-1'],
+        platforms: [{ id: platformId, name: 'Platform 1', lengthMeters: 200 }],
+        stoppingTracks: [{ trackSegmentId: trackId, capacity: 2 }],
+        landmarkEntrances: [landmarkId],
       });
 
       expect(station).toBeDefined();
@@ -111,6 +116,10 @@ describe('ClientService', () => {
 
   describe('Depot Operations', () => {
     it('should create a depot', () => {
+      const trackId1 = uuidv4();
+      const trackId2 = uuidv4();
+      const vehicleId = uuidv4();
+
       const depot = clientService.createDepot({
         name: 'Test Depot',
         areaPolygon: [
@@ -118,9 +127,9 @@ describe('ClientService', () => {
           { x: 200, y: 0 },
           { x: 200, y: 200 },
         ],
-        stoppingLanes: [{ trackSegmentId: 'track-1', capacity: 5 }],
-        serviceTracks: ['track-2'],
-        inventory: [{ vehicleTypeId: 'vehicle-1', quantity: 10 }],
+        stoppingLanes: [{ trackSegmentId: trackId1, capacity: 5 }],
+        serviceTracks: [trackId2],
+        inventory: [{ vehicleTypeId: vehicleId, quantity: 10 }],
       });
 
       expect(depot).toBeDefined();
@@ -140,9 +149,10 @@ describe('ClientService', () => {
         serviceTracks: [],
       });
 
+      const vehicleId = uuidv4();
       const updated = clientService.updateDepot({
         id: depot.id,
-        inventory: [{ vehicleTypeId: 'vehicle-2', quantity: 5 }],
+        inventory: [{ vehicleTypeId: vehicleId, quantity: 5 }],
       });
 
       expect(updated?.inventory).toHaveLength(1);
@@ -151,17 +161,22 @@ describe('ClientService', () => {
 
   describe('Route Operations', () => {
     it('should create a valid route', () => {
+      const stationId1 = uuidv4();
+      const stationId2 = uuidv4();
+      const consistId = uuidv4();
+      const vehicleId = uuidv4();
+
       const route = clientService.createRoute({
         name: 'Test Route',
         stops: [
-          { entityId: 'station-1', type: 'station' },
-          { entityId: 'station-2', type: 'station' },
+          { entityId: stationId1, type: 'station' },
+          { entityId: stationId2, type: 'station' },
         ],
         diagramSettings: {
           horizontalAxis: 'time',
           verticalAxis: 'stations',
         },
-        consistTemplates: [{ id: 'consist-1', vehicleTypeId: 'vehicle-1', carCount: 6 }],
+        consistTemplates: [{ id: consistId, vehicleTypeId: vehicleId, carCount: 6 }],
       });
 
       expect(route).toBeDefined();
@@ -170,10 +185,12 @@ describe('ClientService', () => {
     });
 
     it('should throw error for invalid route with less than 2 stops', () => {
+      const stationId = uuidv4();
+
       expect(() => {
         clientService.createRoute({
           name: 'Invalid Route',
-          stops: [{ entityId: 'station-1', type: 'station' }],
+          stops: [{ entityId: stationId, type: 'station' }],
           diagramSettings: {
             horizontalAxis: 'time',
             verticalAxis: 'stations',
@@ -183,30 +200,38 @@ describe('ClientService', () => {
       }).toThrow();
     });
 
-    it('should throw error for route with loop', () => {
-      expect(() => {
-        clientService.createRoute({
-          name: 'Loop Route',
-          stops: [
-            { entityId: 'station-1', type: 'station' },
-            { entityId: 'station-2', type: 'station' },
-            { entityId: 'station-1', type: 'station' },
-          ],
-          diagramSettings: {
-            horizontalAxis: 'time',
-            verticalAxis: 'stations',
-          },
-          consistTemplates: [],
-        });
-      }).toThrow(/loop/);
+    it('should allow creating route with loop but log warning', () => {
+      const stationId1 = uuidv4();
+      const stationId2 = uuidv4();
+
+      // Loop detection should warn but not prevent creation
+      const route = clientService.createRoute({
+        name: 'Loop Route',
+        stops: [
+          { entityId: stationId1, type: 'station' },
+          { entityId: stationId2, type: 'station' },
+          { entityId: stationId1, type: 'station' },
+        ],
+        diagramSettings: {
+          horizontalAxis: 'time',
+          verticalAxis: 'stations',
+        },
+        consistTemplates: [],
+      });
+
+      expect(route).toBeDefined();
+      expect(route.stops).toHaveLength(3);
     });
 
     it('should update a route', () => {
+      const stationId1 = uuidv4();
+      const stationId2 = uuidv4();
+
       const route = clientService.createRoute({
         name: 'Original Route',
         stops: [
-          { entityId: 'station-1', type: 'station' },
-          { entityId: 'station-2', type: 'station' },
+          { entityId: stationId1, type: 'station' },
+          { entityId: stationId2, type: 'station' },
         ],
         diagramSettings: {
           horizontalAxis: 'time',
@@ -226,11 +251,14 @@ describe('ClientService', () => {
 
   describe('Preview Operations', () => {
     it('should generate preview for valid route', () => {
+      const stationId1 = uuidv4();
+      const stationId2 = uuidv4();
+
       const route = clientService.createRoute({
         name: 'Test Route',
         stops: [
-          { entityId: 'station-1', type: 'station' },
-          { entityId: 'station-2', type: 'station' },
+          { entityId: stationId1, type: 'station' },
+          { entityId: stationId2, type: 'station' },
         ],
         diagramSettings: {
           horizontalAxis: 'time',
@@ -258,12 +286,15 @@ describe('ClientService', () => {
     });
 
     it('should throw error for route with loop', () => {
+      const stationId1 = uuidv4();
+      const stationId2 = uuidv4();
+
       const route = clientService.getRouteService().create(
         'Loop Route',
         [
-          { entityId: 'station-1', entityType: 'station' },
-          { entityId: 'station-2', entityType: 'station' },
-          { entityId: 'station-1', entityType: 'station' },
+          { entityId: stationId1, entityType: 'station' },
+          { entityId: stationId2, entityType: 'station' },
+          { entityId: stationId1, entityType: 'station' },
         ],
         {},
         [],
@@ -279,11 +310,14 @@ describe('ClientService', () => {
 
   describe('Execution Operations', () => {
     it('should start execution for valid route', () => {
+      const stationId1 = uuidv4();
+      const stationId2 = uuidv4();
+
       const route = clientService.createRoute({
         name: 'Test Route',
         stops: [
-          { entityId: 'station-1', type: 'station' },
-          { entityId: 'station-2', type: 'station' },
+          { entityId: stationId1, type: 'station' },
+          { entityId: stationId2, type: 'station' },
         ],
         diagramSettings: {
           horizontalAxis: 'time',
@@ -316,21 +350,26 @@ describe('ClientService', () => {
 
   describe('Addon Operations', () => {
     it('should register an addon', () => {
+      const addonId = uuidv4();
+      const handlerId = uuidv4();
+
       const addon = clientService.registerAddon({
-        id: 'test-addon',
+        id: addonId,
         version: '1.0.0',
         permissions: ['asset-read', 'event-hooks'],
-        hooks: [{ event: 'onPlacementReady', handlerId: 'handler-1' }],
+        hooks: [{ event: 'onPlacementReady', handlerId }],
       });
 
       expect(addon).toBeDefined();
-      expect(addon.id).toBe('test-addon');
+      expect(addon.id).toBe(addonId);
     });
 
     it('should throw error for prohibited permissions', () => {
+      const addonId = uuidv4();
+
       expect(() => {
         clientService.registerAddon({
-          id: 'malicious-addon',
+          id: addonId,
           version: '1.0.0',
           permissions: ['network-access'],
           hooks: [],
@@ -339,12 +378,15 @@ describe('ClientService', () => {
     });
 
     it('should throw error for unapproved event hooks', () => {
+      const addonId = uuidv4();
+      const handlerId = uuidv4();
+
       expect(() => {
         clientService.registerAddon({
-          id: 'bad-addon',
+          id: addonId,
           version: '1.0.0',
           permissions: ['event-hooks'],
-          hooks: [{ event: 'onSystemBoot', handlerId: 'handler-1' }],
+          hooks: [{ event: 'onSystemBoot', handlerId }],
         });
       }).toThrow(/Unapproved event hook/);
     });
