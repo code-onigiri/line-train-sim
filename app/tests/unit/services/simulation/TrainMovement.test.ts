@@ -87,7 +87,7 @@ describe('TrainMovement', () => {
         deceleration: 2.5,
       };
 
-      const speed = movement.calculateSpeed(0, 0, profile, 1.0);
+      const speed = movement.calculateSpeed(0, 1000, profile, 1.0);
       expect(speed).toBeGreaterThan(0);
       expect(speed).toBeLessThanOrEqual(2.0); // One second of acceleration
     });

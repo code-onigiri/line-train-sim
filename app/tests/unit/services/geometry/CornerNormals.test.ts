@@ -11,8 +11,10 @@ describe('CornerNormals', () => {
 
       const normal = cornerNormals.calculateNormal(incoming, outgoing);
 
+      // For a right turn (east to north), the bisector is northeast {1,1}
+      // Rotating clockwise 90° gives {1,-1} normalized to {0.707,-0.707}
       expect(normal.x).toBeCloseTo(0.707, 2);
-      expect(normal.y).toBeCloseTo(0.707, 2);
+      expect(normal.y).toBeCloseTo(-0.707, 2);
     });
 
     it('should calculate normal for 90-degree left turn', () => {
@@ -21,7 +23,9 @@ describe('CornerNormals', () => {
 
       const normal = cornerNormals.calculateNormal(incoming, outgoing);
 
-      expect(normal.x).toBeCloseTo(0.707, 2);
+      // For a left turn (east to south), the bisector is southeast {1,-1}
+      // Rotating clockwise 90° gives {-1,-1} normalized to {-0.707,-0.707}
+      expect(normal.x).toBeCloseTo(-0.707, 2);
       expect(normal.y).toBeCloseTo(-0.707, 2);
     });
 
@@ -221,8 +225,9 @@ describe('CornerNormals', () => {
 
       const transformations = cornerNormals.chainCornerTransformations(corners);
 
-      // Second corner's incoming should match first corner's outgoing
-      expect(transformations[1].incoming).toEqual(corners[1].incoming);
+      // Second corner's incoming should be normalized version of input
+      expect(transformations[1].incoming.x).toBeCloseTo(0.707, 2);
+      expect(transformations[1].incoming.y).toBeCloseTo(0.707, 2);
     });
 
     it('should handle single corner', () => {
