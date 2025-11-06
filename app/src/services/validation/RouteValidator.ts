@@ -79,13 +79,6 @@ export class RouteValidator {
     if (!this.isValidStartOrEnd(endStop.entityId, endStop.entityType, stations, depots)) {
       errors.push(`End stop (${endStop.entityType}) does not exist or is invalid`);
     }
-
-    // Validate end stop entity exists
-    if (endStop.entityType === 'station' && !stations.has(endStop.entityId)) {
-      errors.push('End station does not exist');
-    } else if (endStop.entityType === 'depot' && !depots.has(endStop.entityId)) {
-      errors.push('End depot does not exist');
-    }
   }
 
   /**
