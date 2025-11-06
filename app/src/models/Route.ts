@@ -109,6 +109,14 @@ export class RouteModel {
     });
   }
 
+  updateConsistTemplates(consistTemplates: string[]): RouteModel {
+    return new RouteModel({
+      ...this.data,
+      consistTemplates,
+      updatedAt: Date.now(),
+    });
+  }
+
   updateTimeScale(timeScale: number): RouteModel {
     return new RouteModel({
       ...this.data,
