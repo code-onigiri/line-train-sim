@@ -8,7 +8,7 @@ export class ConflictDetector {
   /**
    * Detect conflicts where trains have overlapping dwell periods on the same track.
    * Two trains conflict if they use the same track and their time windows overlap.
-   * 
+   *
    * @param dwells - Array of dwell assignments to check
    * @returns Array of detected conflicts
    */
@@ -54,7 +54,7 @@ export class ConflictDetector {
 
   /**
    * Validate that all dwell assignments have valid time windows.
-   * 
+   *
    * @param dwells - Array of dwell assignments to validate
    * @returns Array of validation conflicts
    */

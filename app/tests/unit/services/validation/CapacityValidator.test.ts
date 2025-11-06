@@ -1,8 +1,8 @@
-import { describe, expect, it } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
-import { CapacityValidator } from '../../../../src/services/validation/CapacityValidator';
+import { describe, expect, it } from 'vitest';
 import type { DwellAssignment } from '../../../../src/models/ExecutionComponents';
 import type { StoppingTrack } from '../../../../src/models/StationComponents';
+import { CapacityValidator } from '../../../../src/services/validation/CapacityValidator';
 
 describe('CapacityValidator', () => {
   const validator = new CapacityValidator();
@@ -84,7 +84,7 @@ describe('CapacityValidator', () => {
     it('should validate multiple tracks independently', () => {
       const track1Id = uuidv4();
       const track2Id = uuidv4();
-      
+
       const tracks: StoppingTrack[] = [
         {
           id: track1Id,

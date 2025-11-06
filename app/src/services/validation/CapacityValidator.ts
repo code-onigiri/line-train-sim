@@ -8,15 +8,12 @@ import type { StoppingTrack } from '../../models/StationComponents';
 export class CapacityValidator {
   /**
    * Validate that all scheduled trains fit within the capacity of their assigned tracks.
-   * 
+   *
    * @param tracks - Array of stopping tracks with capacity information
    * @param dwells - Array of dwell assignments to validate
    * @returns Array of capacity conflicts
    */
-  validateStoppingTrackCapacity(
-    tracks: StoppingTrack[],
-    dwells: DwellAssignment[],
-  ): Conflict[] {
+  validateStoppingTrackCapacity(tracks: StoppingTrack[], dwells: DwellAssignment[]): Conflict[] {
     const conflicts: Conflict[] = [];
 
     // Create a map of track capacities
@@ -28,7 +25,7 @@ export class CapacityValidator {
     // Check each dwell against track capacity
     for (const dwell of dwells) {
       const capacity = trackCapacities.get(dwell.trackId);
-      
+
       // Skip validation if track not in our list (might be from different stop)
       if (capacity === undefined) {
         continue;
@@ -53,7 +50,7 @@ export class CapacityValidator {
 
   /**
    * Validate depot lane capacities for train storage.
-   * 
+   *
    * @param lanes - Array of depot lanes with capacity information
    * @param assignments - Array of train-to-lane assignments
    * @returns Array of capacity conflicts
@@ -81,7 +78,7 @@ export class CapacityValidator {
     // Check total capacity per lane
     for (const [laneId, laneAssignments] of assignmentsByLane.entries()) {
       const capacity = laneCapacities.get(laneId);
-      
+
       if (capacity === undefined) {
         continue;
       }

@@ -27,7 +27,7 @@ interface SegmentInfo {
 export class TrainMovement {
   /**
    * Calculate the 2D position of a train on a track segment.
-   * 
+   *
    * @param segment - The track segment
    * @param distanceAlongSegment - Distance traveled along the segment in meters
    * @param offset - Perpendicular offset from track centerline
@@ -40,7 +40,7 @@ export class TrainMovement {
   ): { x: number; y: number } {
     // Clamp distance to segment bounds
     const distance = Math.max(0, Math.min(segment.length, distanceAlongSegment));
-    
+
     // Calculate position ratio along segment
     const ratio = segment.length > 0 ? distance / segment.length : 0;
 
@@ -53,12 +53,12 @@ export class TrainMovement {
       const dx = segment.endPoint.x - segment.startPoint.x;
       const dy = segment.endPoint.y - segment.startPoint.y;
       const length = Math.sqrt(dx * dx + dy * dy);
-      
+
       if (length > 0) {
         // Perpendicular vector (rotate 90 degrees)
         const perpX = -dy / length;
         const perpY = dx / length;
-        
+
         return {
           x: x + perpX * offset,
           y: y + perpY * offset,
@@ -72,7 +72,7 @@ export class TrainMovement {
   /**
    * Calculate the speed of a train given current state and speed profile.
    * Applies acceleration/deceleration based on distance to next stop.
-   * 
+   *
    * @param currentSpeed - Current speed in m/s
    * @param distanceToStop - Distance to next stop in meters
    * @param profile - Speed profile with max speed and acceleration rates
@@ -109,10 +109,7 @@ export class TrainMovement {
       newSpeed = Math.max(0, currentSpeed - profile.deceleration * deltaTime);
     } else if (currentSpeed < maxSpeedMs) {
       // Can accelerate
-      newSpeed = Math.min(
-        maxSpeedMs,
-        currentSpeed + profile.acceleration * deltaTime,
-      );
+      newSpeed = Math.min(maxSpeedMs, currentSpeed + profile.acceleration * deltaTime);
     } else {
       // Maintain current speed
       newSpeed = currentSpeed;
@@ -124,7 +121,7 @@ export class TrainMovement {
   /**
    * Calculate total travel time for a given distance using a speed profile.
    * Accounts for acceleration and deceleration phases.
-   * 
+   *
    * @param distance - Total distance to travel in meters
    * @param profile - Speed profile
    * @returns Estimated travel time in seconds
@@ -173,7 +170,7 @@ export class TrainMovement {
 
   /**
    * Calculate heading angle (direction) from a track segment.
-   * 
+   *
    * @param segment - The track segment
    * @returns Heading angle in radians
    */

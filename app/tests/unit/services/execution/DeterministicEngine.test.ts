@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
+import { describe, expect, it } from 'vitest';
 import { DeterministicEngine } from '../../../../src/services/execution/DeterministicEngine';
 
 describe('DeterministicEngine', () => {
@@ -28,25 +28,17 @@ describe('DeterministicEngine', () => {
     it('should produce consistent sequence for same seed', () => {
       const seed = 99999;
       const engine1 = new DeterministicEngine(seed);
-      const sequence1 = [
-        engine1.nextRandom(),
-        engine1.nextRandom(),
-        engine1.nextRandom(),
-      ];
+      const sequence1 = [engine1.nextRandom(), engine1.nextRandom(), engine1.nextRandom()];
 
       const engine2 = new DeterministicEngine(seed);
-      const sequence2 = [
-        engine2.nextRandom(),
-        engine2.nextRandom(),
-        engine2.nextRandom(),
-      ];
+      const sequence2 = [engine2.nextRandom(), engine2.nextRandom(), engine2.nextRandom()];
 
       expect(sequence1).toEqual(sequence2);
     });
 
     it('should maintain state across multiple calls', () => {
       const engine = new DeterministicEngine(42);
-      
+
       const first = engine.nextRandom();
       const second = engine.nextRandom();
       const third = engine.nextRandom();
@@ -82,10 +74,10 @@ describe('DeterministicEngine', () => {
 
     it('should support saving and restoring state', () => {
       const engine = new DeterministicEngine(456);
-      
+
       engine.nextRandom();
       engine.nextRandom();
-      
+
       const savedState = engine.saveState();
       const nextValue = engine.nextRandom();
 
@@ -128,7 +120,7 @@ describe('DeterministicEngine', () => {
   describe('nextInt', () => {
     it('should generate integers in specified range', () => {
       const engine = new DeterministicEngine(789);
-      
+
       for (let i = 0; i < 50; i++) {
         const value = engine.nextInt(1, 10);
         expect(value).toBeGreaterThanOrEqual(1);

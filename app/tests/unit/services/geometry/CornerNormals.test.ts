@@ -13,8 +13,8 @@ describe('CornerNormals', () => {
 
       // For a right turn (east to north), the bisector is northeast {1,1}
       // Rotating clockwise 90° gives {1,-1} normalized to {0.707,-0.707}
-      expect(normal.x).toBeCloseTo(0.707, 2);
-      expect(normal.y).toBeCloseTo(-0.707, 2);
+      expect(normal.x).toBeCloseTo(Math.SQRT1_2, 2);
+      expect(normal.y).toBeCloseTo(-Math.SQRT1_2, 2);
     });
 
     it('should calculate normal for 90-degree left turn', () => {
@@ -25,8 +25,8 @@ describe('CornerNormals', () => {
 
       // For a left turn (east to south), the bisector is southeast {1,-1}
       // Rotating clockwise 90° gives {-1,-1} normalized to {-0.707,-0.707}
-      expect(normal.x).toBeCloseTo(-0.707, 2);
-      expect(normal.y).toBeCloseTo(-0.707, 2);
+      expect(normal.x).toBeCloseTo(-Math.SQRT1_2, 2);
+      expect(normal.y).toBeCloseTo(-Math.SQRT1_2, 2);
     });
 
     it('should calculate normal for 180-degree turn', () => {
@@ -62,7 +62,7 @@ describe('CornerNormals', () => {
 
     it('should calculate normal for 45-degree turn', () => {
       const incoming = { x: 1, y: 0 };
-      const outgoing = { x: 0.707, y: 0.707 };
+      const outgoing = { x: Math.SQRT1_2, y: Math.SQRT1_2 };
 
       const normal = cornerNormals.calculateNormal(incoming, outgoing);
 
@@ -118,12 +118,9 @@ describe('CornerNormals', () => {
       );
 
       expect(points).toHaveLength(4);
-      
+
       // For straight section, should form a rectangle
-      const widths = [
-        Math.abs(points[0].y - points[1].y),
-        Math.abs(points[2].y - points[3].y),
-      ];
+      const widths = [Math.abs(points[0].y - points[1].y), Math.abs(points[2].y - points[3].y)];
       expect(widths[0]).toBeCloseTo(widths[1], 1);
     });
 
@@ -226,8 +223,8 @@ describe('CornerNormals', () => {
       const transformations = cornerNormals.chainCornerTransformations(corners);
 
       // Second corner's incoming should be normalized version of input
-      expect(transformations[1].incoming.x).toBeCloseTo(0.707, 2);
-      expect(transformations[1].incoming.y).toBeCloseTo(0.707, 2);
+      expect(transformations[1].incoming.x).toBeCloseTo(Math.SQRT1_2, 2);
+      expect(transformations[1].incoming.y).toBeCloseTo(Math.SQRT1_2, 2);
     });
 
     it('should handle single corner', () => {

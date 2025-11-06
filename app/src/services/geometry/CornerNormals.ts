@@ -34,7 +34,7 @@ export class CornerNormals {
   /**
    * Calculate the normal vector for a corner between two track segments.
    * The normal is perpendicular to the bisector of the incoming and outgoing directions.
-   * 
+   *
    * @param incoming - Incoming direction vector (will be normalized)
    * @param outgoing - Outgoing direction vector (will be normalized)
    * @returns Normalized normal vector
@@ -62,7 +62,7 @@ export class CornerNormals {
 
   /**
    * Calculate the four corner points of a trapezoid representing a train at a corner.
-   * 
+   *
    * @param cornerPoint - The position of the corner
    * @param trainLength - Length of the train in meters
    * @param trainWidth - Width of the train in meters
@@ -122,7 +122,7 @@ export class CornerNormals {
   /**
    * Chain corner transformations through multiple consecutive corners.
    * Per spec FR-013, transformations must chain continuously without snapping back to rectangles.
-   * 
+   *
    * @param corners - Array of corner information
    * @returns Array of transformations for each corner
    */
@@ -149,7 +149,7 @@ export class CornerNormals {
 
   /**
    * Normalize a vector to unit length.
-   * 
+   *
    * @param v - Vector to normalize
    * @returns Normalized vector
    */
@@ -168,7 +168,7 @@ export class CornerNormals {
 
   /**
    * Calculate the angle between two vectors in radians.
-   * 
+   *
    * @param v1 - First vector
    * @param v2 - Second vector
    * @returns Angle in radians

@@ -1,16 +1,10 @@
+import type { Conflict as ConflictType, DwellAssignment } from '../../models/ExecutionComponents';
 import type { RouteModel } from '../../models/Route';
+import { ConflictDetector } from '../validation/ConflictDetector';
+import { DeterministicEngine } from './DeterministicEngine';
 
 /**
- * Conflict types that can occur in a timetable
- */
-export interface Conflict {
-  type: string;
-  locationId: string;
-  message: string;
-}
-
-/**
- * Scheduled train information for preview
+ * Scheduled train information for preview (API format)
  */
 export interface ScheduledTrain {
   id: string;
@@ -37,17 +31,22 @@ export interface PreviewOptions {
  * Preview response with conflicts and scheduled trains
  */
 export interface PreviewResponse {
-  conflicts: Conflict[];
+  conflicts: ConflictType[];
   scheduledTrains: ScheduledTrain[];
 }
 
 /**
  * Service for generating timetable previews.
  * Validates routes and produces conflict-free schedules.
+ * Per spec FR-011, previews must detect conflicts before execution.
  */
 export class PreviewService {
+  private conflictDetector = new ConflictDetector();
+
   /**
    * Generate a timetable preview for a route.
+   * Creates a deterministic schedule and validates for conflicts.
+   *
    * @param route - The route to generate preview for
    * @param seed - Random seed for deterministic generation
    * @param options - Preview generation options
@@ -57,13 +56,19 @@ export class PreviewService {
     seed?: number,
     _options: PreviewOptions = {},
   ): PreviewResponse {
-    const _actualSeed = seed ?? Math.random();
-    const conflicts: Conflict[] = [];
-    const scheduledTrains: ScheduledTrain[] = [];
+    const actualSeed = seed ?? Math.floor(Math.random() * 1000000);
+    const _engine = new DeterministicEngine(actualSeed);
 
-    // TODO: Implement actual preview generation logic
-    // For now, return empty result structure
-    // This will be implemented when execution mode is fully developed
+    // TODO: Implement full schedule generation from route
+    // For now, return empty results
+    // This requires:
+    // 1. Read route stops and consists
+    // 2. Calculate travel times between stops
+    // 3. Generate dwell assignments
+    // 4. Assign trains to tracks
+
+    const scheduledTrains: ScheduledTrain[] = [];
+    const conflicts: ConflictType[] = [];
 
     return {
       conflicts,
@@ -72,26 +77,21 @@ export class PreviewService {
   }
 
   /**
-   * Validate capacity constraints for scheduled trains.
-   * Checks if stopping tracks have sufficient capacity to avoid overlaps.
+   * Validate a set of scheduled trains for conflicts.
+   *
+   * @param dwells - Dwell assignments to validate
+   * @returns Array of detected conflicts
    */
-  validateCapacity(_scheduledTrains: ScheduledTrain[]): Conflict[] {
-    const conflicts: Conflict[] = [];
+  validateSchedule(dwells: DwellAssignment[]): ConflictType[] {
+    const conflicts: ConflictType[] = [];
 
-    // TODO: Implement capacity validation per FR-011
-    // Check stopping tracks and depot lanes for sufficient capacity
+    // Detect dwell overlaps
+    const dwellConflicts = this.conflictDetector.detectDwellConflicts(dwells);
+    conflicts.push(...dwellConflicts);
 
-    return conflicts;
-  }
-
-  /**
-   * Detect overlapping dwell periods on the same track.
-   */
-  detectDwellConflicts(_scheduledTrains: ScheduledTrain[]): Conflict[] {
-    const conflicts: Conflict[] = [];
-
-    // TODO: Implement dwell conflict detection per FR-011
-    // Check for overlapping train cars during dwell periods
+    // Validate dwell times
+    const timeConflicts = this.conflictDetector.validateDwellTimes(dwells);
+    conflicts.push(...timeConflicts);
 
     return conflicts;
   }

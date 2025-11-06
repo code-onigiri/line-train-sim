@@ -11,7 +11,7 @@ export class DeterministicEngine {
 
   /**
    * Create a new deterministic random number generator with the given seed.
-   * 
+   *
    * @param seed - Initial seed value (must be deterministic for replay)
    */
   constructor(seed: number) {
@@ -21,7 +21,7 @@ export class DeterministicEngine {
   /**
    * Generate the next random number in [0, 1).
    * Uses Linear Congruential Generator algorithm.
-   * 
+   *
    * @returns Random number in range [0, 1)
    */
   nextRandom(): number {
@@ -31,7 +31,7 @@ export class DeterministicEngine {
 
   /**
    * Generate a random integer in the range [min, max] (inclusive).
-   * 
+   *
    * @param min - Minimum value (inclusive)
    * @param max - Maximum value (inclusive)
    * @returns Random integer in range
@@ -44,7 +44,7 @@ export class DeterministicEngine {
   /**
    * Shuffle an array in-place using Fisher-Yates algorithm.
    * Returns the shuffled array for chaining.
-   * 
+   *
    * @param array - Array to shuffle
    * @returns The shuffled array
    */
@@ -59,7 +59,7 @@ export class DeterministicEngine {
   /**
    * Reset the generator to a new seed.
    * Useful for restarting execution from the beginning.
-   * 
+   *
    * @param seed - New seed value
    */
   reseed(seed: number): void {
@@ -69,7 +69,7 @@ export class DeterministicEngine {
   /**
    * Save the current state for later restoration.
    * Enables save/load of execution state.
-   * 
+   *
    * @returns Current internal state
    */
   saveState(): number {
@@ -78,7 +78,7 @@ export class DeterministicEngine {
 
   /**
    * Restore a previously saved state.
-   * 
+   *
    * @param state - Saved state to restore
    */
   restoreState(state: number): void {
@@ -87,7 +87,7 @@ export class DeterministicEngine {
 
   /**
    * Generate a random boolean value.
-   * 
+   *
    * @returns Random boolean
    */
   nextBoolean(): boolean {
@@ -96,7 +96,7 @@ export class DeterministicEngine {
 
   /**
    * Select a random element from an array.
-   * 
+   *
    * @param array - Array to select from
    * @returns Random element, or undefined if array is empty
    */

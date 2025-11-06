@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
-import { TrainMovement } from '../../../../src/services/simulation/TrainMovement';
+import { describe, expect, it } from 'vitest';
 import type { SpeedProfile } from '../../../../src/models/VehicleType';
+import { TrainMovement } from '../../../../src/services/simulation/TrainMovement';
 
 describe('TrainMovement', () => {
   const movement = new TrainMovement();
@@ -101,7 +101,7 @@ describe('TrainMovement', () => {
 
       const currentSpeed = 20; // m/s
       const distanceToStop = 50; // meters
-      
+
       const speed = movement.calculateSpeed(currentSpeed, distanceToStop, profile, 1.0);
       expect(speed).toBeLessThan(currentSpeed);
     });
@@ -127,7 +127,7 @@ describe('TrainMovement', () => {
 
       const speed1 = movement.calculateSpeed(0, 1000, profile, 1.0);
       const speed2 = movement.calculateSpeed(0, 1000, profile, 2.0);
-      
+
       // With 2x time, acceleration should be applied for 2 seconds
       expect(speed2).toBeGreaterThan(speed1);
     });
@@ -154,7 +154,7 @@ describe('TrainMovement', () => {
 
       const distance = 1000; // meters
       const time = movement.calculateTravelTime(distance, profile);
-      
+
       // At 100 km/h = 27.78 m/s, 1000m should take ~36 seconds
       expect(time).toBeGreaterThan(30);
       expect(time).toBeLessThan(40);
@@ -169,7 +169,7 @@ describe('TrainMovement', () => {
 
       const distance = 500;
       const time = movement.calculateTravelTime(distance, profile);
-      
+
       expect(time).toBeGreaterThan(0);
     });
 
@@ -182,7 +182,7 @@ describe('TrainMovement', () => {
 
       const distance = 10; // meters
       const time = movement.calculateTravelTime(distance, profile);
-      
+
       expect(time).toBeGreaterThan(0);
       expect(time).toBeLessThan(10);
     });

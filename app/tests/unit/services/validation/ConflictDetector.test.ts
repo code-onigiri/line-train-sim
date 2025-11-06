@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
-import { ConflictDetector } from '../../../../src/services/validation/ConflictDetector';
+import { describe, expect, it } from 'vitest';
 import type { DwellAssignment } from '../../../../src/models/ExecutionComponents';
+import { ConflictDetector } from '../../../../src/services/validation/ConflictDetector';
 
 describe('ConflictDetector', () => {
   const detector = new ConflictDetector();
@@ -16,7 +16,7 @@ describe('ConflictDetector', () => {
       const track1 = uuidv4();
       const track2 = uuidv4();
       const stop1 = uuidv4();
-      
+
       const dwells: DwellAssignment[] = [
         {
           trainId: uuidv4(),
@@ -41,7 +41,7 @@ describe('ConflictDetector', () => {
     it('should detect no conflicts when trains use same track but different times', () => {
       const track1 = uuidv4();
       const stop1 = uuidv4();
-      
+
       const dwells: DwellAssignment[] = [
         {
           trainId: uuidv4(),
@@ -68,7 +68,7 @@ describe('ConflictDetector', () => {
       const stop1 = uuidv4();
       const train1 = uuidv4();
       const train2 = uuidv4();
-      
+
       const dwells: DwellAssignment[] = [
         {
           trainId: train1,
@@ -95,7 +95,7 @@ describe('ConflictDetector', () => {
     it('should detect conflict when second train arrives before first departs', () => {
       const track1 = uuidv4();
       const stop1 = uuidv4();
-      
+
       const dwells: DwellAssignment[] = [
         {
           trainId: uuidv4(),
@@ -120,7 +120,7 @@ describe('ConflictDetector', () => {
     it('should allow trains to arrive exactly when previous departs', () => {
       const track1 = uuidv4();
       const stop1 = uuidv4();
-      
+
       const dwells: DwellAssignment[] = [
         {
           trainId: uuidv4(),
@@ -146,7 +146,7 @@ describe('ConflictDetector', () => {
       const track1 = uuidv4();
       const track2 = uuidv4();
       const stop1 = uuidv4();
-      
+
       const dwells: DwellAssignment[] = [
         {
           trainId: uuidv4(),
@@ -187,7 +187,7 @@ describe('ConflictDetector', () => {
       const stop1 = uuidv4();
       const train1 = uuidv4();
       const train2 = uuidv4();
-      
+
       const dwells: DwellAssignment[] = [
         {
           trainId: train1,
@@ -213,7 +213,7 @@ describe('ConflictDetector', () => {
     it('should provide helpful conflict message', () => {
       const track1 = uuidv4();
       const stop1 = uuidv4();
-      
+
       const dwells: DwellAssignment[] = [
         {
           trainId: uuidv4(),
