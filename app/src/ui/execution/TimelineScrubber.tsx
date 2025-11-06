@@ -41,12 +41,12 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
-    handleSeek(e);
+    handleSeek(e.nativeEvent);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
     if (isDragging) {
-      handleSeek(e as any);
+      handleSeek(e);
     }
   };
 
@@ -65,11 +65,11 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
     }
   }, [isDragging]);
 
-  const handleSeek = (e: React.MouseEvent | MouseEvent) => {
+  const handleSeek = (e: MouseEvent) => {
     if (!scrubberRef.current || !onSeek) return;
 
     const rect = scrubberRef.current.getBoundingClientRect();
-    const x = (e as MouseEvent).clientX - rect.left;
+    const x = e.clientX - rect.left;
     const percentage = Math.max(0, Math.min(1, x / rect.width));
     const newTime = percentage * totalDuration;
 
