@@ -1,0 +1,135 @@
+.diagram-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.diagram-settings-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.settings-description {
+  margin: 0;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.settings-section {
+  padding: 1rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.settings-section h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.setting-item label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.time-display {
+  padding: 0.25rem 0.5rem;
+  background: #e9ecef;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: #495057;
+}
+
+.setting-item input[type="number"],
+.setting-item select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 0.875rem;
+}
+
+.setting-item input[type="number"]:focus,
+.setting-item select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.setting-item small {
+  color: #666;
+  font-size: 0.75rem;
+}
+
+.checkbox-item {
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkbox-item label {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  cursor: pointer;
+}
+
+.info-text {
+  margin: 0;
+  padding: 0.75rem;
+  background: #e7f3ff;
+  border-left: 3px solid #007bff;
+  border-radius: 3px;
+  font-size: 0.875rem;
+  color: #004085;
+}
+
+.settings-summary {
+  padding: 1rem;
+  background: #e9ecef;
+  border-radius: 4px;
+}
+
+.settings-summary h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666;
+}
+
+.summary-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.summary-list li {
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  color: #333;
+}
