@@ -1,9 +1,9 @@
-import { describe, expect, it } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
-import { RouteValidator } from '../../../../src/services/validation/RouteValidator';
+import { describe, expect, it } from 'vitest';
+import { DepotModel } from '../../../../src/models/Depot';
 import { RouteModel } from '../../../../src/models/Route';
 import { StationModel } from '../../../../src/models/Station';
-import { DepotModel } from '../../../../src/models/Depot';
+import { RouteValidator } from '../../../../src/services/validation/RouteValidator';
 
 describe('RouteValidator', () => {
   const validator = new RouteValidator();
