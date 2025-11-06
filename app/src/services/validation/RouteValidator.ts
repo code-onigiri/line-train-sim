@@ -46,45 +46,37 @@ export class RouteValidator {
     // Validate start stop (first)
     const startStop = stops[0];
     if (!this.isValidStartOrEnd(startStop.entityId, startStop.entityType, stations, depots)) {
-      errors.push(
-        `Start stop must be a valid station or depot, got ${startStop.entityType} with ID ${startStop.entityId}`,
-      );
+      errors.push(`Start stop (${startStop.entityType}) does not exist or is invalid`);
     }
 
     // Validate end stop (last)
     const endStop = stops[stops.length - 1];
     if (!this.isValidStartOrEnd(endStop.entityId, endStop.entityType, stations, depots)) {
-      errors.push(
-        `End stop must be a valid station or depot, got ${endStop.entityType} with ID ${endStop.entityId}`,
-      );
+      errors.push(`End stop (${endStop.entityType}) does not exist or is invalid`);
     }
 
     // Validate intermediate stops (all between first and last)
     for (let i = 1; i < stops.length - 1; i++) {
       const stop = stops[i];
       if (stop.entityType !== 'station') {
-        errors.push(
-          `Intermediate stop at position ${i + 1} must be a station, got ${stop.entityType}`,
-        );
+        errors.push(`Intermediate stop at position ${i + 1} must be a station, not a ${stop.entityType}`);
       }
       if (!stations.has(stop.entityId)) {
-        errors.push(`Station ${stop.entityId} at position ${i + 1} not found`);
+        errors.push(`Station at position ${i + 1} does not exist`);
       }
     }
 
     // Also validate that the end stop entity exists
     if (endStop.entityType === 'station' && !stations.has(endStop.entityId)) {
-      errors.push(`End station ${endStop.entityId} not found`);
+      errors.push('End station does not exist');
     } else if (endStop.entityType === 'depot' && !depots.has(endStop.entityId)) {
-      errors.push(`End depot ${endStop.entityId} not found`);
+      errors.push('End depot does not exist');
     }
 
     // Check for consecutive duplicates
     for (let i = 1; i < stops.length; i++) {
       if (stops[i].entityId === stops[i - 1].entityId) {
-        warnings.push(
-          `Consecutive duplicate stop at positions ${i} and ${i + 1}: ${stops[i].entityId}`,
-        );
+        warnings.push(`Consecutive duplicate stop at positions ${i} and ${i + 1}`);
       }
     }
 
@@ -106,7 +98,7 @@ export class RouteValidator {
 
     if (loopDetected) {
       warnings.push(
-        `Route contains a loop: station ${loopStationId} appears multiple times. ` +
+        'Route contains a loop: a station appears multiple times. ' +
           'Insert an intermediate landmark to break the circular path before execution.',
       );
     }

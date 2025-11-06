@@ -6,7 +6,6 @@ describe('RouteService', () => {
   let service: RouteService;
   let stationId1: string;
   let stationId2: string;
-  let _stationId3: string;
   let depotId1: string;
   let consistId1: string;
 
@@ -14,7 +13,6 @@ describe('RouteService', () => {
     service = new RouteService();
     stationId1 = uuidv4();
     stationId2 = uuidv4();
-    _stationId3 = uuidv4();
     depotId1 = uuidv4();
     consistId1 = uuidv4();
   });

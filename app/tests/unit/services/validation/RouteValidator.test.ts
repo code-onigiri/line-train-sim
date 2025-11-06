@@ -254,6 +254,6 @@ describe('RouteValidator', () => {
 
     const result = validator.validateRoute(route, stations, depots);
     expect(result.isValid).toBe(false);
-    expect(result.errors.some((e) => e.includes('not found'))).toBe(true);
+    expect(result.errors.some((e) => e.includes('does not exist'))).toBe(true);
   });
 });
