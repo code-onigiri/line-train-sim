@@ -6,11 +6,11 @@ describe('ScheduledTrainModel', () => {
   it('should create a scheduled train with default values', () => {
     const train = new ScheduledTrainModel({
       routeId: uuidv4(),
-      consistId: uuidv4(),
+      consistTemplateId: uuidv4(),
     });
 
     expect(typeof train.routeId).toBe('string');
-    expect(typeof train.consistId).toBe('string');
+    expect(typeof train.consistTemplateId).toBe('string');
     expect(train.departureTime).toBe(0);
     expect(train.dwellAssignments).toEqual([]);
     expect(typeof train.seed).toBe('number');
@@ -19,7 +19,7 @@ describe('ScheduledTrainModel', () => {
   it('should create a scheduled train with custom values', () => {
     const train = new ScheduledTrainModel({
       routeId: uuidv4(),
-      consistId: uuidv4(),
+      consistTemplateId: uuidv4(),
       departureTime: 1000,
       seed: 12345,
     });
@@ -31,7 +31,7 @@ describe('ScheduledTrainModel', () => {
   it('should update departure time immutably', () => {
     const original = new ScheduledTrainModel({
       routeId: uuidv4(),
-      consistId: uuidv4(),
+      consistTemplateId: uuidv4(),
     });
     const updated = original.updateDepartureTime(500);
 
@@ -45,7 +45,7 @@ describe('ScheduledTrainModel', () => {
     const trackId = uuidv4();
     const train = new ScheduledTrainModel({
       routeId: uuidv4(),
-      consistId: uuidv4(),
+      consistTemplateId: uuidv4(),
     });
     const updated = train.addDwellAssignment(stopId, trackId, 100, 200);
 
@@ -61,7 +61,7 @@ describe('ScheduledTrainModel', () => {
   it('should update dwell assignments', () => {
     const train = new ScheduledTrainModel({
       routeId: uuidv4(),
-      consistId: uuidv4(),
+      consistTemplateId: uuidv4(),
     });
     const assignments = [
       { stopId: uuidv4(), trackId: uuidv4(), arrivalTime: 100, departureTime: 200 },
@@ -76,15 +76,15 @@ describe('ScheduledTrainModel', () => {
 
   it('should serialize to JSON', () => {
     const routeId = uuidv4();
-    const consistId = uuidv4();
+    const consistTemplateId = uuidv4();
     const train = new ScheduledTrainModel({
       routeId,
-      consistId,
+      consistTemplateId,
     });
     const json = train.toJSON();
 
     expect(json.routeId).toBe(routeId);
-    expect(json.consistId).toBe(consistId);
+    expect(json.consistTemplateId).toBe(consistTemplateId);
     expect(json).toHaveProperty('id');
     expect(json).toHaveProperty('createdAt');
     expect(json).toHaveProperty('updatedAt');
@@ -93,14 +93,14 @@ describe('ScheduledTrainModel', () => {
   it('should deserialize from JSON', () => {
     const original = new ScheduledTrainModel({
       routeId: uuidv4(),
-      consistId: uuidv4(),
+      consistTemplateId: uuidv4(),
       seed: 12345,
     });
     const json = original.toJSON();
     const restored = ScheduledTrainModel.fromJSON(json);
 
     expect(restored.routeId).toBe(original.routeId);
-    expect(restored.consistId).toBe(original.consistId);
+    expect(restored.consistTemplateId).toBe(original.consistTemplateId);
     expect(restored.seed).toBe(original.seed);
     expect(restored.id).toBe(original.id);
   });

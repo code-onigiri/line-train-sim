@@ -111,7 +111,7 @@ export type VehicleType = z.infer<typeof VehicleTypeSchema>;
 export const ScheduledTrainSchema = z.object({
   id: z.string().uuid(),
   routeId: z.string().uuid(),
-  consistId: z.string().uuid(),
+  consistTemplateId: z.string().uuid(),
   departureTime: z.number().nonnegative(),
   dwellAssignments: z.array(
     z.object({
