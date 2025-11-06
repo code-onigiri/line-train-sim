@@ -17,7 +17,7 @@ Implement the placement, diagram configuration, and execution preview workflow f
 **Testing**: Vitest + React Testing Library + Playwright for interaction regression packs (executed via Bun)  
 **Target Platform**: Modern desktop and mobile browsers (Chrome 142+, Firefox 144+, Safari 26.0+) distributed via Vite-built static bundle  
 **Project Type**: Web client (single-page application)  
-**Performance Goals**: Maintain 60 fps canvas interactions with up to 200 landmarks and 50 concurrent trains; execution preview must simulate 60 in-game minutes in ≤5 real minutes per spec SC-004  
+**Performance Goals**: Maintain 60 fps canvas interactions with up to 200 landmarks and 50 concurrent trains; execution preview must simulate 60 in-game minutes in ≤5 real minutes per spec SC-004, and a baseline scenario with 100 trains and 500 track segments must sustain ≤100 ms per simulation tick on reference hardware.
 **Constraints**: Time-scaling controls must respond within 150 ms, validation results return in ≤200 ms for 50-train scenarios, memory footprint ≤256 MB in client session, offline-capable after initial load  
 **Scale/Scope**: Support maps up to 200 landmarks, 50 trains, 20 routes, and 3 concurrent add-ons per session  
 **Reference Hardware**: Average consumer PC (non-gaming): modern multi-core CPU, 8-16GB RAM, integrated or entry-level discrete GPU  
@@ -28,7 +28,7 @@ Implement the placement, diagram configuration, and execution preview workflow f
 1. **Rigorous Code Quality**: Enforce Biome (lint + format), TypeScript strict mode, and PixiJS-specific lint rules in Bun-based CI. PR checklist will require lint/test snapshots plus manual verification of add-on sandbox boundaries.
 2. **Test-Driven Reliability**: Author route geometry unit tests (landmark creation, intersections), depot inventory validation tests, and execution preview conflict detection tests before feature work. Maintain ≥90% coverage on simulation-critical modules; use deterministic seeds for playback verification in Playwright.
 3. **Consistent User Experience**: Primary surfaces include placement canvas, diagram settings panel, and execution preview controls. Update in-app help overlays and release notes to document touch gestures, keyboard shortcuts, and add-on sandbox limitations. No migrations required for existing saves beyond documented schema bump.
-4. **Performance and Determinism**: Instrument PixiJS render loop and validation pipelines with performance markers captured via Web Performance APIs. Provide Bun script to replay seeded scenarios, ensuring identical results across runs. Benchmark maps with 200 landmarks and 50 trains to confirm budgets.
+4. **Performance and Determinism**: Instrument PixiJS render loop and validation pipelines with performance markers captured via Web Performance APIs. Provide Bun script to replay seeded scenarios, ensuring identical results across runs. Benchmark maps with 200 landmarks and 50 trains to confirm budgets, and record a baseline run with 100 trains and 500 track segments to verify ≤100 ms simulation ticks.
 
 ## Project Structure
 

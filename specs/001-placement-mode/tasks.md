@@ -236,6 +236,7 @@ Per plan.md structure:
 - [ ] T106 [P] Create sample add-on package template in app/public/addons/sample-addon/
 - [ ] T107 Add add-on error handling and fallback mechanisms in app/src/services/addons/ErrorHandler.ts
 - [ ] T108 Implement add-on security boundary tests to prevent privileged access in app/tests/integration/addon-security.test.ts
+- [ ] T108a Run regression validation across at least three representative add-ons covering placement, diagram, and execution workflows in app/tests/integration/addon-regressions.test.ts
 
 **Checkpoint**: Add-on system functional - external packages can extend simulator while maintaining security constraints.
 
@@ -258,6 +259,7 @@ Per plan.md structure:
 - [ ] T119 Implement validation performance optimization for <200ms on 50-train scenarios in app/src/services/validation/optimizations.ts
 - [ ] T120 Run determinism verification with seeded scenarios across replays in app/tests/benchmarks/determinism-check.ts
 - [ ] T121 Verify 60 simulation minutes render in <5 real minutes per SC-004 in app/tests/benchmarks/execution-performance.ts
+- [ ] T121a Automate baseline benchmark for 100 trains and 500 track segments sustaining ≤100 ms per simulation tick in app/tests/benchmarks/baseline-100x500.test.ts
 - [ ] T122 [P] Create ja-JP locale bundle with complete translations for all UI strings in app/src/i18n/locales/ja-JP.json
 - [ ] T122a [P] [Localization] Create E2E test validating locale switching with numeric/time formatting verification and text translation completeness in app/tests/e2e/i18n.spec.ts
 - [ ] T123 Implement schema migration utilities for future data model changes in app/src/services/storage/migrations.ts
@@ -267,6 +269,7 @@ Per plan.md structure:
 - [ ] T127 Add error boundary components for graceful failure handling in app/src/ui/common/ErrorBoundary.tsx
 - [ ] T128 Run quickstart.md validation scenarios in app/tests/e2e/quickstart.spec.ts
 - [ ] T129 Perform usability testing for 15-minute route creation per SC-001 and document results
+- [ ] T129a Conduct diagram configuration usability study documenting ≥90% comprehension among beta testers with findings published in app/public/docs/usability/diagram-study.md
 - [ ] T130 Final code cleanup and refactoring with Biome formatting across all files
 - [ ] T131 Verify all constitution guardrails met (quality, testing, UX, performance) per plan.md
 
@@ -403,10 +406,11 @@ Per spec.md Success Criteria:
 
 - **SC-001**: Route creation in <15 minutes → Validate with usability testing (T129)
 - **SC-002**: 100% conflict detection → Covered by T077-T078 validation
-- **SC-003**: 90% diagram usability → Validate with beta testing (T129)
-- **SC-004**: 60 sim minutes in <5 real minutes → Benchmarked by T121 + CI acceptance gate T121a
-- **SC-005**: Add-on compatibility → Verified by T106-T108
+- **SC-003**: 90% diagram usability → Validate with beta testing (T129a)
+- **SC-004**: 60 sim minutes in <5 real minutes → Benchmarked by T024a + T121
+- **SC-005**: Add-on compatibility → Verified by T106-T108 + regression suite T108a
 - **SC-006**: Multi-locale support → Delivered by T019, T122 + validation T122a
+- **SC-007**: 100 trains / 500 segments ≤100 ms tick → Benchmarked by T121a
 
 ---
 

@@ -10,7 +10,7 @@
 - **Rigorous Code Quality**: Maintain schematic tooling and simulation data structures under existing linting and architectural review gates; require peer review to confirm geometric primitives, route state transitions, and add-on hooks adhere to shared modelling guidelines.
 - **Test-Driven Reliability**: Provide unit tests for landmark geometry, station/depot configuration, vehicle assignment, and timetable validation plus end-to-end regression scenarios covering placement-to-preview flow; enforce ≥90% coverage for placement calculations and timetable conflict detection.
 - **Consistent User Experience**: Align placement, diagram, and execution screens with existing simulator visual language; update in-game help/tutorial copy describing new workflow stages and note add-on availability in release notes; no deprecations anticipated.
-- **Performance and Determinism**: Support editing maps with at least 200 landmarks and 50 concurrent trains while maintaining deterministic outcomes via seedable simulation state and repeatable timeline playback checks; measure editing responsiveness and execution tick rate on reference hardware.
+- **Performance and Determinism**: Support editing maps with at least 200 landmarks and 50 concurrent trains while maintaining deterministic outcomes via seedable simulation state and repeatable timeline playback checks; measure editing responsiveness and execution tick rate on reference hardware, including a baseline benchmark with 100 trains and 500 track segments sustaining ≤100 ms per simulation tick per constitution requirements.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -73,7 +73,7 @@ An operations lead previews and runs the timetable, adjusting time speed and ens
 
 ### Functional Requirements
 
-- **FR-001**: Placement mode MUST allow users to create and name new routes before any infrastructure is added.
+- **FR-001**: Placement mode MUST allow users to create and name new routes that reference existing stations or depots once the necessary infrastructure is in place.
 - **FR-002**: Placement mode MUST support drawing station areas with configurable platforms and stopping tracks that can be individually selected and edited.
 - **FR-003**: Placement mode MUST support drawing depot areas with configurable stopping lanes and regular tracks used for staging trains.
 - **FR-004**: Placement mode MUST enable creation of landmarks and straight track segments between landmarks, including branching from existing points.
@@ -109,6 +109,7 @@ An operations lead previews and runs the timetable, adjusting time speed and ens
 - **SC-004**: Execution previews render 60 simulation minutes in under 5 real-time minutes on reference hardware while preserving consistent outcomes across repeated runs.
 - **SC-005**: Add-on content can be installed and activated without regressions in core placement mode across three representative external packages.
 - **SC-006**: At least two locales ship at launch, and 90% of UI copy in usability tests reflects the selected locale’s language and formatting rules.
+- **SC-007**: Baseline scenario with 100 trains and 500 track segments sustains ≤100 ms per simulation tick on reference hardware with a documented measurement procedure.
 
 ## Assumptions & Dependencies
 
