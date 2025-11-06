@@ -104,20 +104,20 @@ Per plan.md structure:
 - [x] T038 [P] [US1] Create PixiJS renderer for depot areas and lanes in app/src/canvas/renderer/DepotRenderer.ts
 - [x] T039 [P] [US1] Implement placement mode UI toolbar with drawing tools in app/src/ui/placement/PlacementToolbar.tsx
 - [x] T040 [US1] Implement landmark placement interaction handler in app/src/canvas/interactions/LandmarkPlacementHandler.ts
-- [ ] T041 [US1] Implement track drawing interaction handler with straight line snapping in app/src/canvas/interactions/TrackDrawingHandler.ts
-- [ ] T042 [US1] Implement station area selection and platform configuration UI in app/src/ui/placement/StationEditor.tsx
-- [ ] T043 [US1] Implement depot area selection and lane configuration UI in app/src/ui/placement/DepotEditor.tsx
-- [ ] T044 [US1] Implement intersection detection algorithm with 4m vertical clearance threshold (measured from track rail top surface) for track segments in app/src/services/geometry/IntersectionDetector.ts
-- [ ] T045 [US1] Implement automatic landmark creation at intersections (only when vertical separation <4m from track rail top surface) in app/src/services/placement/IntersectionHandler.ts
-- [ ] T046 [P] [US1] Add persistence layer for landmarks using Dexie in app/src/services/storage/LandmarkRepository.ts
-- [ ] T047 [P] [US1] Add persistence layer for track segments using Dexie in app/src/services/storage/TrackRepository.ts
-- [ ] T048 [P] [US1] Add persistence layer for stations using Dexie in app/src/services/storage/StationRepository.ts
-- [ ] T049 [P] [US1] Add persistence layer for depots using Dexie in app/src/services/storage/DepotRepository.ts
-- [ ] T050 [US1] Implement canvas pan and zoom controls (WASD, arrow keys, pinch-zoom) in app/src/canvas/interactions/ViewportController.ts
-- [ ] T051 [US1] Implement selection and editing of existing infrastructure in app/src/canvas/interactions/SelectionHandler.ts
-- [ ] T052 [P] [US1] Add keyboard shortcuts for placement tools (Space toggle, Shift multi-select) in app/src/ui/placement/KeyboardShortcuts.tsx
-- [ ] T053 [US1] Implement save/load functionality for complete map state in app/src/services/storage/MapPersistence.ts
-- [ ] T054 [US1] Add validation messages and error feedback for placement operations in app/src/ui/common/ValidationFeedback.tsx
+- [x] T041 [US1] Implement track drawing interaction handler with straight line snapping in app/src/canvas/interactions/TrackDrawingHandler.ts
+- [x] T042 [US1] Implement station area selection and platform configuration UI in app/src/ui/placement/StationEditor.tsx
+- [x] T043 [US1] Implement depot area selection and lane configuration UI in app/src/ui/placement/DepotEditor.tsx
+- [x] T044 [US1] Implement intersection detection algorithm with 4m vertical clearance threshold (measured from track rail top surface) for track segments in app/src/services/geometry/IntersectionDetector.ts
+- [x] T045 [US1] Implement automatic landmark creation at intersections (only when vertical separation <4m from track rail top surface) in app/src/services/placement/IntersectionHandler.ts
+- [x] T046 [P] [US1] Add persistence layer for landmarks using Dexie in app/src/services/storage/LandmarkRepository.ts
+- [x] T047 [P] [US1] Add persistence layer for track segments using Dexie in app/src/services/storage/TrackRepository.ts
+- [x] T048 [P] [US1] Add persistence layer for stations using Dexie in app/src/services/storage/StationRepository.ts
+- [x] T049 [P] [US1] Add persistence layer for depots using Dexie in app/src/services/storage/DepotRepository.ts
+- [x] T050 [US1] Implement canvas pan and zoom controls (WASD, arrow keys, pinch-zoom) in app/src/canvas/interactions/ViewportController.ts
+- [x] T051 [US1] Implement selection and editing of existing infrastructure in app/src/canvas/interactions/SelectionHandler.ts
+- [x] T052 [P] [US1] Add keyboard shortcuts for placement tools (Space toggle, Shift multi-select) in app/src/ui/placement/KeyboardShortcuts.tsx
+- [x] T053 [US1] Implement save/load functionality for complete map state in app/src/services/storage/MapPersistence.ts
+- [x] T054 [US1] Add validation messages and error feedback for placement operations in app/src/ui/common/ValidationFeedback.tsx
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently - users can create, edit, save, and reload complete infrastructure layouts.
 
