@@ -131,12 +131,12 @@ Per plan.md structure:
 
 ### Tests for User Story 2 (Complete BEFORE Implementation)
 
-- [ ] T054a [P] [US2-TEST] Write failing unit tests for Route model validation (start/end constraints, depot position rules) in app/tests/unit/models/Route.test.ts
-- [ ] T054b [P] [US2-TEST] Write failing unit tests for ConsistTemplate model in app/tests/unit/models/ConsistTemplate.test.ts
-- [ ] T054c [US2-TEST] Write failing unit tests for RouteService with stop ordering validation in app/tests/unit/services/diagram/RouteService.test.ts
-- [ ] T054d [US2-TEST] Write failing unit tests for route validator (start/end must be station/depot, intermediate must be stations only) in app/tests/unit/services/validation/RouteValidator.test.ts
-- [ ] T054e [US2-TEST] Write failing unit tests for diagram validator (loop detection, completeness) in app/tests/unit/services/validation/DiagramValidator.test.ts
-- [ ] T054f [US2-TEST] Write failing E2E test for US2 acceptance scenarios (route creation, diagram config, drag-reorder) in app/tests/e2e/diagram-workflow.spec.ts
+- [x] T054a [P] [US2-TEST] Write failing unit tests for Route model validation (start/end constraints, depot position rules) in app/tests/unit/models/Route.test.ts
+- [x] T054b [P] [US2-TEST] Write failing unit tests for ConsistTemplate model in app/tests/unit/models/ConsistTemplate.test.ts
+- [x] T054c [US2-TEST] Write failing unit tests for RouteService with stop ordering validation in app/tests/unit/services/diagram/RouteService.test.ts
+- [x] T054d [US2-TEST] Write failing unit tests for route validator (start/end must be station/depot, intermediate must be stations only) in app/tests/unit/services/validation/RouteValidator.test.ts
+- [x] T054e [US2-TEST] Write failing unit tests for diagram validator (loop detection, completeness) in app/tests/unit/services/validation/DiagramValidator.test.ts
+- [x] T054f [US2-TEST] Write failing E2E test for US2 acceptance scenarios (route creation, diagram config, drag-reorder) in app/tests/e2e/diagram-workflow.spec.ts
 
 **Checkpoint**: All US2 tests written and failing - ready to implement
 
@@ -162,7 +162,7 @@ Per plan.md structure:
 - [ ] T069 [US2] Implement diagram preview summary showing consist lengths and speed categories in app/src/ui/diagram/PreviewSummary.tsx
 - [ ] T070 [US2] Add route navigation between placement and diagram modes in app/src/app/routes/routeNavigation.ts
 - [ ] T071 [US2] Implement diagram settings persistence and retrieval in app/src/services/storage/DiagramRepository.ts
-- [ ] T072 [US2] Add validation for route completeness and loop detection (warning + execution prevention on error) before preview in app/src/services/validation/DiagramValidator.ts
+- [x] T072 [US2] Add validation for route completeness and loop detection (warning + execution prevention on error) before preview in app/src/services/validation/DiagramValidator.ts
 - [ ] T072a [US2] Implement loop detection warning UI dialog with guidance to insert intermediate landmark in app/src/ui/diagram/LoopWarningDialog.tsx
 - [ ] T073 [P] [US2] Implement localized time formatting for diagram axis in app/src/i18n/timeFormatters.ts
 
