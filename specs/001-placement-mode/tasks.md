@@ -27,15 +27,15 @@ Per plan.md structure:
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project directory structure under app/ with src/, tests/, and public/ subdirectories
-- [ ] T002 Initialize Bun project with package.json including React 18, PixiJS, Zustand, Dexie, and Zod dependencies in app/
-- [ ] T003 [P] Configure Vite 5.x build tool with React plugin and TypeScript support in app/vite.config.ts
-- [ ] T004 [P] Setup Biome 1.x for linting and formatting in app/biome.json
-- [ ] T005 [P] Configure TypeScript 5.x with strict mode targeting ES2022 in app/tsconfig.json
-- [ ] T006 [P] Create HTML entry point in app/public/index.html
-- [ ] T007 [P] Setup Vitest configuration for unit tests in app/vitest.config.ts
-- [ ] T008 [P] Configure Playwright for E2E tests targeting Chrome 142+, Firefox 144+, Safari 26.0+ with touch/keyboard regression support in app/playwright.config.ts
-- [ ] T009 [P] Initialize React Testing Library utilities in app/tests/unit/setup.ts
+- [x] T001 Create project directory structure under app/ with src/, tests/, and public/ subdirectories
+- [x] T002 Initialize Bun project with package.json including React 18, PixiJS, Zustand, Dexie, and Zod dependencies in app/
+- [x] T003 [P] Configure Vite 5.x build tool with React plugin and TypeScript support in app/vite.config.ts
+- [x] T004 [P] Setup Biome 1.x for linting and formatting in app/biome.json
+- [x] T005 [P] Configure TypeScript 5.x with strict mode targeting ES2022 in app/tsconfig.json
+- [x] T006 [P] Create HTML entry point in app/public/index.html
+- [x] T007 [P] Setup Vitest configuration for unit tests in app/vitest.config.ts
+- [x] T008 [P] Configure Playwright for E2E tests targeting Chrome 142+, Firefox 144+, Safari 26.0+ with touch/keyboard regression support in app/playwright.config.ts
+- [x] T009 [P] Initialize React Testing Library utilities in app/tests/unit/setup.ts
 
 ---
 
@@ -45,22 +45,22 @@ Per plan.md structure:
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T010 Setup IndexedDB schema using Dexie with placementSimDB database in app/src/services/storage/db.ts
-- [ ] T011 [P] Implement localStorage fallback for preferences in app/src/services/storage/preferences.ts
-- [ ] T012 [P] Create Zustand store structure for placement state management in app/src/state/placementStore.ts
-- [ ] T013 [P] Create Zustand store for diagram state in app/src/state/diagramStore.ts
-- [ ] T014 [P] Create Zustand store for execution state in app/src/state/executionStore.ts
-- [ ] T015 [P] Define Zod validation schemas for all entities from data-model.md in app/src/schemas/entities.ts
-- [ ] T016 [P] Initialize PixiJS application and setup canvas renderer in app/src/canvas/renderer/PixiApp.ts
-- [ ] T017 [P] Implement canvas interaction manager for touch and keyboard events in app/src/canvas/interactions/InteractionManager.ts
-- [ ] T018 [P] Setup internationalization with FormatJS (react-intl) in app/src/i18n/setup.ts
-- [ ] T019 [P] Create default en-US locale bundle in app/src/i18n/locales/en-US.json
-- [ ] T020 [P] Implement deterministic seed management utilities in app/src/services/simulation/seedManager.ts
-- [ ] T021 [P] Create base React App component and routing structure in app/src/app/App.tsx
-- [ ] T022 [P] Setup performance monitoring utilities using Web Performance APIs in app/src/services/monitoring/performance.ts
-- [ ] T023 [P] Create error handling and logging infrastructure in app/src/services/logging/logger.ts
-- [ ] T024 Create baseline performance benchmark script in app/tests/benchmarks/baseline.ts
-- [ ] T024a Create CI acceptance test for SC-004 performance budget with automated pass/fail gate (fails build if execution preview >5 real minutes for 60 sim minutes) in app/tests/benchmarks/sc004-acceptance.test.ts
+- [x] T010 Setup IndexedDB schema using Dexie with placementSimDB database in app/src/services/storage/db.ts
+- [x] T011 [P] Implement localStorage fallback for preferences in app/src/services/storage/preferences.ts
+- [x] T012 [P] Create Zustand store structure for placement state management in app/src/state/placementStore.ts
+- [x] T013 [P] Create Zustand store for diagram state in app/src/state/diagramStore.ts
+- [x] T014 [P] Create Zustand store for execution state in app/src/state/executionStore.ts
+- [x] T015 [P] Define Zod validation schemas for all entities from data-model.md in app/src/schemas/entities.ts
+- [x] T016 [P] Initialize PixiJS application and setup canvas renderer in app/src/canvas/renderer/PixiApp.ts
+- [x] T017 [P] Implement canvas interaction manager for touch and keyboard events in app/src/canvas/interactions/InteractionManager.ts
+- [x] T018 [P] Setup internationalization with FormatJS (react-intl) in app/src/i18n/setup.ts
+- [x] T019 [P] Create default en-US locale bundle in app/src/i18n/locales/en-US.json
+- [x] T020 [P] Implement deterministic seed management utilities in app/src/services/simulation/seedManager.ts
+- [x] T021 [P] Create base React App component and routing structure in app/src/app/App.tsx
+- [x] T022 [P] Setup performance monitoring utilities using Web Performance APIs in app/src/services/monitoring/performance.ts
+- [x] T023 [P] Create error handling and logging infrastructure in app/src/services/logging/logger.ts
+- [x] T024 Create baseline performance benchmark script in app/tests/benchmarks/baseline.ts
+- [x] T024a Create CI acceptance test for SC-004 performance budget with automated pass/fail gate (fails build if execution preview >5 real minutes for 60 sim minutes) in app/tests/benchmarks/sc004-acceptance.test.ts
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -74,15 +74,15 @@ Per plan.md structure:
 
 ### Tests for User Story 1 (Complete BEFORE Implementation)
 
-- [ ] T024b [P] [US1-TEST] Write failing unit tests for Landmark model validation (coordinates, elevation, connections) in app/tests/unit/models/Landmark.test.ts
-- [ ] T024c [P] [US1-TEST] Write failing unit tests for TrackSegment model validation (slope, clearance, intersections) in app/tests/unit/models/TrackSegment.test.ts
-- [ ] T024d [P] [US1-TEST] Write failing unit tests for Station model validation (area polygon, platforms) in app/tests/unit/models/Station.test.ts
-- [ ] T024e [P] [US1-TEST] Write failing unit tests for Depot model validation (inventory, lanes) in app/tests/unit/models/Depot.test.ts
-- [ ] T024f [US1-TEST] Write failing unit tests for LandmarkService operations (create, update, delete) in app/tests/unit/services/placement/LandmarkService.test.ts
-- [ ] T024g [US1-TEST] Write failing unit tests for TrackSegmentService with intersection detection (4m clearance threshold) in app/tests/unit/services/placement/TrackSegmentService.test.ts
-- [ ] T024h [US1-TEST] Write failing unit tests for StationService with area validation in app/tests/unit/services/placement/StationService.test.ts
-- [ ] T024i [US1-TEST] Write failing unit tests for DepotService with inventory management in app/tests/unit/services/placement/DepotService.test.ts
-- [ ] T024j [US1-TEST] Write failing E2E test for complete US1 acceptance scenarios (place, save, reload infrastructure) in app/tests/e2e/placement-workflow.spec.ts
+- [x] T024b [P] [US1-TEST] Write failing unit tests for Landmark model validation (coordinates, elevation, connections) in app/tests/unit/models/Landmark.test.ts
+- [x] T024c [P] [US1-TEST] Write failing unit tests for TrackSegment model validation (slope, clearance, intersections) in app/tests/unit/models/TrackSegment.test.ts
+- [x] T024d [P] [US1-TEST] Write failing unit tests for Station model validation (area polygon, platforms) in app/tests/unit/models/Station.test.ts
+- [x] T024e [P] [US1-TEST] Write failing unit tests for Depot model validation (inventory, lanes) in app/tests/unit/models/Depot.test.ts
+- [x] T024f [US1-TEST] Write failing unit tests for LandmarkService operations (create, update, delete) in app/tests/unit/services/placement/LandmarkService.test.ts
+- [x] T024g [US1-TEST] Write failing unit tests for TrackSegmentService with intersection detection (4m clearance threshold) in app/tests/unit/services/placement/TrackSegmentService.test.ts
+- [x] T024h [US1-TEST] Write failing unit tests for StationService with area validation in app/tests/unit/services/placement/StationService.test.ts
+- [x] T024i [US1-TEST] Write failing unit tests for DepotService with inventory management in app/tests/unit/services/placement/DepotService.test.ts
+- [x] T024j [US1-TEST] Write failing E2E test for complete US1 acceptance scenarios (place, save, reload infrastructure) in app/tests/e2e/placement-workflow.spec.ts
 
 **Checkpoint**: All US1 tests written and failing - ready to implement
 
@@ -131,12 +131,12 @@ Per plan.md structure:
 
 ### Tests for User Story 2 (Complete BEFORE Implementation)
 
-- [ ] T054a [P] [US2-TEST] Write failing unit tests for Route model validation (start/end constraints, depot position rules) in app/tests/unit/models/Route.test.ts
-- [ ] T054b [P] [US2-TEST] Write failing unit tests for ConsistTemplate model in app/tests/unit/models/ConsistTemplate.test.ts
-- [ ] T054c [US2-TEST] Write failing unit tests for RouteService with stop ordering validation in app/tests/unit/services/diagram/RouteService.test.ts
-- [ ] T054d [US2-TEST] Write failing unit tests for route validator (start/end must be station/depot, intermediate must be stations only) in app/tests/unit/services/validation/RouteValidator.test.ts
-- [ ] T054e [US2-TEST] Write failing unit tests for diagram validator (loop detection, completeness) in app/tests/unit/services/validation/DiagramValidator.test.ts
-- [ ] T054f [US2-TEST] Write failing E2E test for US2 acceptance scenarios (route creation, diagram config, drag-reorder) in app/tests/e2e/diagram-workflow.spec.ts
+- [x] T054a [P] [US2-TEST] Write failing unit tests for Route model validation (start/end constraints, depot position rules) in app/tests/unit/models/Route.test.ts
+- [x] T054b [P] [US2-TEST] Write failing unit tests for ConsistTemplate model in app/tests/unit/models/ConsistTemplate.test.ts
+- [x] T054c [US2-TEST] Write failing unit tests for RouteService with stop ordering validation in app/tests/unit/services/diagram/RouteService.test.ts
+- [x] T054d [US2-TEST] Write failing unit tests for route validator (start/end must be station/depot, intermediate must be stations only) in app/tests/unit/services/validation/RouteValidator.test.ts
+- [x] T054e [US2-TEST] Write failing unit tests for diagram validator (loop detection, completeness) in app/tests/unit/services/validation/DiagramValidator.test.ts
+- [x] T054f [US2-TEST] Write failing E2E test for US2 acceptance scenarios (route creation, diagram config, drag-reorder) in app/tests/e2e/diagram-workflow.spec.ts
 
 **Checkpoint**: All US2 tests written and failing - ready to implement
 
@@ -154,17 +154,17 @@ Per plan.md structure:
 - [ ] T062 [US2] Implement diagram settings screen with horizontal time axis in app/src/ui/diagram/DiagramSettings.tsx
 - [ ] T063 [US2] Implement vertical station list with drag-and-drop reordering in app/src/ui/diagram/StationOrderEditor.tsx
 - [ ] T063a [US2] Implement real-time diagram preview updates during station drag-and-drop reordering in app/src/ui/diagram/LivePreviewPanel.tsx
-- [ ] T064 [P] [US2] Create VehicleTypeService with speed category management in app/src/services/diagram/VehicleTypeService.ts
+- [x] T064 [P] [US2] Create VehicleTypeService with speed category management in app/src/services/diagram/VehicleTypeService.ts
 - [ ] T065 [US2] Implement consist configuration UI with car counts and speed profiles in app/src/ui/diagram/ConsistEditor.tsx
 - [ ] T066 [US2] Implement depot inventory assignment interface in app/src/ui/diagram/DepotInventoryPanel.tsx
-- [ ] T067 [P] [US2] Add persistence layer for routes using Dexie in app/src/services/storage/RouteRepository.ts
-- [ ] T068 [P] [US2] Add persistence layer for vehicle types using Dexie in app/src/services/storage/VehicleTypeRepository.ts
+- [x] T067 [P] [US2] Add persistence layer for routes using Dexie in app/src/services/storage/RouteRepository.ts
+- [x] T068 [P] [US2] Add persistence layer for vehicle types using Dexie in app/src/services/storage/VehicleTypeRepository.ts
 - [ ] T069 [US2] Implement diagram preview summary showing consist lengths and speed categories in app/src/ui/diagram/PreviewSummary.tsx
 - [ ] T070 [US2] Add route navigation between placement and diagram modes in app/src/app/routes/routeNavigation.ts
-- [ ] T071 [US2] Implement diagram settings persistence and retrieval in app/src/services/storage/DiagramRepository.ts
-- [ ] T072 [US2] Add validation for route completeness and loop detection (warning + execution prevention on error) before preview in app/src/services/validation/DiagramValidator.ts
+- [x] T071 [US2] Implement diagram settings persistence and retrieval in app/src/services/storage/DiagramRepository.ts
+- [x] T072 [US2] Add validation for route completeness and loop detection (warning + execution prevention on error) before preview in app/src/services/validation/DiagramValidator.ts
 - [ ] T072a [US2] Implement loop detection warning UI dialog with guidance to insert intermediate landmark in app/src/ui/diagram/LoopWarningDialog.tsx
-- [ ] T073 [P] [US2] Implement localized time formatting for diagram axis in app/src/i18n/timeFormatters.ts
+- [x] T073 [P] [US2] Implement localized time formatting for diagram axis in app/src/i18n/timeFormatters.ts
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - users can build infrastructure (US1) and configure routes with diagrams (US2) as separate workflows.
 
