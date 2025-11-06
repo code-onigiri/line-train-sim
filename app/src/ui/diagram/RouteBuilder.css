@@ -1,0 +1,187 @@
+.route-builder {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.route-builder-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.validation-warning {
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem;
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 3px;
+  font-size: 0.875rem;
+  color: #856404;
+}
+
+.route-builder-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.entity-selector {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.entity-selector label {
+  font-weight: 500;
+}
+
+.entity-selector select {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 0.875rem;
+}
+
+.add-stop-button {
+  padding: 0.375rem 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.add-stop-button:hover {
+  background: #0056b3;
+}
+
+.route-stops-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 100px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.route-stop {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.route-stop.start {
+  border-left: 3px solid #28a745;
+}
+
+.route-stop.end {
+  border-left: 3px solid #dc3545;
+}
+
+.route-stop.intermediate {
+  border-left: 3px solid #6c757d;
+}
+
+.stop-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: #6c757d;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.stop-type-icon {
+  font-size: 1.25rem;
+}
+
+.stop-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.stop-position-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.stop-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.move-button,
+.remove-button {
+  padding: 0.25rem 0.5rem;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.move-button:hover:not(:disabled),
+.remove-button:hover {
+  background: #5a6268;
+}
+
+.move-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.remove-button {
+  background: #dc3545;
+}
+
+.remove-button:hover {
+  background: #c82333;
+}
+
+.route-validation-status {
+  padding: 0.75rem;
+  border-radius: 3px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.validation-success {
+  display: inline-block;
+  color: #155724;
+  background: #d4edda;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+}
+
+.validation-error {
+  color: #721c24;
+  background: #f8d7da;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+}

@@ -149,7 +149,7 @@ Per plan.md structure:
 - [x] T057 [P] [US2] Create VehicleType model with speed categories in app/src/models/VehicleType.ts
 - [x] T058 [P] [US2] Create ConsistTemplate model in app/src/models/ConsistTemplate.ts
 - [x] T059 [US2] Implement RouteService with stop ordering and validation in app/src/services/diagram/RouteService.ts
-- [ ] T060 [US2] Implement route definition UI with station/depot selection in app/src/ui/diagram/RouteBuilder.tsx
+- [x] T060 [US2] Implement route definition UI with station/depot selection in app/src/ui/diagram/RouteBuilder.tsx
 - [x] T061 [US2] Implement validation for start/end must be station or depot in app/src/services/validation/RouteValidator.ts
 - [ ] T062 [US2] Implement diagram settings screen with horizontal time axis in app/src/ui/diagram/DiagramSettings.tsx
 - [ ] T063 [US2] Implement vertical station list with drag-and-drop reordering in app/src/ui/diagram/StationOrderEditor.tsx
