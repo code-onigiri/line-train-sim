@@ -142,13 +142,13 @@ Per plan.md structure:
 
 ### Implementation for User Story 2
 
-- [ ] T054g Immediately update all references from "Consist" to "ConsistTemplate" in models and services (moved from Phase 7 T132)
+- [x] T054g Immediately update all references from "Consist" to "ConsistTemplate" in models and services (moved from Phase 7 T132)
 
-- [ ] T055 [P] [US2] Create Route model with validation in app/src/models/Route.ts
-- [ ] T056 [P] [US2] Create RouteStop and DiagramConfig models in app/src/models/RouteComponents.ts
-- [ ] T057 [P] [US2] Create VehicleType model with speed categories in app/src/models/VehicleType.ts
-- [ ] T058 [P] [US2] Create ConsistTemplate model in app/src/models/ConsistTemplate.ts
-- [ ] T059 [US2] Implement RouteService with stop ordering and validation in app/src/services/diagram/RouteService.ts
+- [x] T055 [P] [US2] Create Route model with validation in app/src/models/Route.ts
+- [x] T056 [P] [US2] Create RouteStop and DiagramConfig models in app/src/models/RouteComponents.ts
+- [x] T057 [P] [US2] Create VehicleType model with speed categories in app/src/models/VehicleType.ts
+- [x] T058 [P] [US2] Create ConsistTemplate model in app/src/models/ConsistTemplate.ts
+- [x] T059 [US2] Implement RouteService with stop ordering and validation in app/src/services/diagram/RouteService.ts
 - [ ] T060 [US2] Implement route definition UI with station/depot selection in app/src/ui/diagram/RouteBuilder.tsx
 - [ ] T061 [US2] Implement validation for start/end must be station or depot in app/src/services/validation/RouteValidator.ts
 - [ ] T062 [US2] Implement diagram settings screen with horizontal time axis in app/src/ui/diagram/DiagramSettings.tsx
