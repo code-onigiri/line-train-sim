@@ -52,8 +52,12 @@ export class PreviewService {
    * @param seed - Random seed for deterministic generation
    * @param options - Preview generation options
    */
-  generatePreview(route: RouteModel, seed?: number, options: PreviewOptions = {}): PreviewResponse {
-    const actualSeed = seed ?? Math.random();
+  generatePreview(
+    _route: RouteModel,
+    seed?: number,
+    _options: PreviewOptions = {},
+  ): PreviewResponse {
+    const _actualSeed = seed ?? Math.random();
     const conflicts: Conflict[] = [];
     const scheduledTrains: ScheduledTrain[] = [];
 
@@ -71,7 +75,7 @@ export class PreviewService {
    * Validate capacity constraints for scheduled trains.
    * Checks if stopping tracks have sufficient capacity to avoid overlaps.
    */
-  validateCapacity(scheduledTrains: ScheduledTrain[]): Conflict[] {
+  validateCapacity(_scheduledTrains: ScheduledTrain[]): Conflict[] {
     const conflicts: Conflict[] = [];
 
     // TODO: Implement capacity validation per FR-011
@@ -83,7 +87,7 @@ export class PreviewService {
   /**
    * Detect overlapping dwell periods on the same track.
    */
-  detectDwellConflicts(scheduledTrains: ScheduledTrain[]): Conflict[] {
+  detectDwellConflicts(_scheduledTrains: ScheduledTrain[]): Conflict[] {
     const conflicts: Conflict[] = [];
 
     // TODO: Implement dwell conflict detection per FR-011

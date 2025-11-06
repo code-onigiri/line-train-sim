@@ -9,7 +9,7 @@ export class ScheduledTrainModel {
     this.data = ScheduledTrainSchema.parse({
       id: data.id || uuidv4(),
       routeId: data.routeId ?? '',
-      consistId: data.consistId ?? '',
+      consistTemplateId: data.consistTemplateId ?? '',
       departureTime: data.departureTime ?? 0,
       dwellAssignments: data.dwellAssignments ?? [],
       seed: data.seed ?? Math.floor(Math.random() * 1000000),
@@ -26,8 +26,8 @@ export class ScheduledTrainModel {
     return this.data.routeId;
   }
 
-  get consistId(): string {
-    return this.data.consistId;
+  get consistTemplateId(): string {
+    return this.data.consistTemplateId;
   }
 
   get departureTime(): number {

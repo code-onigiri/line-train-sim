@@ -1,12 +1,11 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { RouteService } from '../../../../src/services/diagram/RouteService';
 
 describe('RouteService', () => {
   let service: RouteService;
   let stationId1: string;
   let stationId2: string;
-  let stationId3: string;
   let depotId1: string;
   let consistId1: string;
 
@@ -14,7 +13,6 @@ describe('RouteService', () => {
     service = new RouteService();
     stationId1 = uuidv4();
     stationId2 = uuidv4();
-    stationId3 = uuidv4();
     depotId1 = uuidv4();
     consistId1 = uuidv4();
   });
@@ -69,7 +67,7 @@ describe('RouteService', () => {
 
       const validation = service.validateRoute(route);
       expect(validation.valid).toBe(false);
-      expect(validation.errors.some(e => e.includes('Intermediate'))).toBe(true);
+      expect(validation.errors.some((e) => e.includes('Intermediate'))).toBe(true);
     });
   });
 

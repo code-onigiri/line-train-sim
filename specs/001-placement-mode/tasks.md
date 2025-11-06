@@ -104,20 +104,20 @@ Per plan.md structure:
 - [x] T038 [P] [US1] Create PixiJS renderer for depot areas and lanes in app/src/canvas/renderer/DepotRenderer.ts
 - [x] T039 [P] [US1] Implement placement mode UI toolbar with drawing tools in app/src/ui/placement/PlacementToolbar.tsx
 - [x] T040 [US1] Implement landmark placement interaction handler in app/src/canvas/interactions/LandmarkPlacementHandler.ts
-- [ ] T041 [US1] Implement track drawing interaction handler with straight line snapping in app/src/canvas/interactions/TrackDrawingHandler.ts
-- [ ] T042 [US1] Implement station area selection and platform configuration UI in app/src/ui/placement/StationEditor.tsx
-- [ ] T043 [US1] Implement depot area selection and lane configuration UI in app/src/ui/placement/DepotEditor.tsx
-- [ ] T044 [US1] Implement intersection detection algorithm with 4m vertical clearance threshold (measured from track rail top surface) for track segments in app/src/services/geometry/IntersectionDetector.ts
-- [ ] T045 [US1] Implement automatic landmark creation at intersections (only when vertical separation <4m from track rail top surface) in app/src/services/placement/IntersectionHandler.ts
-- [ ] T046 [P] [US1] Add persistence layer for landmarks using Dexie in app/src/services/storage/LandmarkRepository.ts
-- [ ] T047 [P] [US1] Add persistence layer for track segments using Dexie in app/src/services/storage/TrackRepository.ts
-- [ ] T048 [P] [US1] Add persistence layer for stations using Dexie in app/src/services/storage/StationRepository.ts
-- [ ] T049 [P] [US1] Add persistence layer for depots using Dexie in app/src/services/storage/DepotRepository.ts
-- [ ] T050 [US1] Implement canvas pan and zoom controls (WASD, arrow keys, pinch-zoom) in app/src/canvas/interactions/ViewportController.ts
-- [ ] T051 [US1] Implement selection and editing of existing infrastructure in app/src/canvas/interactions/SelectionHandler.ts
-- [ ] T052 [P] [US1] Add keyboard shortcuts for placement tools (Space toggle, Shift multi-select) in app/src/ui/placement/KeyboardShortcuts.tsx
-- [ ] T053 [US1] Implement save/load functionality for complete map state in app/src/services/storage/MapPersistence.ts
-- [ ] T054 [US1] Add validation messages and error feedback for placement operations in app/src/ui/common/ValidationFeedback.tsx
+- [x] T041 [US1] Implement track drawing interaction handler with straight line snapping in app/src/canvas/interactions/TrackDrawingHandler.ts
+- [x] T042 [US1] Implement station area selection and platform configuration UI in app/src/ui/placement/StationEditor.tsx
+- [x] T043 [US1] Implement depot area selection and lane configuration UI in app/src/ui/placement/DepotEditor.tsx
+- [x] T044 [US1] Implement intersection detection algorithm with 4m vertical clearance threshold (measured from track rail top surface) for track segments in app/src/services/geometry/IntersectionDetector.ts
+- [x] T045 [US1] Implement automatic landmark creation at intersections (only when vertical separation <4m from track rail top surface) in app/src/services/placement/IntersectionHandler.ts
+- [x] T046 [P] [US1] Add persistence layer for landmarks using Dexie in app/src/services/storage/LandmarkRepository.ts
+- [x] T047 [P] [US1] Add persistence layer for track segments using Dexie in app/src/services/storage/TrackRepository.ts
+- [x] T048 [P] [US1] Add persistence layer for stations using Dexie in app/src/services/storage/StationRepository.ts
+- [x] T049 [P] [US1] Add persistence layer for depots using Dexie in app/src/services/storage/DepotRepository.ts
+- [x] T050 [US1] Implement canvas pan and zoom controls (WASD, arrow keys, pinch-zoom) in app/src/canvas/interactions/ViewportController.ts
+- [x] T051 [US1] Implement selection and editing of existing infrastructure in app/src/canvas/interactions/SelectionHandler.ts
+- [x] T052 [P] [US1] Add keyboard shortcuts for placement tools (Space toggle, Shift multi-select) in app/src/ui/placement/KeyboardShortcuts.tsx
+- [x] T053 [US1] Implement save/load functionality for complete map state in app/src/services/storage/MapPersistence.ts
+- [x] T054 [US1] Add validation messages and error feedback for placement operations in app/src/ui/common/ValidationFeedback.tsx
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently - users can create, edit, save, and reload complete infrastructure layouts.
 
@@ -142,15 +142,15 @@ Per plan.md structure:
 
 ### Implementation for User Story 2
 
-- [ ] T054g Immediately update all references from "Consist" to "ConsistTemplate" in models and services (moved from Phase 7 T132)
+- [x] T054g Immediately update all references from "Consist" to "ConsistTemplate" in models and services (moved from Phase 7 T132)
 
-- [ ] T055 [P] [US2] Create Route model with validation in app/src/models/Route.ts
-- [ ] T056 [P] [US2] Create RouteStop and DiagramConfig models in app/src/models/RouteComponents.ts
-- [ ] T057 [P] [US2] Create VehicleType model with speed categories in app/src/models/VehicleType.ts
-- [ ] T058 [P] [US2] Create ConsistTemplate model in app/src/models/ConsistTemplate.ts
-- [ ] T059 [US2] Implement RouteService with stop ordering and validation in app/src/services/diagram/RouteService.ts
+- [x] T055 [P] [US2] Create Route model with validation in app/src/models/Route.ts
+- [x] T056 [P] [US2] Create RouteStop and DiagramConfig models in app/src/models/RouteComponents.ts
+- [x] T057 [P] [US2] Create VehicleType model with speed categories in app/src/models/VehicleType.ts
+- [x] T058 [P] [US2] Create ConsistTemplate model in app/src/models/ConsistTemplate.ts
+- [x] T059 [US2] Implement RouteService with stop ordering and validation in app/src/services/diagram/RouteService.ts
 - [ ] T060 [US2] Implement route definition UI with station/depot selection in app/src/ui/diagram/RouteBuilder.tsx
-- [ ] T061 [US2] Implement validation for start/end must be station or depot in app/src/services/validation/RouteValidator.ts
+- [x] T061 [US2] Implement validation for start/end must be station or depot in app/src/services/validation/RouteValidator.ts
 - [ ] T062 [US2] Implement diagram settings screen with horizontal time axis in app/src/ui/diagram/DiagramSettings.tsx
 - [ ] T063 [US2] Implement vertical station list with drag-and-drop reordering in app/src/ui/diagram/StationOrderEditor.tsx
 - [ ] T063a [US2] Implement real-time diagram preview updates during station drag-and-drop reordering in app/src/ui/diagram/LivePreviewPanel.tsx
