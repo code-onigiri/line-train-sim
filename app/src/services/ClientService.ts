@@ -1,26 +1,26 @@
-import { LandmarkService } from './placement/LandmarkService';
-import { TrackSegmentService } from './placement/TrackSegmentService';
-import { StationService } from './placement/StationService';
-import { DepotService } from './placement/DepotService';
+import { type AddonRegistration, AddonService } from './addons/AddonService';
 import { RouteService } from './diagram/RouteService';
 import {
-  PreviewService,
+  type ExecutionAck,
+  type ExecutionRequest,
+  ExecutionService,
+} from './execution/ExecutionService';
+import {
   type PreviewOptions,
   type PreviewResponse,
+  PreviewService,
 } from './execution/PreviewService';
-import {
-  ExecutionService,
-  type ExecutionRequest,
-  type ExecutionAck,
-} from './execution/ExecutionService';
-import { AddonService, type AddonRegistration } from './addons/AddonService';
+import { DepotService } from './placement/DepotService';
+import { LandmarkService } from './placement/LandmarkService';
+import { StationService } from './placement/StationService';
+import { TrackSegmentService } from './placement/TrackSegmentService';
 
-import type { LandmarkModel } from '../models/Landmark';
-import type { TrackSegmentModel } from '../models/TrackSegment';
-import type { StationModel } from '../models/Station';
-import type { DepotModel } from '../models/Depot';
-import type { RouteModel } from '../models/Route';
 import type { AddonModel } from '../models/Addon';
+import type { DepotModel } from '../models/Depot';
+import type { LandmarkModel } from '../models/Landmark';
+import type { RouteModel } from '../models/Route';
+import type { StationModel } from '../models/Station';
+import type { TrackSegmentModel } from '../models/TrackSegment';
 
 /**
  * Unified client service implementing the OpenAPI contract.
@@ -147,9 +147,12 @@ export class ClientService {
 
     // Set diagram order if provided
     if (input.diagramOrderIndex !== undefined) {
-      station = this.stationService.update(station.id, {
+      const updated = this.stationService.update(station.id, {
         diagramOrderIndex: input.diagramOrderIndex,
-      })!;
+      });
+      if (updated) {
+        station = updated;
+      }
     }
 
     return station;
@@ -231,7 +234,7 @@ export class ClientService {
     inventory?: Array<{ vehicleTypeId: string; quantity: number }>;
   }): DepotModel | undefined {
     const { id, inventory, stoppingLanes, serviceTracks, ...basicUpdates } = input;
-    
+
     // First update basic properties
     let depot = this.depotService.update(id, basicUpdates);
     if (!depot) {
