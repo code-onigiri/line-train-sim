@@ -151,11 +151,11 @@ Per plan.md structure:
 - [x] T059 [US2] Implement RouteService with stop ordering and validation in app/src/services/diagram/RouteService.ts
 - [x] T060 [US2] Implement route definition UI with station/depot selection in app/src/ui/diagram/RouteBuilder.tsx
 - [x] T061 [US2] Implement validation for start/end must be station or depot in app/src/services/validation/RouteValidator.ts
-- [ ] T062 [US2] Implement diagram settings screen with horizontal time axis in app/src/ui/diagram/DiagramSettings.tsx
-- [ ] T063 [US2] Implement vertical station list with drag-and-drop reordering in app/src/ui/diagram/StationOrderEditor.tsx
-- [ ] T063a [US2] Implement real-time diagram preview updates during station drag-and-drop reordering in app/src/ui/diagram/LivePreviewPanel.tsx
+- [x] T062 [US2] Implement diagram settings screen with horizontal time axis in app/src/ui/diagram/DiagramSettings.tsx
+- [x] T063 [US2] Implement vertical station list with drag-and-drop reordering in app/src/ui/diagram/StationOrderEditor.tsx
+- [x] T063a [US2] Implement real-time diagram preview updates during station drag-and-drop reordering in app/src/ui/diagram/LivePreviewPanel.tsx
 - [x] T064 [P] [US2] Create VehicleTypeService with speed category management in app/src/services/diagram/VehicleTypeService.ts
-- [ ] T065 [US2] Implement consist configuration UI with car counts and speed profiles in app/src/ui/diagram/ConsistEditor.tsx
+- [x] T065 [US2] Implement consist configuration UI with car counts and speed profiles in app/src/ui/diagram/ConsistEditor.tsx
 - [ ] T066 [US2] Implement depot inventory assignment interface in app/src/ui/diagram/DepotInventoryPanel.tsx
 - [x] T067 [P] [US2] Add persistence layer for routes using Dexie in app/src/services/storage/RouteRepository.ts
 - [x] T068 [P] [US2] Add persistence layer for vehicle types using Dexie in app/src/services/storage/VehicleTypeRepository.ts
