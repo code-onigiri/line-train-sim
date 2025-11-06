@@ -98,6 +98,12 @@ export class TrainMovement {
       return Math.min(maxSpeedMs, currentSpeed + profile.acceleration * deltaTime);
     }
 
+    // Protect against division by zero
+    if (profile.deceleration === 0) {
+      // No deceleration possible, just maintain or accelerate to max speed
+      return Math.min(maxSpeedMs, currentSpeed + profile.acceleration * deltaTime);
+    }
+
     // Calculate stopping distance needed at current speed
     const stoppingDistance = (currentSpeed * currentSpeed) / (2 * profile.deceleration);
 

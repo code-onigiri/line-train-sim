@@ -68,7 +68,10 @@ export class CapacityValidator {
     }
 
     // Group assignments by lane
-    const assignmentsByLane = new Map<string, typeof assignments>();
+    const assignmentsByLane = new Map<
+      string,
+      Array<{ laneId: string; trainId: string; trainLength?: number }>
+    >();
     for (const assignment of assignments) {
       const laneAssignments = assignmentsByLane.get(assignment.laneId) || [];
       laneAssignments.push(assignment);

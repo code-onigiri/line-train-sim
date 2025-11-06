@@ -28,23 +28,22 @@ export class ConflictDetector {
       // Sort by arrival time for easier comparison
       const sorted = [...trackDwells].sort((a, b) => a.arrivalTime - b.arrivalTime);
 
-      // Check consecutive pairs for overlaps
+      // Check consecutive pairs for overlaps (O(n) optimization)
+      // Since sorted by arrival time, only need to check if next train arrives before current departs
       for (let i = 0; i < sorted.length - 1; i++) {
-        for (let j = i + 1; j < sorted.length; j++) {
-          const dwell1 = sorted[i];
-          const dwell2 = sorted[j];
+        const current = sorted[i];
+        const next = sorted[i + 1];
 
-          // Check if time periods overlap
-          // Overlap occurs if: dwell2 arrives before dwell1 departs
-          if (dwell2.arrivalTime < dwell1.departureTime) {
-            conflicts.push({
-              type: 'DWELL_OVERLAP',
-              locationId: trackId,
-              message: `Trains overlap on track ${trackId}: Train arrives at ${dwell2.arrivalTime}s before previous train departs at ${dwell1.departureTime}s`,
-              trainIds: [dwell1.trainId, dwell2.trainId],
-              severity: 'ERROR',
-            });
-          }
+        // Check if time periods overlap
+        // Overlap occurs if: next train arrives before current train departs
+        if (next.arrivalTime < current.departureTime) {
+          conflicts.push({
+            type: 'DWELL_OVERLAP',
+            locationId: trackId,
+            message: `Trains overlap on track ${trackId}: Train arrives at ${next.arrivalTime}s before previous train departs at ${current.departureTime}s`,
+            trainIds: [current.trainId, next.trainId],
+            severity: 'ERROR',
+          });
         }
       }
     }
