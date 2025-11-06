@@ -190,20 +190,20 @@ Per plan.md structure:
 
 ### Implementation for User Story 3
 
-- [ ] T074 [P] [US3] Create ScheduledTrain model with dwell assignments in app/src/models/ScheduledTrain.ts
-- [ ] T075 [P] [US3] Create DwellAssignment and Conflict models in app/src/models/ExecutionComponents.ts
-- [ ] T076 [US3] Implement PreviewService to generate timetable from route in app/src/services/execution/PreviewService.ts
-- [ ] T077 [US3] Implement conflict detection algorithm for overlapping dwells in app/src/services/validation/ConflictDetector.ts
-- [ ] T078 [US3] Implement validation that checks stopping track capacity in app/src/services/validation/CapacityValidator.ts
+- [x] T074 [P] [US3] Create ScheduledTrain model with dwell assignments in app/src/models/ScheduledTrain.ts
+- [x] T075 [P] [US3] Create DwellAssignment and Conflict models in app/src/models/ExecutionComponents.ts
+- [x] T076 [US3] Implement PreviewService to generate timetable from route in app/src/services/execution/PreviewService.ts
+- [x] T077 [US3] Implement conflict detection algorithm for overlapping dwells in app/src/services/validation/ConflictDetector.ts
+- [x] T078 [US3] Implement validation that checks stopping track capacity in app/src/services/validation/CapacityValidator.ts
 - [ ] T079 [US3] Implement preview generation UI showing scheduled trains in app/src/ui/execution/PreviewPanel.tsx
 - [ ] T080 [US3] Implement conflict display and resolution guidance in app/src/ui/execution/ConflictResolutionPanel.tsx
 - [ ] T081 [US3] Implement ExecutionService with time-scaled simulation loop in app/src/services/execution/ExecutionService.ts
-- [ ] T082 [US3] Implement train movement calculations respecting speed profiles in app/src/services/simulation/TrainMovement.ts
-- [ ] T083 [US3] Implement deterministic execution with seeded state management in app/src/services/execution/DeterministicEngine.ts
+- [x] T082 [US3] Implement train movement calculations respecting speed profiles in app/src/services/simulation/TrainMovement.ts
+- [x] T083 [US3] Implement deterministic execution with seeded state management in app/src/services/execution/DeterministicEngine.ts
 - [ ] T084 [US3] Implement execution mode UI with time scaling controls (0.1x to 5x) in app/src/ui/execution/ExecutionControls.tsx
 - [ ] T085 [P] [US3] Create PixiJS renderer for train rectangles on straight segments in app/src/canvas/renderer/TrainRenderer.ts
 - [ ] T086 [US3] Implement trapezoid rendering for trains turning at corners (chain transformations for consecutive corners without snapping back to rectangles) in app/src/canvas/renderer/TurnRenderer.ts
-- [ ] T087 [US3] Implement corner normal calculation for trapezoid alignment in app/src/services/geometry/CornerNormals.ts
+- [x] T087 [US3] Implement corner normal calculation for trapezoid alignment in app/src/services/geometry/CornerNormals.ts
 - [ ] T088 [US3] Implement train position interpolation along track segments in app/src/services/simulation/PositionInterpolator.ts
 - [ ] T089 [US3] Implement execution preview validation before playback start in app/src/services/validation/ExecutionValidator.ts
 - [ ] T090 [US3] Add execution state persistence for replay capability in app/src/services/storage/ExecutionRepository.ts
