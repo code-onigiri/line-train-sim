@@ -216,42 +216,6 @@ class PlacementScene {
     }
   };
 
-  private handlePointerMove = (event: InteractionEvent): void => {
-    // Always handle viewport panning
-    this.viewportController.handlePointerMove(event);
-
-    if (this.activeTool !== 'track' || !this.pendingTrackStart) {
-      return;
-    }
-
-    // Track preview rendering will be added in a future iteration.
-    void event;
-  };
-
-  private handlePointerUp = (event: InteractionEvent): void => {
-    this.viewportController.handlePointerUp(event);
-  };
-
-  private handleWheel = (event: InteractionEvent): void => {
-    this.viewportController.handleWheel(event);
-  };
-
-  private handleKeyDown = (event: InteractionEvent): void => {
-    if (event.key !== 'Delete' && event.key !== 'Backspace') {
-      return;
-    }
-
-    if (this.selectionHandler.getSelection().length === 0) {
-      return;
-    }
-
-    this.selectionHandler.deleteSelected();
-    this.callbacks.onSelectionChange([]);
-    this.renderAll();
-    this.emitMetrics();
-    this.callbacks.onNotify?.('Selected entities deleted.');
-  };
-
   private createLandmark(event: InteractionEvent): void {
     const landmark = this.landmarkService.create(event.point.x, event.point.y);
     this.landmarkRenderer.render(landmark, true);
@@ -301,6 +265,42 @@ class PlacementScene {
     this.callbacks.onNotify?.('Track created successfully.');
     this.pendingTrackStart = null;
   }
+
+  private handlePointerMove = (event: InteractionEvent): void => {
+    // Always handle viewport panning
+    this.viewportController.handlePointerMove(event);
+
+    if (this.activeTool !== 'track' || !this.pendingTrackStart) {
+      return;
+    }
+
+    // Track preview rendering will be added in a future iteration.
+    void event;
+  };
+
+  private handlePointerUp = (event: InteractionEvent): void => {
+    this.viewportController.handlePointerUp(event);
+  };
+
+  private handleWheel = (event: InteractionEvent): void => {
+    this.viewportController.handleWheel(event);
+  };
+
+  private handleKeyDown = (event: InteractionEvent): void => {
+    if (event.key !== 'Delete' && event.key !== 'Backspace') {
+      return;
+    }
+
+    if (this.selectionHandler.getSelection().length === 0) {
+      return;
+    }
+
+    this.selectionHandler.deleteSelected();
+    this.callbacks.onSelectionChange([]);
+    this.renderAll();
+    this.emitMetrics();
+    this.callbacks.onNotify?.('Selected entities deleted.');
+  };
 
   private renderAll(): void {
     this.landmarkRenderer.renderAll(this.landmarkService.getAll());
