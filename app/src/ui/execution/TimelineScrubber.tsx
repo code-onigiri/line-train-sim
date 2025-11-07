@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Timeline event marker
@@ -44,15 +44,18 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
     handleSeek(e.nativeEvent);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      handleSeek(e);
-    }
-  };
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (isDragging) {
+        handleSeek(e);
+      }
+    },
+    [isDragging],
+  );
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (isDragging) {
@@ -63,7 +66,7 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging]);
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   const handleSeek = (e: MouseEvent) => {
     if (!scrubberRef.current || !onSeek) return;
@@ -171,8 +174,9 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
         <div style={styles.timeMarkers}>
           {Array.from({ length: 11 }).map((_, idx) => {
             const time = (idx / 10) * totalDuration;
+            const markerId = `marker-${time.toFixed(2)}`;
             return (
-              <div key={`time-marker-${idx}`} style={styles.timeMarker}>
+              <div key={markerId} style={styles.timeMarker}>
                 <div style={styles.tick} />
                 <span style={styles.timeLabel}>{formatTime(time)}</span>
               </div>
