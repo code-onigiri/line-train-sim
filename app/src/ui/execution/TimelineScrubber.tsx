@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Timeline event marker
@@ -39,20 +39,38 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
   const [hoveredEvent, setHoveredEvent] = useState<TimelineEvent | null>(null);
   const scrubberRef = useRef<HTMLDivElement>(null);
 
+  const handleSeek = useCallback(
+    (e: MouseEvent | React.MouseEvent) => {
+      if (!scrubberRef.current || !onSeek) return;
+
+      const rect = scrubberRef.current.getBoundingClientRect();
+      const nativeEvent = 'nativeEvent' in e ? e.nativeEvent : e;
+      const x = nativeEvent.clientX - rect.left;
+      const percentage = Math.max(0, Math.min(1, x / rect.width));
+      const newTime = percentage * totalDuration;
+
+      onSeek(newTime);
+    },
+    [onSeek, totalDuration],
+  );
+
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
-    handleSeek(e.nativeEvent);
+    handleSeek(e);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      handleSeek(e);
-    }
-  };
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (isDragging) {
+        handleSeek(e);
+      }
+    },
+    [isDragging, handleSeek],
+  );
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (isDragging) {
@@ -63,18 +81,7 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging]);
-
-  const handleSeek = (e: MouseEvent) => {
-    if (!scrubberRef.current || !onSeek) return;
-
-    const rect = scrubberRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, x / rect.width));
-    const newTime = percentage * totalDuration;
-
-    onSeek(newTime);
-  };
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   const formatTime = (seconds: number): string => {
     const hours = Math.floor(seconds / 3600);
@@ -171,8 +178,9 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
         <div style={styles.timeMarkers}>
           {Array.from({ length: 11 }).map((_, idx) => {
             const time = (idx / 10) * totalDuration;
+            const markerId = `marker-${idx}-${time.toFixed(2)}`;
             return (
-              <div key={`time-marker-${idx}`} style={styles.timeMarker}>
+              <div key={markerId} style={styles.timeMarker}>
                 <div style={styles.tick} />
                 <span style={styles.timeLabel}>{formatTime(time)}</span>
               </div>

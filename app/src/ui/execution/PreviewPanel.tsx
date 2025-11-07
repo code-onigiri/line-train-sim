@@ -7,10 +7,11 @@ import type { ScheduledTrainModel } from '../../models/ScheduledTrain';
  * Props for PreviewPanel component
  */
 export interface PreviewPanelProps {
-  route: RouteModel;
+  route?: RouteModel;
   scheduledTrains: ScheduledTrainModel[];
   onStartExecution?: () => void;
   onCancelPreview?: () => void;
+  onTrainSelect?: (trainId: string) => void;
 }
 
 /**
@@ -22,11 +23,16 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   scheduledTrains,
   onStartExecution,
   onCancelPreview,
+  onTrainSelect,
 }) => {
   const [selectedTrain, setSelectedTrain] = useState<string | null>(null);
 
   const handleTrainClick = (trainId: string) => {
-    setSelectedTrain(trainId === selectedTrain ? null : trainId);
+    const newSelection = trainId === selectedTrain ? null : trainId;
+    setSelectedTrain(newSelection);
+    if (onTrainSelect && newSelection) {
+      onTrainSelect(newSelection);
+    }
   };
 
   const selectedTrainData = scheduledTrains.find((t) => t.id === selectedTrain);
@@ -36,7 +42,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
       <div style={styles.header}>
         <h2>Execution Preview</h2>
         <div style={styles.routeInfo}>
-          <span>Route: {route.name || route.id}</span>
+          <span>Route: {route?.name || route?.id || 'No route selected'}</span>
           <span>Trains: {scheduledTrains.length}</span>
         </div>
       </div>
@@ -45,20 +51,14 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
         <h3>Scheduled Trains</h3>
         <div style={styles.trainGrid}>
           {scheduledTrains.map((train) => (
-            <div
+            <button
               key={train.id}
+              type="button"
               style={{
                 ...styles.trainCard,
                 ...(selectedTrain === train.id ? styles.trainCardSelected : {}),
               }}
               onClick={() => handleTrainClick(train.id)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleTrainClick(train.id);
-                }
-              }}
-              role="button"
-              tabIndex={0}
             >
               <div style={styles.trainHeader}>
                 <span style={styles.trainId}>Train {train.id.slice(0, 8)}</span>
@@ -67,7 +67,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
               <div style={styles.trainDetails}>
                 <span>Stops: {train.dwellAssignments?.length || 0}</span>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>

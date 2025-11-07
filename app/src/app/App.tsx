@@ -2,7 +2,18 @@ import { useMemo, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import type { SelectedEntity } from '../canvas/interactions/SelectionHandler';
 import enUSMessages from '../i18n/locales/en-US.json';
+import type { DiagramConfig } from '../models/RouteComponents';
+import { DEFAULT_DIAGRAM_CONFIG } from '../models/RouteComponents';
+import { RouteService } from '../services/diagram/RouteService';
+import { DepotService } from '../services/placement/DepotService';
+import { LandmarkService } from '../services/placement/LandmarkService';
+import { StationService } from '../services/placement/StationService';
 import { getPreferences } from '../services/storage/preferences';
+import { DiagramSettings } from '../ui/diagram/DiagramSettings';
+import { RouteBuilder, type RouteStop } from '../ui/diagram/RouteBuilder';
+import { StationOrderEditor } from '../ui/diagram/StationOrderEditor';
+import { ExecutionControls } from '../ui/execution/ExecutionControls';
+import { PreviewPanel } from '../ui/execution/PreviewPanel';
 import { PlacementCanvas } from '../ui/placement/PlacementCanvas';
 import { type PlacementTool, PlacementToolbar } from '../ui/placement/PlacementToolbar';
 
@@ -133,19 +144,128 @@ function PlacementView() {
 }
 
 function DiagramView() {
+  const [routeStops, setRouteStops] = useState<RouteStop[]>([]);
+  const [diagramConfig, setDiagramConfig] = useState<DiagramConfig>(DEFAULT_DIAGRAM_CONFIG);
+  const [_stationOrder, setStationOrder] = useState<string[]>([]);
+
+  // Initialize services
+  const stationService = useMemo(() => new StationService(), []);
+  const depotService = useMemo(() => new DepotService(), []);
+
+  // Get available stations and depots
+  const availableStations = useMemo(
+    () => stationService.getAll().map((s) => ({ id: s.id, name: s.name })),
+    [stationService],
+  );
+
+  const availableDepots = useMemo(
+    () => depotService.getAll().map((d) => ({ id: d.id, name: d.name })),
+    [depotService],
+  );
+
   return (
-    <div style={{ width: '100%', height: '100%', padding: '2rem' }}>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '1rem',
+        gap: '1rem',
+      }}
+    >
       <h2>Diagram Configuration</h2>
-      <p>Diagram configuration interface will be implemented in Phase 4</p>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', flex: 1 }}>
+        <div style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '4px' }}>
+          <h3>Route Builder</h3>
+          <RouteBuilder
+            availableStations={availableStations}
+            availableDepots={availableDepots}
+            onRouteChange={setRouteStops}
+            initialStops={routeStops}
+          />
+        </div>
+        <div style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '4px' }}>
+          <h3>Station Order</h3>
+          <StationOrderEditor
+            stations={routeStops
+              .filter((s) => s.entityType === 'station')
+              .map((s) => ({
+                id: s.entityId,
+                name: s.name,
+                order: 0,
+              }))}
+            onOrderChange={(stations) => setStationOrder(stations.map((s) => s.id))}
+          />
+        </div>
+        <div
+          style={{
+            border: '1px solid #ccc',
+            padding: '1rem',
+            borderRadius: '4px',
+            gridColumn: 'span 2',
+          }}
+        >
+          <h3>Diagram Settings</h3>
+          <DiagramSettings config={diagramConfig} onConfigChange={setDiagramConfig} />
+        </div>
+      </div>
+      <div style={{ padding: '0.5rem', background: '#f0f0f0', borderRadius: '4px' }}>
+        <strong>Route Summary:</strong> {routeStops.length} stops configured
+      </div>
     </div>
   );
 }
 
 function ExecutionView() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [timeScale, setTimeScale] = useState(1.0);
+  const [simulationTime, setSimulationTime] = useState(0);
+  const [_selectedTrainId, setSelectedTrainId] = useState<string | null>(null);
+  const totalDuration = 3600; // 1 hour simulation
+
+  const handlePlay = () => setIsPlaying(true);
+  const handlePause = () => setIsPlaying(false);
+  const handleStop = () => {
+    setIsPlaying(false);
+    setSimulationTime(0);
+  };
+
+  const handleTrainSelect = (trainId: string) => {
+    setSelectedTrainId(trainId);
+    // Future: Update execution canvas to highlight selected train
+  };
+
   return (
-    <div style={{ width: '100%', height: '100%', padding: '2rem' }}>
-      <h2>Execution Preview</h2>
-      <p>Execution preview interface will be implemented in Phase 5</p>
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: '1rem', borderBottom: '1px solid #ccc' }}>
+        <h2>Execution Preview</h2>
+        <ExecutionControls
+          isPlaying={isPlaying}
+          currentTimeScale={timeScale}
+          simulationTime={simulationTime}
+          totalDuration={totalDuration}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onStop={handleStop}
+          onTimeScaleChange={setTimeScale}
+          onSeek={setSimulationTime}
+        />
+      </div>
+      <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
+        <PreviewPanel scheduledTrains={[]} onTrainSelect={handleTrainSelect} />
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#f5f5f5',
+          }}
+        >
+          <p style={{ color: '#666' }}>Execution canvas will render trains here</p>
+        </div>
+      </div>
     </div>
   );
 }

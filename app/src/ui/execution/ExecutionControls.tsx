@@ -82,7 +82,11 @@ export const ExecutionControls: React.FC<ExecutionControlsProps> = ({
             ▶ Play
           </button>
         ) : (
-          <button type="button" style={{ ...styles.button, ...styles.pauseButton }} onClick={onPause}>
+          <button
+            type="button"
+            style={{ ...styles.button, ...styles.pauseButton }}
+            onClick={onPause}
+          >
             ⏸ Pause
           </button>
         )}

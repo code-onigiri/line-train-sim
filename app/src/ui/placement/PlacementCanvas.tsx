@@ -64,7 +64,7 @@ export function PlacementCanvas({
       sceneRef.current = null;
       destroyPixiApp();
     };
-  }, [onSelectionChange, onSceneMetrics, onNotify]);
+  }, [activeTool, onSelectionChange, onSceneMetrics, onNotify]);
 
   useEffect(() => {
     sceneRef.current?.setTool(activeTool);
