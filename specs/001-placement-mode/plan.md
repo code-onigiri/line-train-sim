@@ -10,18 +10,18 @@ Implement the placement, diagram configuration, and execution preview workflow f
 ## Technical Context
 
 **Language/Version**: TypeScript 5.x (ES2022 targeting Chrome 142+, Firefox 144+, Safari 26.0+)  
-**Runtime**: Bun 1.x for package management, script execution, and test running  
+**Runtime**: Node.js 20 LTS with npm scripts (Bun 1.x remains supported for contributors who prefer `bun run`)  
 **Build Tool**: Vite 5.x with React plugin for fast HMR and optimized production builds  
 **Primary Dependencies**: React 18, PixiJS for high-performance 2D rendering, Zustand for state management, Dexie for IndexedDB access, Zod for runtime validation  
 **Storage**: IndexedDB (via Dexie) with localStorage fallback for lightweight preferences  
-**Testing**: Vitest + React Testing Library + Playwright for interaction regression packs (executed via Bun)  
+**Testing**: Vitest + React Testing Library + Playwright for interaction regression packs (executed through `npm run test` / `npm run test:e2e`, with Bun parity scripts maintained)  
 **Target Platform**: Modern desktop and mobile browsers (Chrome 142+, Firefox 144+, Safari 26.0+) distributed via Vite-built static bundle  
 **Project Type**: Web client (single-page application)  
 **Performance Goals**: Maintain 60 fps canvas interactions with up to 200 landmarks and 50 concurrent trains; execution preview must simulate 60 in-game minutes in ≤5 real minutes per spec SC-004, and a baseline scenario with 100 trains and 500 track segments must sustain ≤100 ms per simulation tick on reference hardware.
 **Constraints**: Time-scaling controls must respond within 150 ms, validation results return in ≤200 ms for 50-train scenarios, memory footprint ≤256 MB in client session, offline-capable after initial load  
 **Scale/Scope**: Support maps up to 200 landmarks, 50 trains, 20 routes, and 3 concurrent add-ons per session  
 **Reference Hardware**: Average consumer PC (non-gaming): modern multi-core CPU, 8-16GB RAM, integrated or entry-level discrete GPU  
-**Developer Tooling**: Biome 1.x for linting/formatting; Vite dev server with Bun runtime for local development with HMR
+**Developer Tooling**: Biome 1.x for linting/formatting; Vite dev server running via `npm run dev` (or `bun run dev` when desired) with HMR support
 
 ## Constitution Check
 

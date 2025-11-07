@@ -43,9 +43,10 @@ export class TrackRenderer {
     const lineWidth = this.getLineWidthByClassification(track.classification);
 
     // Main track line
-    graphic.moveTo(startLandmark.x, startLandmark.y);
-    graphic.lineTo(endLandmark.x, endLandmark.y);
-    graphic.stroke({ width: lineWidth, color, alpha: 0.8 });
+    graphic
+      .moveTo(startLandmark.x, startLandmark.y)
+      .lineTo(endLandmark.x, endLandmark.y)
+      .stroke({ width: lineWidth, color, alpha: 0.8 });
 
     // Draw elevation indicator if elevated or underground
     if (track.elevation > 0) {
@@ -166,9 +167,10 @@ export class TrackRenderer {
     const nx = (-dy / length) * offset;
     const ny = (dx / length) * offset;
 
-    graphic.moveTo(x1 + nx, y1 + ny);
-    graphic.lineTo(x2 + nx, y2 + ny);
-    graphic.stroke({ width: 1, color, alpha: 0.6 });
+    graphic
+      .moveTo(x1 + nx, y1 + ny)
+      .lineTo(x2 + nx, y2 + ny)
+      .stroke({ width: 1, color, alpha: 0.6 });
   }
 
   private drawUndergroundPattern(
@@ -196,9 +198,7 @@ export class TrackRenderer {
       const endX = x1 + dx * t2;
       const endY = y1 + dy * t2;
 
-      graphic.moveTo(startX, startY);
-      graphic.lineTo(endX, endY);
-      graphic.stroke({ width: 1, color, alpha: 0.5 });
+      graphic.moveTo(startX, startY).lineTo(endX, endY).stroke({ width: 1, color, alpha: 0.5 });
     }
   }
 
@@ -234,11 +234,12 @@ export class TrackRenderer {
     const base2X = midX - perpX * arrowSize * 0.5;
     const base2Y = midY - perpY * arrowSize * 0.5;
 
-    graphic.moveTo(tipX, tipY);
-    graphic.lineTo(base1X, base1Y);
-    graphic.lineTo(base2X, base2Y);
-    graphic.lineTo(tipX, tipY);
-    graphic.fill({ color, alpha: 0.8 });
+    graphic
+      .moveTo(tipX, tipY)
+      .lineTo(base1X, base1Y)
+      .lineTo(base2X, base2Y)
+      .lineTo(tipX, tipY)
+      .fill({ color, alpha: 0.8 });
   }
 
   /**

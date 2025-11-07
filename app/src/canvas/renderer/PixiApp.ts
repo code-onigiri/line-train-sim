@@ -87,8 +87,10 @@ export class PixiApp {
    * Should be called when the component is unmounted
    */
   public destroy(): void {
-    this.app.destroy(true, { children: true, texture: true, baseTexture: true });
-    this.isInitialized = false;
+    if (this.isInitialized) {
+      this.app.destroy({ removeView: true });
+      this.isInitialized = false;
+    }
   }
 
   /**

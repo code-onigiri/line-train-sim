@@ -41,17 +41,19 @@ export class LandmarkRenderer {
     const radius = 5;
     const color = this.getColorByElevation(landmark.elevation);
 
-    graphic.circle(landmark.x, landmark.y, radius);
-    graphic.fill({ color, alpha: 1 });
+    // Draw filled circle
+    graphic.circle(landmark.x, landmark.y, radius).fill({ color, alpha: 1 });
 
     // Draw border
-    graphic.circle(landmark.x, landmark.y, radius);
-    graphic.stroke({ width: 1, color: 0x000000, alpha: 0.5 });
+    graphic
+      .circle(landmark.x, landmark.y, radius)
+      .stroke({ width: 1, color: 0x000000, alpha: 0.5 });
 
     // If landmark has connections, show as a junction
     if (landmark.connections.length > 2) {
-      graphic.circle(landmark.x, landmark.y, radius + 2);
-      graphic.stroke({ width: 2, color: 0x0066cc, alpha: 0.8 });
+      graphic
+        .circle(landmark.x, landmark.y, radius + 2)
+        .stroke({ width: 2, color: 0x0066cc, alpha: 0.8 });
     }
 
     // Cache the rendered state

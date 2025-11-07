@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { IntlProvider } from 'react-intl';
+import type { SelectedEntity } from '../canvas/interactions/SelectionHandler';
 import enUSMessages from '../i18n/locales/en-US.json';
 import { getPreferences } from '../services/storage/preferences';
+import { PlacementCanvas } from '../ui/placement/PlacementCanvas';
+import { type PlacementTool, PlacementToolbar } from '../ui/placement/PlacementToolbar';
 
 type AppMode = 'placement' | 'diagram' | 'execution';
 
@@ -45,15 +48,86 @@ function App() {
 }
 
 function PlacementView() {
+  const [activeTool, setActiveTool] = useState<PlacementTool>('select');
+  const [selection, setSelection] = useState<SelectedEntity[]>([]);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [sceneMetrics, setSceneMetrics] = useState<{ landmarks: number; tracks: number }>(() => ({
+    landmarks: 0,
+    tracks: 0,
+  }));
+
+  const selectionSummary = useMemo(() => {
+    if (selection.length === 0) {
+      return 'Nothing selected';
+    }
+
+    const counts = selection.reduce<Record<string, number>>((acc, entity) => {
+      acc[entity.type] = (acc[entity.type] ?? 0) + 1;
+      return acc;
+    }, {});
+
+    return Object.entries(counts)
+      .map(([type, count]) => `${type}: ${count}`)
+      .join(', ');
+  }, [selection]);
+
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex' }}>
-      <div style={{ flex: 1, background: '#f0f0f0' }}>
-        <canvas id="placement-canvas" style={{ width: '100%', height: '100%' }} />
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ borderBottom: '1px solid #ddd', padding: '0.5rem 0.75rem' }}>
+        <PlacementToolbar activeTool={activeTool} onToolChange={setActiveTool} />
       </div>
-      <aside style={{ width: '300px', padding: '1rem', borderLeft: '1px solid #ccc' }}>
-        <h2>Tools</h2>
-        <p>Placement mode tools will appear here</p>
-      </aside>
+      <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
+        <div style={{ flex: 1, background: '#f0f0f0', position: 'relative' }}>
+          <PlacementCanvas
+            activeTool={activeTool}
+            onSelectionChange={setSelection}
+            onSceneMetrics={setSceneMetrics}
+            onNotify={setStatusMessage}
+          />
+        </div>
+        <aside
+          style={{
+            width: '320px',
+            padding: '1rem',
+            borderLeft: '1px solid #ccc',
+            background: '#fff',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+          }}
+        >
+          <section>
+            <h2 style={{ marginBottom: '0.5rem' }}>Scene Metrics</h2>
+            <dl style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', rowGap: '0.25rem' }}>
+              <dt>Landmarks</dt>
+              <dd>{sceneMetrics.landmarks}</dd>
+              <dt>Tracks</dt>
+              <dd>{sceneMetrics.tracks}</dd>
+            </dl>
+          </section>
+
+          <section>
+            <h2 style={{ marginBottom: '0.5rem' }}>Selection</h2>
+            <p style={{ margin: 0 }}>{selectionSummary}</p>
+          </section>
+
+          <section>
+            <h2 style={{ marginBottom: '0.5rem' }}>Tips</h2>
+            <ul style={{ margin: 0, paddingLeft: '1.1rem', display: 'grid', rowGap: '0.35rem' }}>
+              <li>Use the Landmark tool to drop anchor points before drawing tracks.</li>
+              <li>Select two landmarks in Track mode to connect them.</li>
+              <li>Use Delete to remove the current selection.</li>
+            </ul>
+          </section>
+
+          {statusMessage && (
+            <section>
+              <h2 style={{ marginBottom: '0.5rem' }}>Status</h2>
+              <p style={{ margin: 0 }}>{statusMessage}</p>
+            </section>
+          )}
+        </aside>
+      </div>
     </div>
   );
 }
