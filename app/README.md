@@ -1,15 +1,31 @@
 # app
 
-To install dependencies:
+Front-end workspace for the placement, diagram, and execution flows of Line Train Simulator.
+
+## Setup
+
+Install dependencies with npm (default):
 
 ```bash
-bun install
+npm install
 ```
 
-To run:
+> Bun users can continue to run `bun install`; both `package-lock.json` and `bun.lock` are maintained in sync.
+
+## Development
+
+Start the Vite dev server:
 
 ```bash
-bun run index.ts
+npm run dev
 ```
 
-This project was created using `bun init` in bun v1.3.1. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+## Quality Gates
+
+```bash
+npm test        # Vitest suite
+npm run lint    # Biome lint + format checks
+npm run test:e2e # Playwright regression pack
+```
+
+Use `npm run build` to generate a production bundle.

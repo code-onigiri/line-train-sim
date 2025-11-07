@@ -87,6 +87,7 @@ An operations lead previews and runs the timetable, adjusting time speed and ens
 - **FR-012**: Execution mode MUST respect user-selected time scaling while maintaining per-train speed constraints and preventing visual or logical overlaps.
 - **FR-013**: Train visualization MUST render consist bodies as single rectangles on straight segments and as paired trapezoids that bend smoothly through corners.
 - **FR-014**: The platform MUST expose an add-on interface that lets optional content register new assets and event-driven behaviors tied to simulator timing while preventing access to security-sensitive operations.
+	- Security-sensitive operations include filesystem or environment inspection, arbitrary network requests outside the documented ClientService API surface, execution of dynamic code via `eval`/`Function`, and direct DOM manipulation that bypasses the sandbox bridge. The add-on runtime MUST block these capabilities by default and surface permission errors for auditing.
 - **FR-015**: The user interface MUST support configurable locale packs with translated text, numeric, and time formatting for placement, diagram, and execution surfaces.
 
 ### Key Entities *(include if feature involves data)*

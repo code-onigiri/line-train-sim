@@ -118,6 +118,8 @@ Per plan.md structure:
 - [x] T052 [P] [US1] Add keyboard shortcuts for placement tools (Space toggle, Shift multi-select) in app/src/ui/placement/KeyboardShortcuts.tsx
 - [x] T053 [US1] Implement save/load functionality for complete map state in app/src/services/storage/MapPersistence.ts
 - [x] T054 [US1] Add validation messages and error feedback for placement operations in app/src/ui/common/ValidationFeedback.tsx
+- [x] T054k [US1] Wire Pixi-based placement canvas into React shell via app/src/ui/placement/PlacementCanvas.tsx and integrate toolbar switching in app/src/app/App.tsx
+- [x] T054l [US1] Expose placement scene metrics and selection inspector in app/src/app/App.tsx to surface InteractionManager state to the UI
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently - users can create, edit, save, and reload complete infrastructure layouts.
 
@@ -142,7 +144,7 @@ Per plan.md structure:
 
 ### Implementation for User Story 2
 
-- [x] T054g Immediately update all references from "Consist" to "ConsistTemplate" in models and services (moved from Phase 7 T132)
+- [x] T054g Immediately update all references from "Consist" to "ConsistTemplate" in models and services
 
 - [x] T055 [P] [US2] Create Route model with validation in app/src/models/Route.ts
 - [x] T056 [P] [US2] Create RouteStop and DiagramConfig models in app/src/models/RouteComponents.ts
@@ -178,15 +180,15 @@ Per plan.md structure:
 
 ### Tests for User Story 3 (Complete BEFORE Implementation)
 
-- [ ] T073a [P] [US3-TEST] Write failing unit tests for ScheduledTrain model with dwell assignments in app/tests/unit/models/ScheduledTrain.test.ts
-- [ ] T073b [US3-TEST] Write failing unit tests for ConflictDetector (overlapping dwell detection) in app/tests/unit/services/validation/ConflictDetector.test.ts
-- [ ] T073c [US3-TEST] Write failing unit tests for CapacityValidator (stopping track capacity) in app/tests/unit/services/validation/CapacityValidator.test.ts
-- [ ] T073d [US3-TEST] Write failing unit tests for train movement calculations with speed profiles in app/tests/unit/services/simulation/TrainMovement.test.ts
-- [ ] T073e [US3-TEST] Write failing unit tests for deterministic execution with seeded state in app/tests/unit/services/execution/DeterministicEngine.test.ts
-- [ ] T073f [US3-TEST] Write failing unit tests for corner normal calculation and trapezoid rendering in app/tests/unit/services/geometry/CornerNormals.test.ts
-- [ ] T073g [US3-TEST] Write failing E2E test for US3 acceptance scenarios (preview generation, execution playback, conflict display, train visualization) in app/tests/e2e/execution-workflow.spec.ts
+   - [x] T073a [P] [US3-TEST] Write failing unit tests for ScheduledTrain model with dwell assignments in app/tests/unit/models/ScheduledTrain.test.ts
+   - [x] T073b [US3-TEST] Write failing unit tests for ConflictDetector (overlapping dwell detection) in app/tests/unit/services/validation/ConflictDetector.test.ts
+   - [x] T073c [US3-TEST] Write failing unit tests for CapacityValidator (stopping track capacity) in app/tests/unit/services/validation/CapacityValidator.test.ts
+   - [x] T073d [US3-TEST] Write failing unit tests for train movement calculations with speed profiles in app/tests/unit/services/simulation/TrainMovement.test.ts
+   - [x] T073e [US3-TEST] Write failing unit tests for deterministic execution with seeded state in app/tests/unit/services/execution/DeterministicEngine.test.ts
+   - [x] T073f [US3-TEST] Write failing unit tests for corner normal calculation and trapezoid rendering in app/tests/unit/services/geometry/CornerNormals.test.ts
+   - [x] T073g [US3-TEST] Write failing E2E test for US3 acceptance scenarios (preview generation, execution playback, conflict display, train visualization) in app/tests/e2e/execution-workflow.spec.ts
 
-**Checkpoint**: All US3 tests written and failing - ready to implement
+**Checkpoint**: All US3 tests written and failing - ready to implement. Tests MUST remain in place before enabling any T074+ work to satisfy Constitution Principle 2.
 
 ### Implementation for User Story 3
 
