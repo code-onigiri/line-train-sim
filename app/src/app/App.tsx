@@ -221,6 +221,7 @@ function ExecutionView() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeScale, setTimeScale] = useState(1.0);
   const [simulationTime, setSimulationTime] = useState(0);
+  const [_selectedTrainId, setSelectedTrainId] = useState<string | null>(null);
   const totalDuration = 3600; // 1 hour simulation
 
   const handlePlay = () => setIsPlaying(true);
@@ -228,6 +229,11 @@ function ExecutionView() {
   const handleStop = () => {
     setIsPlaying(false);
     setSimulationTime(0);
+  };
+
+  const handleTrainSelect = (trainId: string) => {
+    setSelectedTrainId(trainId);
+    // Future: Update execution canvas to highlight selected train
   };
 
   return (
@@ -247,10 +253,7 @@ function ExecutionView() {
         />
       </div>
       <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
-        <PreviewPanel
-          scheduledTrains={[]}
-          onTrainSelect={(trainId) => console.log('Selected train:', trainId)}
-        />
+        <PreviewPanel scheduledTrains={[]} onTrainSelect={handleTrainSelect} />
         <div
           style={{
             flex: 1,

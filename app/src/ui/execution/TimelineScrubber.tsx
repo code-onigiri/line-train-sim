@@ -178,7 +178,7 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
         <div style={styles.timeMarkers}>
           {Array.from({ length: 11 }).map((_, idx) => {
             const time = (idx / 10) * totalDuration;
-            const markerId = `marker-${time.toFixed(2)}`;
+            const markerId = `marker-${idx}-${time.toFixed(2)}`;
             return (
               <div key={markerId} style={styles.timeMarker}>
                 <div style={styles.tick} />
