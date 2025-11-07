@@ -51,9 +51,10 @@ function PlacementView() {
   const [activeTool, setActiveTool] = useState<PlacementTool>('select');
   const [selection, setSelection] = useState<SelectedEntity[]>([]);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [sceneMetrics, setSceneMetrics] = useState<{ landmarks: number; tracks: number }>(
-    () => ({ landmarks: 0, tracks: 0 }),
-  );
+  const [sceneMetrics, setSceneMetrics] = useState<{ landmarks: number; tracks: number }>(() => ({
+    landmarks: 0,
+    tracks: 0,
+  }));
 
   const selectionSummary = useMemo(() => {
     if (selection.length === 0) {
