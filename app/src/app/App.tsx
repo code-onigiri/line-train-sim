@@ -14,6 +14,7 @@ import { RouteBuilder, type RouteStop } from '../ui/diagram/RouteBuilder';
 import { StationOrderEditor } from '../ui/diagram/StationOrderEditor';
 import { ExecutionControls } from '../ui/execution/ExecutionControls';
 import { PreviewPanel } from '../ui/execution/PreviewPanel';
+import { TimelineScrubber } from '../ui/execution/TimelineScrubber';
 import { PlacementCanvas } from '../ui/placement/PlacementCanvas';
 import { type PlacementTool, PlacementToolbar } from '../ui/placement/PlacementToolbar';
 
@@ -252,18 +253,28 @@ function ExecutionView() {
           onSeek={setSimulationTime}
         />
       </div>
-      <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
-        <PreviewPanel scheduledTrains={[]} onTrainSelect={handleTrainSelect} />
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: '#f5f5f5',
-          }}
-        >
-          <p style={{ color: '#666' }}>Execution canvas will render trains here</p>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
+          <PreviewPanel scheduledTrains={[]} onTrainSelect={handleTrainSelect} />
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: '#f5f5f5',
+            }}
+          >
+            <p style={{ color: '#666' }}>Execution canvas will render trains here</p>
+          </div>
+        </div>
+        <div style={{ padding: '1rem', borderTop: '1px solid #ccc' }}>
+          <TimelineScrubber
+            currentTime={simulationTime}
+            totalDuration={totalDuration}
+            isPlaying={isPlaying}
+            onSeek={setSimulationTime}
+          />
         </div>
       </div>
     </div>
