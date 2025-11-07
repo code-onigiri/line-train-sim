@@ -3,8 +3,11 @@ import type { InteractionEvent } from '../../canvas/interactions/InteractionMana
 import { InteractionManager } from '../../canvas/interactions/InteractionManager';
 import type { SelectedEntity } from '../../canvas/interactions/SelectionHandler';
 import { SelectionHandler } from '../../canvas/interactions/SelectionHandler';
+import { ViewportController } from '../../canvas/interactions/ViewportController';
+import { DepotRenderer } from '../../canvas/renderer/DepotRenderer';
 import { LandmarkRenderer } from '../../canvas/renderer/LandmarkRenderer';
 import { type PixiApp, destroyPixiApp, getPixiApp } from '../../canvas/renderer/PixiApp';
+import { StationRenderer } from '../../canvas/renderer/StationRenderer';
 import { TrackRenderer } from '../../canvas/renderer/TrackRenderer';
 import { DepotService } from '../../services/placement/DepotService';
 import { LandmarkService } from '../../services/placement/LandmarkService';
@@ -87,8 +90,11 @@ class PlacementScene {
   private trackService = new TrackSegmentService(this.landmarkService);
   private landmarkRenderer: LandmarkRenderer;
   private trackRenderer: TrackRenderer;
+  private stationRenderer: StationRenderer;
+  private depotRenderer: DepotRenderer;
   private interactionManager: InteractionManager;
   private selectionHandler: SelectionHandler;
+  private viewportController: ViewportController;
   private activeTool: PlacementTool = 'select';
   private pendingTrackStart: string | null = null;
 
@@ -103,7 +109,10 @@ class PlacementScene {
     const container = pixiApp.getMainContainer();
     this.landmarkRenderer = new LandmarkRenderer(container);
     this.trackRenderer = new TrackRenderer(container, this.landmarkService);
+    this.stationRenderer = new StationRenderer(container);
+    this.depotRenderer = new DepotRenderer(container);
     this.interactionManager = new InteractionManager(pixiApp.getApp());
+    this.viewportController = new ViewportController(container);
     this.selectionHandler = new SelectionHandler(
       this.landmarkService,
       this.trackService,
@@ -117,6 +126,8 @@ class PlacementScene {
 
     this.interactionManager.on('pointerdown', this.handlePointerDown);
     this.interactionManager.on('pointermove', this.handlePointerMove);
+    this.interactionManager.on('pointerup', this.handlePointerUp);
+    this.interactionManager.on('wheel', this.handleWheel);
     this.interactionManager.on('keydown', this.handleKeyDown);
 
     this.callbacks.onSelectionChange([]);
@@ -161,11 +172,19 @@ class PlacementScene {
     this.interactionManager.destroy();
     this.landmarkRenderer.destroy();
     this.trackRenderer.destroy();
+    this.stationRenderer.destroy();
+    this.depotRenderer.destroy();
     this.selectionHandler.deactivate();
     this.callbacks.onSelectionChange([]);
   }
 
   private handlePointerDown = (event: InteractionEvent): void => {
+    // Check if this is a viewport control action (middle mouse or shift+left)
+    if (event.button === 1 || (event.button === 0 && event.shiftKey)) {
+      this.viewportController.handlePointerDown(event);
+      return;
+    }
+
     switch (this.activeTool) {
       case 'landmark':
         this.createLandmark(event);
@@ -197,12 +216,23 @@ class PlacementScene {
   };
 
   private handlePointerMove = (event: InteractionEvent): void => {
+    // Always handle viewport panning
+    this.viewportController.handlePointerMove(event);
+
     if (this.activeTool !== 'track' || !this.pendingTrackStart) {
       return;
     }
 
     // Track preview rendering will be added in a future iteration.
     void event;
+  };
+
+  private handlePointerUp = (event: InteractionEvent): void => {
+    this.viewportController.handlePointerUp(event);
+  };
+
+  private handleWheel = (event: InteractionEvent): void => {
+    this.viewportController.handleWheel(event);
   };
 
   private handleKeyDown = (event: InteractionEvent): void => {
@@ -274,6 +304,8 @@ class PlacementScene {
   private renderAll(): void {
     this.landmarkRenderer.renderAll(this.landmarkService.getAll());
     this.trackRenderer.renderAll(this.trackService.getAll());
+    this.stationRenderer.renderAll(this.stationService.getAll());
+    this.depotRenderer.renderAll(this.depotService.getAll());
   }
 
   private emitMetrics(): void {
