@@ -265,4 +265,12 @@ export class ViewportController {
 
     this.applyTransform();
   }
+
+  /**
+   * Cleanup and reset viewport state
+   */
+  destroy(): void {
+    this.isPanning = false;
+    this.resetView();
+  }
 }
