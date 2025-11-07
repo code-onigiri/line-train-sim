@@ -68,8 +68,12 @@ export function ExecutionCanvas({
 
   // Update selection highlight
   useEffect(() => {
-    if (sceneRef.current && selectedTrainId) {
-      sceneRef.current.highlightTrain(selectedTrainId);
+    if (sceneRef.current) {
+      if (selectedTrainId) {
+        sceneRef.current.highlightTrain(selectedTrainId);
+      } else {
+        sceneRef.current.clearHighlight();
+      }
     }
   }, [selectedTrainId]);
 
@@ -112,14 +116,26 @@ class ExecutionScene {
 
     // Render each train
     // TODO: Calculate actual positions based on routes and simulation time
-    // For now, just render placeholder trains
-    for (const train of trains) {
-      // Placeholder position calculation
-      const x = 200 + Math.random() * 400;
-      const y = 200 + Math.random() * 300;
-      const rotation = Math.random() * Math.PI * 2;
+    // For now, render trains at deterministic positions based on train ID
+    for (let i = 0; i < trains.length; i++) {
+      const train = trains[i];
+      // Deterministic position based on index to avoid jumping on re-renders
+      const x = 200 + (i % 5) * 100;
+      const y = 200 + Math.floor(i / 5) * 80;
+      const rotation = (i * Math.PI) / 4; // Rotate each train differently
 
       this.trainRenderer.renderTrain(train, x, y, rotation);
+    }
+  }
+
+  /**
+   * Clear highlight from all trains
+   */
+  clearHighlight(): void {
+    if (this.previousSelectedTrainId) {
+      this.trainRenderer.removeHighlight(this.previousSelectedTrainId);
+      this.turnRenderer.removeHighlight(this.previousSelectedTrainId);
+      this.previousSelectedTrainId = null;
     }
   }
 
