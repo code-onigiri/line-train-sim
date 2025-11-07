@@ -39,9 +39,24 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
   const [hoveredEvent, setHoveredEvent] = useState<TimelineEvent | null>(null);
   const scrubberRef = useRef<HTMLDivElement>(null);
 
+  const handleSeek = useCallback(
+    (e: MouseEvent | React.MouseEvent) => {
+      if (!scrubberRef.current || !onSeek) return;
+
+      const rect = scrubberRef.current.getBoundingClientRect();
+      const nativeEvent = 'nativeEvent' in e ? e.nativeEvent : e;
+      const x = nativeEvent.clientX - rect.left;
+      const percentage = Math.max(0, Math.min(1, x / rect.width));
+      const newTime = percentage * totalDuration;
+
+      onSeek(newTime);
+    },
+    [onSeek, totalDuration],
+  );
+
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
-    handleSeek(e.nativeEvent);
+    handleSeek(e);
   };
 
   const handleMouseMove = useCallback(
@@ -50,7 +65,7 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
         handleSeek(e);
       }
     },
-    [isDragging],
+    [isDragging, handleSeek],
   );
 
   const handleMouseUp = useCallback(() => {
@@ -67,17 +82,6 @@ export const TimelineScrubber: React.FC<TimelineScrubberProps> = ({
       };
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
-
-  const handleSeek = (e: MouseEvent) => {
-    if (!scrubberRef.current || !onSeek) return;
-
-    const rect = scrubberRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, x / rect.width));
-    const newTime = percentage * totalDuration;
-
-    onSeek(newTime);
-  };
 
   const formatTime = (seconds: number): string => {
     const hours = Math.floor(seconds / 3600);
