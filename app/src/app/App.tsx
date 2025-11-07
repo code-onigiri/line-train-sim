@@ -12,6 +12,7 @@ import { getPreferences } from '../services/storage/preferences';
 import { DiagramSettings } from '../ui/diagram/DiagramSettings';
 import { RouteBuilder, type RouteStop } from '../ui/diagram/RouteBuilder';
 import { StationOrderEditor } from '../ui/diagram/StationOrderEditor';
+import { ExecutionCanvas } from '../ui/execution/ExecutionCanvas';
 import { ExecutionControls } from '../ui/execution/ExecutionControls';
 import { PreviewPanel } from '../ui/execution/PreviewPanel';
 import { TimelineScrubber } from '../ui/execution/TimelineScrubber';
@@ -222,7 +223,7 @@ function ExecutionView() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeScale, setTimeScale] = useState(1.0);
   const [simulationTime, setSimulationTime] = useState(0);
-  const [_selectedTrainId, setSelectedTrainId] = useState<string | null>(null);
+  const [selectedTrainId, setSelectedTrainId] = useState<string | null>(null);
   const totalDuration = 3600; // 1 hour simulation
 
   const handlePlay = () => setIsPlaying(true);
@@ -234,8 +235,10 @@ function ExecutionView() {
 
   const handleTrainSelect = (trainId: string) => {
     setSelectedTrainId(trainId);
-    // Future: Update execution canvas to highlight selected train
   };
+
+  // Sample scheduled trains for demonstration
+  const scheduledTrains = [];
 
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -255,17 +258,15 @@ function ExecutionView() {
       </div>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
         <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
-          <PreviewPanel scheduledTrains={[]} onTrainSelect={handleTrainSelect} />
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: '#f5f5f5',
-            }}
-          >
-            <p style={{ color: '#666' }}>Execution canvas will render trains here</p>
+          <PreviewPanel scheduledTrains={scheduledTrains} onTrainSelect={handleTrainSelect} />
+          <div style={{ flex: 1, position: 'relative', background: '#f5f5f5' }}>
+            <ExecutionCanvas
+              scheduledTrains={scheduledTrains}
+              simulationTime={simulationTime}
+              isPlaying={isPlaying}
+              selectedTrainId={selectedTrainId}
+              onTrainClick={handleTrainSelect}
+            />
           </div>
         </div>
         <div style={{ padding: '1rem', borderTop: '1px solid #ccc' }}>
