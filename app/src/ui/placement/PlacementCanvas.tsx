@@ -169,6 +169,7 @@ class PlacementScene {
   }
 
   destroy(): void {
+    this.viewportController.destroy();
     this.interactionManager.destroy();
     this.landmarkRenderer.destroy();
     this.trackRenderer.destroy();
