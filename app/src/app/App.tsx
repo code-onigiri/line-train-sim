@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { IntlProvider } from 'react-intl';
+import type { SelectedEntity } from '../canvas/interactions/SelectionHandler';
 import enUSMessages from '../i18n/locales/en-US.json';
 import { getPreferences } from '../services/storage/preferences';
-import type { SelectedEntity } from '../canvas/interactions/SelectionHandler';
 import { PlacementCanvas } from '../ui/placement/PlacementCanvas';
-import { PlacementToolbar, type PlacementTool } from '../ui/placement/PlacementToolbar';
+import { type PlacementTool, PlacementToolbar } from '../ui/placement/PlacementToolbar';
 
 type AppMode = 'placement' | 'diagram' | 'execution';
 

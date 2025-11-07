@@ -4,8 +4,8 @@ import { InteractionManager } from '../../canvas/interactions/InteractionManager
 import type { SelectedEntity } from '../../canvas/interactions/SelectionHandler';
 import { SelectionHandler } from '../../canvas/interactions/SelectionHandler';
 import { LandmarkRenderer } from '../../canvas/renderer/LandmarkRenderer';
+import { type PixiApp, destroyPixiApp, getPixiApp } from '../../canvas/renderer/PixiApp';
 import { TrackRenderer } from '../../canvas/renderer/TrackRenderer';
-import { destroyPixiApp, getPixiApp, type PixiApp } from '../../canvas/renderer/PixiApp';
 import { DepotService } from '../../services/placement/DepotService';
 import { LandmarkService } from '../../services/placement/LandmarkService';
 import { StationService } from '../../services/placement/StationService';
